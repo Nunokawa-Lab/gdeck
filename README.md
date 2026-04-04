@@ -26,5 +26,9 @@ root.goなどを簡単に作成してくれる便利CLI。
 
 `apictl get <URL>`
 
+シンボリックリンクを作成しておけばビルドだけで済む
+
+`ln -s $(pwd)/apictl /usr/local/bin/apictl`
+
 ## 実装時ルール
 * コミット前には必ず`go fmt`を実行する
