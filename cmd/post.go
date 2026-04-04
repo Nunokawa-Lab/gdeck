@@ -41,7 +41,7 @@ var postCmd = &cobra.Command{
 		}
 
 		fmt.Printf("Status Code: %v\n", res.Status)
-		fmt.Println(string(res.Body))
+		fmt.Println(httpclient.FormatJSON(res.Body))
 	},
 }
 

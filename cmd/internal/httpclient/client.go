@@ -67,7 +67,7 @@ func Post(url string, body string, headers []string) (*Response, error) {
 
 	res := &Response{
 		Status: httpRes.Status,
-		Body: b,
+		Body:   b,
 	}
 	return res, nil
 
