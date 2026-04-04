@@ -16,3 +16,6 @@ root.goなどを簡単に作成してくれる便利CLI。
 
 ## ツールの使い方(Local)
 `go run main.go apictl get <URL>`
+
+## 実装時ルール
+* コミット前には必ず`go fmt`を実行する
