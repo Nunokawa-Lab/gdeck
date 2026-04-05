@@ -24,11 +24,11 @@ import (
  *   args: CLIで渡された引数（今回はURLが入る）
  */
 var getCmd = &cobra.Command{
-	Use: "get [url]",
-	Short: "Send get request",
+	Use:     "get [url]",
+	Short:   "Send get request",
 	Example: "apictl get https://example.com",
-	Args: cobra.ExactArgs(1),
-	Run: func (cmd *cobra.Command, args []string)  {
+	Args:    cobra.ExactArgs(1),
+	Run: func(cmd *cobra.Command, args []string) {
 		url := args[0]
 		res, err := httpclient.Get(url)
 		if err != nil {
@@ -36,11 +36,14 @@ var getCmd = &cobra.Command{
 			return
 		}
 
-		fmt.Println(res)
+		res.PrintResponse(isVerbose)
 	},
 }
 
 func init() {
+	// -v
+	getCmd.Flags().BoolVarP(&isVerbose, "verbose", "v", false, "Verbose output")
+
 	// Getコマンドを登録
 	rootCmd.AddCommand(getCmd)
 }
