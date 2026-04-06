@@ -10,9 +10,10 @@ import (
 
 // レスポンス構造体
 type Response struct {
-	Status string
-	Header http.Header
-	Body   []byte
+	Status     string
+	StatusCode int
+	Header     http.Header
+	Body       []byte
 }
 
 // レスポンス共通関数
@@ -26,13 +27,29 @@ func (res *Response) PrintResponse(isVerbose bool) {
 
 		fmt.Printf(
 			"Status Code: %s\n\nHeader: %s\n\nBody: %s",
-			res.Status,
+			colorStatus(res.Status, res.StatusCode),
 			FormatJSON(headerJSONBytes),
 			FormatJSON(res.Body),
 		)
 	} else {
-		fmt.Printf("Status Code: %v\n", res.Status)
+		fmt.Printf("Status Code: %v\n", colorStatus(res.Status, res.StatusCode))
 		fmt.Println(FormatJSON(res.Body))
+	}
+}
+
+// ステータスコード色付け
+func colorStatus(status string, code int) string {
+	switch {
+	case code >= 200 && code < 300:
+		return "\033[42;30m " + status + " \033[0m" // 緑背景＋黒文字
+	case code >= 300 && code < 400:
+		return "\033[44;37m " + status + " \033[0m" // 青背景＋白文字
+	case code >= 400 && code < 500:
+		return "\033[43;30m " + status + " \033[0m" // 黄背景＋黒文字
+	case code >= 500:
+		return "\033[41;37m " + status + " \033[0m" // 赤背景＋白文字
+	default:
+		return status
 	}
 }
 
@@ -60,9 +77,10 @@ func Get(url string) (*Response, error) {
 	}
 
 	res := &Response{
-		Status: getRes.Status,
-		Header: getRes.Header,
-		Body:   body,
+		Status:     getRes.Status,
+		StatusCode: getRes.StatusCode,
+		Header:     getRes.Header,
+		Body:       body,
 	}
 
 	return res, nil
@@ -104,9 +122,10 @@ func Post(url string, body string, headers []string) (*Response, error) {
 	}
 
 	res := &Response{
-		Status: httpRes.Status,
-		Header: httpRes.Header,
-		Body:   b,
+		Status:     httpRes.Status,
+		StatusCode: httpRes.StatusCode,
+		Header:     httpRes.Header,
+		Body:       b,
 	}
 	return res, nil
 
