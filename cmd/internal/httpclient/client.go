@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"strings"
+	"time"
 )
 
 // レスポンス構造体
@@ -14,6 +15,7 @@ type Response struct {
 	StatusCode int
 	Header     http.Header
 	Body       []byte
+	Time       time.Duration
 }
 
 // レスポンス共通関数
@@ -26,14 +28,19 @@ func (res *Response) PrintResponse(isVerbose bool) {
 		}
 
 		fmt.Printf(
-			"Status Code: %s\n\nHeader: %s\n\nBody: %s",
+			"Status Code: %s\n\nHeader: %s\n\nBody: %s\n\nTime: %v",
 			colorStatus(res.Status, res.StatusCode),
 			FormatJSON(headerJSONBytes),
 			FormatJSON(res.Body),
+			res.Time,
 		)
 	} else {
-		fmt.Printf("Status Code: %v\n", colorStatus(res.Status, res.StatusCode))
-		fmt.Println(FormatJSON(res.Body))
+		fmt.Printf(
+			"Status Code: %s\n\nBody: %s\n\nTime: %v",
+			colorStatus(res.Status, res.StatusCode),
+			FormatJSON(res.Body),
+			res.Time,
+		)
 	}
 }
 
@@ -58,10 +65,12 @@ func colorStatus(status string, code int) string {
 ********************/
 // 実ロジック
 func Get(url string) (*Response, error) {
+	start := time.Now()
 	getRes, err := http.Get(url)
 	if err != nil {
 		return nil, err
 	}
+	duration := time.Since(start)
 
 	// 最後に接続閉じる
 	defer getRes.Body.Close()
@@ -81,6 +90,7 @@ func Get(url string) (*Response, error) {
 		StatusCode: getRes.StatusCode,
 		Header:     getRes.Header,
 		Body:       body,
+		Time:       duration,
 	}
 
 	return res, nil
@@ -106,10 +116,12 @@ func Post(url string, body string, headers []string) (*Response, error) {
 	}
 
 	client := &http.Client{}
+	start := time.Now()
 	httpRes, err := client.Do(req)
 	if err != nil {
 		return nil, err
 	}
+	duration := time.Since(start)
 	defer httpRes.Body.Close()
 
 	if hLen := len(httpRes.Header); hLen < 1 {
@@ -126,6 +138,7 @@ func Post(url string, body string, headers []string) (*Response, error) {
 		StatusCode: httpRes.StatusCode,
 		Header:     httpRes.Header,
 		Body:       b,
+		Time:       duration,
 	}
 	return res, nil
 
