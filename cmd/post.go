@@ -37,7 +37,11 @@ var postCmd = &cobra.Command{
 			return
 		}
 
-		res.PrintResponse(isVerbose)
+		if output != "" {
+			res.WriteJSONFile(output, isVerbose)
+		} else {
+			res.PrintResponse(isVerbose)
+		}
 	},
 }
 
@@ -49,6 +53,8 @@ func init() {
 	postCmd.Flags().StringArrayVarP(&requestHeaders, "header", "H", []string{}, "Request header")
 	// -v
 	postCmd.Flags().BoolVarP(&isVerbose, "verbose", "v", false, "Verbose output")
+	// -o
+	postCmd.Flags().StringVarP(&output, "output", "o", "", "Output file path")
 
 	// 登録
 	rootCmd.AddCommand(postCmd)

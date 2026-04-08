@@ -5,23 +5,31 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 )
 
 // レスポンス構造体
 type Response struct {
-	Status     string
-	StatusCode int
-	Header     http.Header
-	Body       []byte
-	Time       time.Duration
+	Status     string        `json:"status"`
+	StatusCode int           `json:"status_code"`
+	Header     http.Header   `json:"header"`
+	Body       []byte        `json:"body"`
+	Time       time.Duration `json:"time"`
+}
+
+
+type Output struct {
+	StatusCode int           `json:"status_code"`
+	Body       json.RawMessage `json:"body"`
+	Time       time.Duration `json:"time"`
 }
 
 // レスポンス共通関数
 func (res *Response) PrintResponse(isVerbose bool) {
 	if isVerbose {
-		headerJSONBytes, err := json.Marshal(res.Header)
+		hBytes, err := json.Marshal(res.Header)
 		if err != nil {
 			fmt.Println("Error: ", err.Error())
 			return
@@ -30,10 +38,11 @@ func (res *Response) PrintResponse(isVerbose bool) {
 		fmt.Printf(
 			"Status Code: %s\n\nHeader: %s\n\nBody: %s\n\nTime: %v",
 			colorStatus(res.Status, res.StatusCode),
-			FormatJSON(headerJSONBytes),
+			FormatJSON(hBytes),
 			FormatJSON(res.Body),
 			res.Time,
 		)
+
 	} else {
 		fmt.Printf(
 			"Status Code: %s\n\nBody: %s\n\nTime: %v",
@@ -41,6 +50,31 @@ func (res *Response) PrintResponse(isVerbose bool) {
 			FormatJSON(res.Body),
 			res.Time,
 		)
+	}
+}
+
+// JSONファイルとしてエクスポート
+func (res *Response) WriteJSONFile(path string, isVerbose bool) {
+	if isVerbose {
+		return
+	} else {
+		out := Output{
+			StatusCode: res.StatusCode,
+			Body:       res.Body,
+			Time:       res.Time,
+		}
+
+		b, err := json.MarshalIndent(out, "", "  ")
+		if err != nil {
+			fmt.Println("Error:", err)
+			return
+		}
+
+		err = os.WriteFile(path, b, 0644)
+		if err != nil {
+			fmt.Println("Error: ", err.Error())
+			return
+		}
 	}
 }
 
@@ -100,9 +134,9 @@ func Get(url string) (*Response, error) {
  POST
 ********************/
 // 実ロジック
-func Post(url string, body string, headers []string) (*Response, error) {
+func Post(url string, requestBody string, headers []string) (*Response, error) {
 	// 拡張性が乏しいため http.Post() でリクエストは作成しない
-	req, err := http.NewRequest("POST", url, strings.NewReader(body))
+	req, err := http.NewRequest("POST", url, strings.NewReader(requestBody))
 	if err != nil {
 		return nil, err
 	}
