@@ -38,7 +38,7 @@ var postCmd = &cobra.Command{
 		}
 
 		if output != "" {
-			res.WriteJSONFile(output, isVerbose)
+			res.WriteFile(output, isVerbose)
 		} else {
 			res.PrintResponse(isVerbose)
 		}

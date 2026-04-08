@@ -19,13 +19,6 @@ type Response struct {
 	Time       time.Duration `json:"time"`
 }
 
-
-type Output struct {
-	StatusCode int           `json:"status_code"`
-	Body       json.RawMessage `json:"body"`
-	Time       time.Duration `json:"time"`
-}
-
 // レスポンス共通関数
 func (res *Response) PrintResponse(isVerbose bool) {
 	if isVerbose {
@@ -53,12 +46,27 @@ func (res *Response) PrintResponse(isVerbose bool) {
 	}
 }
 
-// JSONファイルとしてエクスポート
-func (res *Response) WriteJSONFile(path string, isVerbose bool) {
+// ファイルとしてエクスポート
+func (res *Response) WriteFile(path string, isVerbose bool) {
 	if isVerbose {
-		return
+		b, err := json.MarshalIndent(res, "", "  ")
+		if err != nil {
+			fmt.Println("Error:", err)
+			return
+		}
+
+		err = os.WriteFile(path, b, 0644)
+		if err != nil {
+			fmt.Println("Error: ", err.Error())
+			return
+		}
+
 	} else {
-		out := Output{
+		out := struct {
+			StatusCode int             `json:"status_code"`
+			Body       json.RawMessage `json:"body"`
+			Time       time.Duration   `json:"time"`
+		}{
 			StatusCode: res.StatusCode,
 			Body:       res.Body,
 			Time:       res.Time,
