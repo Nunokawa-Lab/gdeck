@@ -36,13 +36,19 @@ var getCmd = &cobra.Command{
 			return
 		}
 
-		res.PrintResponse(isVerbose)
+		if output != "" {
+			res.WriteFile(output, isVerbose)
+		} else {
+			res.PrintResponse(isVerbose)
+		}
 	},
 }
 
 func init() {
 	// -v
 	getCmd.Flags().BoolVarP(&isVerbose, "verbose", "v", false, "Verbose output")
+	// -o
+	getCmd.Flags().StringVarP(&output, "output", "o", "", "Output file path")
 
 	// Getコマンドを登録
 	rootCmd.AddCommand(getCmd)

@@ -12,11 +12,11 @@ import (
 
 // レスポンス構造体
 type Response struct {
-	Status     string        `json:"status"`
-	StatusCode int           `json:"status_code"`
-	Header     http.Header   `json:"header"`
-	Body       []byte        `json:"body"`
-	Time       time.Duration `json:"time"`
+	Status     string          `json:"status"`
+	StatusCode int             `json:"status_code"`
+	Header     http.Header     `json:"header"`
+	Body       json.RawMessage `json:"body"`
+	Time       time.Duration   `json:"time"`
 }
 
 // レスポンス共通関数
@@ -48,40 +48,73 @@ func (res *Response) PrintResponse(isVerbose bool) {
 
 // ファイルとしてエクスポート
 func (res *Response) WriteFile(path string, isVerbose bool) {
-	if isVerbose {
-		b, err := json.MarshalIndent(res, "", "  ")
-		if err != nil {
-			fmt.Println("Error:", err)
-			return
-		}
 
-		err = os.WriteFile(path, b, 0644)
+	helperWriteFile := func(data []byte) {
+		err := os.WriteFile(path, data, 0644)
 		if err != nil {
 			fmt.Println("Error: ", err.Error())
 			return
+		}
+	}
+
+	// 詳細オプションオン（-v）
+	if isVerbose {
+		if json.Valid(res.Body) {
+			// レスポンスボディーがJSON形式の場合
+			b, err := json.MarshalIndent(res, "", "  ")
+			if err != nil {
+				fmt.Println("Error:", err)
+				return
+			}
+			helperWriteFile(b)
+
+		} else {
+			// それ以外はテキストを出力
+			hBytes, err := json.Marshal(res.Header)
+			if err != nil {
+				fmt.Println("Error: ", err.Error())
+				return
+			}
+
+			content := fmt.Sprintf(
+				"Status Code: %v\n\nHeader: %s\n\nBody: %s\n\nTime: %v",
+				res.StatusCode,
+				FormatJSON(hBytes),
+				FormatJSON(res.Body),
+				res.Time,
+			)
+			helperWriteFile([]byte(content))
 		}
 
 	} else {
-		out := struct {
-			StatusCode int             `json:"status_code"`
-			Body       json.RawMessage `json:"body"`
-			Time       time.Duration   `json:"time"`
-		}{
-			StatusCode: res.StatusCode,
-			Body:       res.Body,
-			Time:       res.Time,
-		}
+		if json.Valid(res.Body) {
+			// レスポンスボディーがJSON形式の場合
+			out := struct {
+				StatusCode int             `json:"status_code"`
+				Body       json.RawMessage `json:"body"`
+				Time       time.Duration   `json:"time"`
+			}{
+				StatusCode: res.StatusCode,
+				Body:       res.Body,
+				Time:       res.Time,
+			}
 
-		b, err := json.MarshalIndent(out, "", "  ")
-		if err != nil {
-			fmt.Println("Error:", err)
-			return
-		}
+			b, err := json.MarshalIndent(out, "", "  ")
+			if err != nil {
+				fmt.Println("Error:", err)
+				return
+			}
+			helperWriteFile(b)
 
-		err = os.WriteFile(path, b, 0644)
-		if err != nil {
-			fmt.Println("Error: ", err.Error())
-			return
+		} else {
+			// それ以外はテキストを出力
+			content := fmt.Sprintf(
+				"Status Code: %v\n\nBody: %s\n\nTime: %v",
+				res.StatusCode,
+				FormatJSON(res.Body),
+				res.Time,
+			)
+			helperWriteFile([]byte(content))
 		}
 	}
 }
