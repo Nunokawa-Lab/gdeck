@@ -21,6 +21,7 @@ type Response struct {
 
 // レスポンス共通関数
 func (res *Response) PrintResponse(isVerbose bool) {
+	// 詳細出力か
 	if isVerbose {
 		hBytes, err := json.Marshal(res.Header)
 		if err != nil {
@@ -57,10 +58,10 @@ func (res *Response) WriteFile(path string, isVerbose bool) {
 		}
 	}
 
-	// 詳細オプションオン（-v）
+	// 詳細出力か
 	if isVerbose {
+		// JSON出力か
 		if json.Valid(res.Body) {
-			// レスポンスボディーがJSON形式の場合
 			b, err := json.MarshalIndent(res, "", "  ")
 			if err != nil {
 				fmt.Println("Error:", err)
@@ -87,8 +88,8 @@ func (res *Response) WriteFile(path string, isVerbose bool) {
 		}
 
 	} else {
+		// JSON出力か
 		if json.Valid(res.Body) {
-			// レスポンスボディーがJSON形式の場合
 			out := struct {
 				StatusCode int             `json:"status_code"`
 				Body       json.RawMessage `json:"body"`

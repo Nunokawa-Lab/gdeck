@@ -14,11 +14,38 @@ root.goなどを簡単に作成してくれる便利CLI。
 `go install github.com/spf13/cobra-cli@latest`
 
 ## ツールの使い方(Local)
-### ◆単発実行
+### ◆バイナリを使用しない実行
 
-`go run main.go apictl get <URL>`
+`go run main.go get <URL>`
 
-### ◆バイナリを作成しツール名称で実行
+`go run main.go post <URL>`
+
+### ◆バイナリ使用した実行
+
+`apictl get <URL>`
+
+`apictl post <URL>`
+
+### ◆オプション
+
+`-v`: 詳細出力
+
+`-o`: ファイルエクスポート
+
+`-d`: postデータを設定
+
+`-H`: reqeust headerを設定
+
+### ◆例
+```
+go run main.go  post https://jsonplaceholder.typicode.com/posts \
+  -d '{"id":"1"}' \
+  -o '/Users/nunokawa/projects/apictl/post.json' \
+  -v
+```
+
+
+### ◆バイナリを作成方法
 
 `go build -o apictl`
 
