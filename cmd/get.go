@@ -2,8 +2,8 @@ package cmd
 
 import (
 	"apictl/cmd/internal/httpclient"
-	"fmt"
 	outputHandler "apictl/cmd/internal/output"
+	"fmt"
 
 	"github.com/spf13/cobra"
 )

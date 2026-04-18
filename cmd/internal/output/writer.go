@@ -1,12 +1,12 @@
 package output
 
 import (
+	formatter "apictl/cmd/internal"
 	"apictl/cmd/internal/model"
 	"encoding/json"
 	"fmt"
 	"os"
 	"time"
-	formatter "apictl/cmd/internal"
 )
 
 // ファイルとしてエクスポート

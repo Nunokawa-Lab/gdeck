@@ -1,10 +1,10 @@
 package output
 
 import (
+	formatter "apictl/cmd/internal"
 	"apictl/cmd/internal/model"
 	"encoding/json"
 	"fmt"
-	formatter "apictl/cmd/internal"
 )
 
 // レスポンス共通関数

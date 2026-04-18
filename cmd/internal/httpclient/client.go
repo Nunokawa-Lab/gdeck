@@ -8,25 +8,37 @@ import (
 	"time"
 )
 
-/********************
- GET
-********************/
+/*
+*******************
+
+	GET
+
+*******************
+*/
 func Get(url string) (*model.Response, error) {
 	return Do("GET", url, "", nil)
 }
 
-/********************
- POST
-********************/
+/*
+*******************
+
+	POST
+
+*******************
+*/
 func Post(url string, requestBody string, headers []string) (*model.Response, error) {
 	return Do("POST", url, requestBody, headers)
 }
 
-/********************
- 共通処理関数
-********************/
+/*
+*******************
+
+	共通処理関数
+
+*******************
+*/
 func Do(method string, url string, body string, headers []string) (*model.Response, error) {
-	
+
 	// bodyがあればio.Reader型に変換（NewRequest()第三引数に渡せるようにするため）
 	var reader io.Reader
 	if body != "" {
