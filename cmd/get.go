@@ -3,6 +3,7 @@ package cmd
 import (
 	"apictl/cmd/internal/httpclient"
 	"fmt"
+	outputHandler "apictl/cmd/internal/output"
 
 	"github.com/spf13/cobra"
 )
@@ -37,9 +38,9 @@ var getCmd = &cobra.Command{
 		}
 
 		if output != "" {
-			res.WriteFile(output, isVerbose)
+			outputHandler.WriteFile(res, output, isVerbose)
 		} else {
-			res.PrintResponse(isVerbose)
+			outputHandler.PrintResponse(res, isVerbose)
 		}
 	},
 }
