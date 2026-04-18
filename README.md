@@ -15,7 +15,7 @@ root.goなどを簡単に作成してくれる便利CLI。
 
 ## 使い方
 
-**◆GET**
+### ◆GET
 
 `apictl get <URL>`
 
@@ -25,9 +25,8 @@ root.goなどを簡単に作成してくれる便利CLI。
 
 `-o`: ファイルエクスポート
 
----
 
-**◆POST**
+### ◆POST
 
 `apictl post <URL>`
 
@@ -41,9 +40,8 @@ root.goなどを簡単に作成してくれる便利CLI。
 
 `-H`: reqeust headerを設定
 
----
 
-**◆SAVE**
+### ◆SAVE
 
 `apictl save <NAME> <METHOD> <URL>`
 
@@ -53,6 +51,14 @@ root.goなどを簡単に作成してくれる便利CLI。
 
 `-H`: reqeust headerを設定
 
+
+### ◆RUN
+
+`apictl run <SAVED COMMAND NAME>`
+
+---オプション---
+
+`-v`: 詳細出力
 
 ## ◆バイナリの作成方法
 
