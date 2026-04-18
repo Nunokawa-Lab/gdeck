@@ -139,46 +139,29 @@ func colorStatus(status string, code int) string {
 /********************
  GET
 ********************/
-// 実ロジック
 func Get(url string) (*Response, error) {
-	start := time.Now()
-	getRes, err := http.Get(url)
-	if err != nil {
-		return nil, err
-	}
-	duration := time.Since(start)
-
-	// 最後に接続閉じる
-	defer getRes.Body.Close()
-
-	if hLen := len(getRes.Header); hLen < 1 {
-		return nil, err
-	}
-
-	// res.Bodyはストリームのためbyte[]として書き出す
-	body, err := io.ReadAll(getRes.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	res := &Response{
-		Status:     getRes.Status,
-		StatusCode: getRes.StatusCode,
-		Header:     getRes.Header,
-		Body:       body,
-		Time:       duration,
-	}
-
-	return res, nil
+	return Do("GET", url, "", nil)
 }
 
 /********************
  POST
 ********************/
-// 実ロジック
 func Post(url string, requestBody string, headers []string) (*Response, error) {
-	// 拡張性が乏しいため http.Post() でリクエストは作成しない
-	req, err := http.NewRequest("POST", url, strings.NewReader(requestBody))
+	return Do("POST", url, requestBody, headers)
+}
+
+/********************
+ 共通処理関数
+********************/
+func Do(method string, url string, body string, headers []string) (*Response, error) {
+	
+	// bodyがあればio.Reader型に変換（NewRequest()第三引数に渡せるようにするため）
+	var reader io.Reader
+	if body != "" {
+		reader = strings.NewReader(body)
+	}
+
+	req, err := http.NewRequest(method, url, reader)
 	if err != nil {
 		return nil, err
 	}
@@ -192,30 +175,26 @@ func Post(url string, requestBody string, headers []string) (*Response, error) {
 	}
 
 	client := &http.Client{}
+
 	start := time.Now()
-	httpRes, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
+	resp, err := client.Do(req)
 	duration := time.Since(start)
-	defer httpRes.Body.Close()
 
-	if hLen := len(httpRes.Header); hLen < 1 {
+	if err != nil {
 		return nil, err
 	}
+	defer resp.Body.Close()
 
-	b, err := io.ReadAll(httpRes.Body)
+	bodyBytes, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
 
-	res := &Response{
-		Status:     httpRes.Status,
-		StatusCode: httpRes.StatusCode,
-		Header:     httpRes.Header,
-		Body:       b,
+	return &Response{
+		Status:     resp.Status,
+		StatusCode: resp.StatusCode,
+		Header:     resp.Header,
+		Body:       bodyBytes,
 		Time:       duration,
-	}
-	return res, nil
-
+	}, nil
 }
