@@ -60,6 +60,13 @@ root.goなどを簡単に作成してくれる便利CLI。
 
 `-v`: 詳細出力
 
+### ◆LIST
+
+`apictl list`
+
+---オプション---
+
+
 ## バイナリの作成方法
 
 `go build -o apictl`
