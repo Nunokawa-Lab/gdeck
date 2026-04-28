@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 )
 
-// 保存されたコマンド名をリストで取得
+// 保存されたコマンドファイルのリストを取得
 func List() []string {
 	
 	home, err := os.UserHomeDir()

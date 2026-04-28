@@ -3,6 +3,7 @@ package cmd
 import (
 	"apictl/cmd/internal/store"
 	"fmt"
+	"path/filepath"
 
 	"github.com/spf13/cobra"
 )
@@ -32,7 +33,14 @@ var listCmd = &cobra.Command{
 		filenames := store.List()
 
 		for _, name := range filenames {
-			fmt.Println(name)
+			ext := filepath.Ext(name)
+			cmdName := name[:len(name)-len(ext)]
+			
+			// 自動生成ファイルが出来上がっている場合もあるため、特定の拡張子以外は出力対象外
+			if ext != ".json" && ext != ".txt" {
+				continue
+			}
+			fmt.Println(cmdName)
 		}
 	},
 }
