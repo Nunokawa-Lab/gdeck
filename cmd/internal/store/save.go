@@ -16,8 +16,6 @@ func Save(name string, req interface{}) error {
 	}
 
 	dir := filepath.Join(home, ".apictl", "requests")
-	fmt.Println(dir)
-
 	if err := os.MkdirAll(dir, 0755); err != nil {
 		return err
 	}
