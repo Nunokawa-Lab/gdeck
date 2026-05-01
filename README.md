@@ -67,6 +67,13 @@ root.goなどを簡単に作成してくれる便利CLI。
 ---オプション---
 
 
+### ◆DELETE
+
+`apictl delete <SAVED COMMAND NAME>`
+
+---オプション---
+
+
 ## バイナリの作成方法
 
 `go build -o apictl`
