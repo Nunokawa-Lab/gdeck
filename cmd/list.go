@@ -35,7 +35,7 @@ var listCmd = &cobra.Command{
 		for _, name := range filenames {
 			ext := filepath.Ext(name)
 			cmdName := name[:len(name)-len(ext)]
-			
+
 			// 自動生成ファイルが出来上がっている場合もあるため、特定の拡張子以外は出力対象外
 			if ext != ".json" && ext != ".txt" {
 				continue

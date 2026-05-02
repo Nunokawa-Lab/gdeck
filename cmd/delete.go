@@ -36,7 +36,7 @@ var deleteCmd = &cobra.Command{
 		if err != nil {
 			fmt.Println(err.Error())
 		}
-		
+
 		fmt.Println("Status Code:  " + internal.ColorStatus("204 No-Content", 204))
 	},
 }

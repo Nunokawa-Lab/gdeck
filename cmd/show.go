@@ -36,7 +36,7 @@ var showCmd = &cobra.Command{
 		if err != nil {
 			fmt.Println(err.Error())
 		}
-		
+
 		reqJSON, err := json.MarshalIndent(req, "", "  ")
 		if err != nil {
 			fmt.Println(err.Error())

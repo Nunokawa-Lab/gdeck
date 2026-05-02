@@ -7,7 +7,7 @@ import (
 
 // 保存されたコマンドファイルのリストを取得
 func List() []string {
-	
+
 	home, err := os.UserHomeDir()
 	if err != nil {
 		return nil
@@ -30,6 +30,6 @@ func List() []string {
 		}
 		filenames = append(filenames, file.Name())
 	}
-	
+
 	return filenames
 }
