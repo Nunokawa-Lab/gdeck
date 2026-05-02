@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"apictl/cmd/internal/env"
 	"apictl/cmd/internal/httpclient"
 	outputHandler "apictl/cmd/internal/output"
 	"apictl/cmd/internal/store"
@@ -38,6 +39,25 @@ var runCmd = &cobra.Command{
 		if err != nil {
 			fmt.Println("Error:", err)
 			return
+		}
+
+		// 環境変数置換
+		req.URL, err = env.ReplaceEnv(req.URL)
+		if err != nil {
+			fmt.Println("Error:", err)
+			return
+		}
+		req.Body, err = env.ReplaceEnv(req.Body)
+		if err != nil {
+			fmt.Println("Error:", err)
+			return
+		}
+		for i, h := range req.Headers {
+			req.Headers[i], err = env.ReplaceEnv(h)
+			if err != nil {
+				fmt.Println("Error:", err)
+				return
+			}
 		}
 
 		// 実行
