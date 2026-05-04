@@ -3,7 +3,11 @@ package cmd
 import (
 	"apictl/cmd/internal/httpclient"
 	outputHandler "apictl/cmd/internal/output"
+	"apictl/cmd/internal/store"
+	"context"
+	"errors"
 	"fmt"
+	"os"
 
 	"github.com/spf13/cobra"
 )
@@ -31,8 +35,20 @@ var getCmd = &cobra.Command{
 	Args:    cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		url := args[0]
-		res, err := httpclient.Get(url)
+
+		// オプション設定
+		options := store.DefaultOptions()
+		if timeout != 0 {
+			options.Timeout = timeout
+		}
+
+		res, err := httpclient.Get(url, options)
 		if err != nil {
+			if errors.Is(err, context.DeadlineExceeded) || os.IsTimeout(err) {
+				fmt.Println("Error:, Request timed out")
+				return
+			}
+
 			fmt.Println("Error : ", err.Error())
 			return
 		}
@@ -50,6 +66,8 @@ func init() {
 	getCmd.Flags().BoolVarP(&isVerbose, "verbose", "v", false, "Verbose output")
 	// -o
 	getCmd.Flags().StringVarP(&output, "output", "o", "", "Output file path")
+	// -t
+	getCmd.Flags().IntVarP(&timeout, "timeout", "t", 10, "timeout seconds")
 
 	// Getコマンドを登録
 	rootCmd.AddCommand(getCmd)

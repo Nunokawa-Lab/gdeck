@@ -15,8 +15,8 @@ import (
 
 *******************
 */
-func Get(url string) (*model.Response, error) {
-	return Do("GET", url, "", nil)
+func Get(url string, options model.Options) (*model.Response, error) {
+	return Do("GET", url, "", nil, options)
 }
 
 /*
@@ -26,8 +26,8 @@ func Get(url string) (*model.Response, error) {
 
 *******************
 */
-func Post(url string, requestBody string, headers []string) (*model.Response, error) {
-	return Do("POST", url, requestBody, headers)
+func Post(url string, requestBody string, headers []string, options model.Options) (*model.Response, error) {
+	return Do("POST", url, requestBody, headers, options)
 }
 
 /*
@@ -37,7 +37,7 @@ func Post(url string, requestBody string, headers []string) (*model.Response, er
 
 *******************
 */
-func Do(method string, url string, body string, headers []string) (*model.Response, error) {
+func Do(method string, url string, body string, headers []string, options model.Options) (*model.Response, error) {
 
 	// bodyがあればio.Reader型に変換（NewRequest()第三引数に渡せるようにするため）
 	var reader io.Reader
@@ -57,8 +57,9 @@ func Do(method string, url string, body string, headers []string) (*model.Respon
 			req.Header.Add(strings.TrimSpace(parts[0]), strings.TrimSpace(parts[1]))
 		}
 	}
-
-	client := &http.Client{}
+	client := &http.Client{
+		Timeout: time.Duration(options.Timeout),
+	}
 
 	start := time.Now()
 	resp, err := client.Do(req)

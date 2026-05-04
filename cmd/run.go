@@ -6,7 +6,10 @@ import (
 	outputHandler "apictl/cmd/internal/output"
 	"apictl/cmd/internal/request"
 	"apictl/cmd/internal/store"
+	"context"
+	"errors"
 	"fmt"
+	"os"
 
 	"github.com/spf13/cobra"
 )
@@ -52,11 +55,6 @@ var runCmd = &cobra.Command{
 			req.Headers = request.MergeHeaders(req.Headers, requestHeaders)
 		}
 
-		fmt.Printf("Body: %v\n", req.Body)
-		for _, h := range req.Headers {
-			fmt.Printf("Header: %v\n", h)
-		}
-
 		// 環境変数置換
 		req.URL, err = env.ReplaceEnv(req.URL)
 		if err != nil {
@@ -76,14 +74,26 @@ var runCmd = &cobra.Command{
 			}
 		}
 
+		// オプション設定
+		options := store.DefaultOptions()
+		if timeout != 0 {
+			options.Timeout = timeout
+		}
+
 		// 実行
 		res, err := httpclient.Do(
 			req.Method,
 			req.URL,
 			req.Body,
 			req.Headers,
+			options,
 		)
 		if err != nil {
+			if errors.Is(err, context.DeadlineExceeded) || os.IsTimeout(err) {
+				fmt.Println("Error:, Request timed out")
+				return
+			}
+
 			fmt.Println("Error:", err)
 			return
 		}
@@ -99,6 +109,8 @@ func init() {
 	runCmd.Flags().StringVarP(&requestData, "data", "d", "", "Request body")
 	// -H
 	runCmd.Flags().StringArrayVarP(&requestHeaders, "header", "H", []string{}, "Request header")
+	// -t
+	runCmd.Flags().IntVarP(&timeout, "timeout", "t", 10, "timeout seconds")
 
 	// rootに登録
 	rootCmd.AddCommand(runCmd)

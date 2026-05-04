@@ -3,7 +3,11 @@ package cmd
 import (
 	"apictl/cmd/internal/httpclient"
 	outputHandler "apictl/cmd/internal/output"
+	"apictl/cmd/internal/store"
+	"context"
+	"errors"
 	"fmt"
+	"os"
 
 	"github.com/spf13/cobra"
 )
@@ -32,8 +36,19 @@ var postCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		url := args[0]
 
-		res, err := httpclient.Post(url, requestData, requestHeaders)
+		// オプション設定
+		options := store.DefaultOptions()
+		if timeout != 0 {
+			options.Timeout = timeout
+		}
+
+		res, err := httpclient.Post(url, requestData, requestHeaders, options)
 		if err != nil {
+			if errors.Is(err, context.DeadlineExceeded) || os.IsTimeout(err) {
+				fmt.Println("Error:, Request timed out")
+				return
+			}
+
 			fmt.Println("Error: ", err.Error())
 			return
 		}
@@ -56,6 +71,8 @@ func init() {
 	postCmd.Flags().BoolVarP(&isVerbose, "verbose", "v", false, "Verbose output")
 	// -o
 	postCmd.Flags().StringVarP(&output, "output", "o", "", "Output file path")
+	// -t
+	postCmd.Flags().IntVarP(&timeout, "timeout", "t", 10, "timeout seconds")
 
 	// 登録
 	rootCmd.AddCommand(postCmd)
