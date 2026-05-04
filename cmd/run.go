@@ -4,6 +4,7 @@ import (
 	"apictl/cmd/internal/env"
 	"apictl/cmd/internal/httpclient"
 	outputHandler "apictl/cmd/internal/output"
+	"apictl/cmd/internal/request"
 	"apictl/cmd/internal/store"
 	"fmt"
 
@@ -39,6 +40,21 @@ var runCmd = &cobra.Command{
 		if err != nil {
 			fmt.Println("Error:", err)
 			return
+		}
+
+		// Body上書き
+		if requestData != "" {
+			req.Body = requestData
+		}
+
+		// Header上書き
+		if len(requestHeaders) > 0 {
+			req.Headers = request.MergeHeaders(req.Headers, requestHeaders)
+		}
+
+		fmt.Printf("Body: %v\n", req.Body)
+		for _, h := range req.Headers {
+			fmt.Printf("Header: %v\n", h)
 		}
 
 		// 環境変数置換
@@ -79,6 +95,10 @@ var runCmd = &cobra.Command{
 func init() {
 	// -v
 	runCmd.Flags().BoolVarP(&isVerbose, "verbose", "v", false, "Verbose output")
+	// -d
+	runCmd.Flags().StringVarP(&requestData, "data", "d", "", "Request body")
+	// -H
+	runCmd.Flags().StringArrayVarP(&requestHeaders, "header", "H", []string{}, "Request header")
 
 	// rootに登録
 	rootCmd.AddCommand(runCmd)
