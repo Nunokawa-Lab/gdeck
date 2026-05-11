@@ -25,7 +25,7 @@ import (
  *   args: CLIで渡された引数（今回はURLが入る）
  */
 var saveCmd = &cobra.Command{
-	Use:     "save [name] [method] [url]",
+	Use:     "save [({path/})name] [method] [url]",
 	Short:   "Save request command for later use",
 	Example: "apictl save SampleCmd get https://example.com",
 	Args:    cobra.ExactArgs(3),

@@ -16,16 +16,28 @@ func Save(name string, req interface{}) error {
 	}
 
 	dir := filepath.Join(home, ".apictl", "requests")
+	if strings.Contains(name, "/") {
+		// 名称にパスが含まれる場合はそのパスもディレクトリ作成対象とする
+		dir = filepath.Join(dir, filepath.Dir(name))
+	}
 	if err := os.MkdirAll(dir, 0755); err != nil {
 		return err
 	}
 
 	// ファイルパス生成
-	if strings.Contains(name, "..") || strings.Contains(name, "/") {
+	if strings.Contains(name, "..") {
 		// 不正なディレクトリアクセスを防ぐ
 		return fmt.Errorf("invalid name")
 	}
-	path := filepath.Join(dir, name+".json")
+
+	// 拡張子を除いたファイル名を取り出す
+	base := filepath.Base(name)
+	ext := filepath.Ext(name)
+    filename := strings.ReplaceAll(base, ext, "")
+	// ファイル名として非推奨なドット除去
+    filename = strings.ReplaceAll(filename, ".", "")
+
+	path := filepath.Join(dir, filename+".json")
 
 	// JSON化
 	b, err := json.MarshalIndent(req, "", "  ")
