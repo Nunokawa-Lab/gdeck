@@ -58,7 +58,7 @@ func Do(method string, url string, body string, headers []string, options model.
 		}
 	}
 	client := &http.Client{
-		Timeout: time.Duration(options.Timeout),
+		Timeout: time.Duration(options.Timeout) * time.Second,
 	}
 
 	start := time.Now()

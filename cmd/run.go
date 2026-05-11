@@ -31,7 +31,7 @@ import (
  *   args: CLIで渡された引数（今回はURLが入る）
  */
 var runCmd = &cobra.Command{
-	Use:   "run [name]",
+	Use:   "run [({path/})name]",
 	Short: "Run saved request",
 	Args:  cobra.ExactArgs(1),
 
@@ -90,7 +90,7 @@ var runCmd = &cobra.Command{
 		)
 		if err != nil {
 			if errors.Is(err, context.DeadlineExceeded) || os.IsTimeout(err) {
-				fmt.Println("Error:, Request timed out")
+				fmt.Println("Error: Request timed out")
 				return
 			}
 

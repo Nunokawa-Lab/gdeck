@@ -25,14 +25,14 @@ import (
  *   args: CLIで渡された引数（今回はURLが入る）
  */
 var deleteCmd = &cobra.Command{
-	Use:     "delete [name]",
+	Use:     "delete [({path/})name]",
 	Short:   "Delete Saved command",
 	Example: "apictl delete getUser",
 	Args:    cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		cmdName := args[0]
+		name := args[0]
 
-		err := store.Delete(cmdName)
+		err := store.Delete(name)
 		if err != nil {
 			fmt.Println(err.Error())
 		}

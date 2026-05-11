@@ -17,11 +17,15 @@ func Load(name string) (*model.Request, error) {
 	}
 
 	// ファイルパス生成
-	if strings.Contains(name, "..") || strings.Contains(name, "/") {
+	if strings.Contains(name, "..") {
 		// 不正なディレクトリアクセスを防ぐ
 		return nil, fmt.Errorf("invalid name")
 	}
-	path := filepath.Join(home, ".apictl", "requests", name+".json")
+	// 拡張子を除いたファイル名を取り出す
+	base := filepath.Base(name)
+	ext := filepath.Ext(name)
+    filename := strings.ReplaceAll(base, ext, "")
+	path := filepath.Join(home, ".apictl", "requests", filepath.Dir(name), filename+".json")
 
 	b, err := os.ReadFile(path)
 	if err != nil {

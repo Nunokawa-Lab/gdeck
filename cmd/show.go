@@ -25,14 +25,14 @@ import (
  *   args: CLIで渡された引数
  */
 var showCmd = &cobra.Command{
-	Use:     "show [name]",
+	Use:     "show [({path/})name]",
 	Short:   "Show Saved-Command Detail",
 	Example: "apictl show TestCommand",
 	Args:    cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		cmdName := args[0]
+		name := args[0]
 
-		req, err := store.Load(cmdName)
+		req, err := store.Load(name)
 		if err != nil {
 			fmt.Println(err.Error())
 		}
