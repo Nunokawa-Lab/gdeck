@@ -1,6 +1,7 @@
 package store
 
 import (
+	"io/fs"
 	"os"
 	"path/filepath"
 )
@@ -15,20 +16,25 @@ func List() []string {
 
 	dir := filepath.Join(home, ".apictl", "requests")
 
-	// ~/.apictl/requestからファイル取得
-	// 今後、子階層にも保存できるようにしたら`filepath.Walk`で再起的に取得できるようにする
-	files, err := os.ReadDir(dir)
+	var filenames []string
+	err = filepath.WalkDir(dir, func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+
+		// ディレクトリはスキップ
+		if d.IsDir() {
+			return nil
+		}
+
+		// 相対パス化
+		rel, err := filepath.Rel(dir, path)
+		filenames = append(filenames, rel)
+
+		return nil
+	})
 	if err != nil {
 		return nil
-	}
-
-	var filenames []string
-	for _, file := range files {
-		// ディレクトリはないはずだけど念の為判定
-		if file.IsDir() {
-			continue
-		}
-		filenames = append(filenames, file.Name())
 	}
 
 	return filenames
