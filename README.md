@@ -66,7 +66,7 @@ runコマンド実行時に明示的に値をセット。
 
 `apictl run {NAME or PATH}`
 
-`apictl run {NAME or PATH}/*` で一括実行
+`apictl run "{NAME or PATH}/*"` で一括実行（※ダブルクォーテーションで囲まないとzshエラー起こります）
 
 ---オプション---
 
@@ -89,7 +89,7 @@ saveコマンドで登録した際に`{{HOGE}}`のような形式があれば、
 
 `apictl show {NAME or path}`
 
-`apictl run {NAME or PATH}/*` で一括実行
+`apictl run "{NAME or PATH}/*"` で一括実行（※ダブルクォーテーションで囲まないとzshエラー起こります）
 
 ---オプション---
 
@@ -105,7 +105,7 @@ saveコマンドで登録した際に`{{HOGE}}`のような形式があれば、
 
 `apictl delete {NAME or path}`
 
-`apictl run {NAME or PATH}/*` で一括実行
+`apictl run "{NAME or PATH}/*"` で一括実行（※ダブルクォーテーションで囲まないとzshエラー起こります）
 
 ---オプション---
 
