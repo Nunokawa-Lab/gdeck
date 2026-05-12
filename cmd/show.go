@@ -32,16 +32,21 @@ var showCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		name := args[0]
 
-		req, err := store.Load(name)
+		requests, err := store.Load(name)
 		if err != nil {
 			fmt.Println(err.Error())
 		}
 
-		reqJSON, err := json.MarshalIndent(req, "", "  ")
-		if err != nil {
-			fmt.Println(err.Error())
+		reqLen := len(requests)
+
+		for i, req := range requests {
+			reqJSON, err := json.MarshalIndent(req, "", "  ")
+			if err != nil {
+				fmt.Println(err.Error())
+			}
+			fmt.Printf("[%v/%v]\n---------------------------\n", i+1, reqLen)
+			fmt.Println(string(reqJSON)+"\n")
 		}
-		fmt.Println(string(reqJSON))
 	},
 }
 

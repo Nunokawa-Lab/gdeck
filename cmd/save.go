@@ -35,6 +35,7 @@ var saveCmd = &cobra.Command{
 		url := args[2]
 
 		req := &model.Request{
+			RequestName: name,
 			Method:  method,
 			URL:     url,
 			Headers: requestHeaders,

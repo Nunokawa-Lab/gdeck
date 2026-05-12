@@ -45,7 +45,9 @@ var runCmd = &cobra.Command{
 			return
 		}
 
-		for _, req := range requests {
+		reqLen := len(requests)
+
+		for i, req := range requests {
 			// Body上書き
 			if requestData != "" {
 				req.Body = requestData
@@ -98,7 +100,8 @@ var runCmd = &cobra.Command{
 				fmt.Println("Error:", err)
 				return
 			}
-	
+
+			fmt.Printf("[%v/%v] %v\n---------------------------\n", i+1, reqLen, req.RequestName)
 			outputHandler.PrintResponse(res, isVerbose) // ← verboseは後でフラグ対応
 
 		}
