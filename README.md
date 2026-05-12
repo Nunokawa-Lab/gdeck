@@ -17,7 +17,7 @@ root.goなどを簡単に作成してくれる便利CLI。
 
 ### ◆GET
 
-`apictl get <URL>`
+`apictl get {URL}`
 
 ---オプション---
 
@@ -30,7 +30,7 @@ root.goなどを簡単に作成してくれる便利CLI。
 
 ### ◆POST
 
-`apictl post <URL>`
+`apictl post {URL}`
 
 ---オプション---
 
@@ -47,7 +47,7 @@ root.goなどを簡単に作成してくれる便利CLI。
 
 ### ◆SAVE
 
-`apictl save <NAME> <METHOD> <URL>`
+`apictl save {NAME} {METHOD} {URL}`
 
 ---オプション---
 
@@ -64,7 +64,8 @@ runコマンド実行時に明示的に値をセット。
 
 ### ◆RUN
 
-`apictl run <SAVED COMMAND NAME>`
+`apictl run {NAME or PATH}`
+`apictl run {NAME or PATH}/*` で一括実行
 
 ---オプション---
 
@@ -80,7 +81,15 @@ runコマンド実行時に明示的に値をセット。
 
 saveコマンドで登録した際に`{{HOGE}}`のような形式があれば、実行時に値をセットできる
 
-`HOGE=batsumaru \ apictl run <SAVED COMMAND NAME>`
+`HOGE=batsumaru \ apictl run {SAVED COMMAND NAME}`
+
+
+### ◆SHOW
+
+`apictl show {NAME or path}`
+`apictl run {NAME or PATH}/*` で一括実行
+
+---オプション---
 
 
 ### ◆LIST
@@ -92,7 +101,8 @@ saveコマンドで登録した際に`{{HOGE}}`のような形式があれば、
 
 ### ◆DELETE
 
-`apictl delete <SAVED COMMAND NAME>`
+`apictl delete {NAME or path}`
+`apictl run {NAME or PATH}/*` で一括実行
 
 ---オプション---
 
@@ -103,7 +113,7 @@ saveコマンドで登録した際に`{{HOGE}}`のような形式があれば、
 
 `mv apictl /usr/local/bin/`
 
-`apictl get <URL>`
+`apictl get {URL}`
 
 シンボリックリンクを作成しておけばビルドだけで済む
 
