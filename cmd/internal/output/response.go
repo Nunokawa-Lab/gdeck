@@ -18,7 +18,7 @@ func PrintResponse(res *model.Response, isVerbose bool) {
 		}
 
 		fmt.Printf(
-			"Status Code: %s\n\nHeader: %s\n\nBody: %s\n\nTime: %v",
+			"Status Code: %s\n\nHeader: %s\n\nBody: %s\n\nTime: %v\n\n",
 			formatter.ColorStatus(res.Status, res.StatusCode),
 			formatter.FormatJSON(hBytes),
 			formatter.FormatJSON(res.Body),
@@ -27,7 +27,7 @@ func PrintResponse(res *model.Response, isVerbose bool) {
 
 	} else {
 		fmt.Printf(
-			"Status Code: %s\n\nBody: %s\n\nTime: %v",
+			"Status Code: %s\n\nBody: %s\n\nTime: %v\n\n",
 			formatter.ColorStatus(res.Status, res.StatusCode),
 			formatter.FormatJSON(res.Body),
 			res.Time,

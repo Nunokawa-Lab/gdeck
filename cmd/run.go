@@ -39,66 +39,70 @@ var runCmd = &cobra.Command{
 		name := args[0]
 
 		// 読み込み
-		req, err := store.Load(name)
+		requests, err := store.Load(name)
 		if err != nil {
 			fmt.Println("Error:", err)
 			return
 		}
 
-		// Body上書き
-		if requestData != "" {
-			req.Body = requestData
-		}
-
-		// Header上書き
-		if len(requestHeaders) > 0 {
-			req.Headers = request.MergeHeaders(req.Headers, requestHeaders)
-		}
-
-		// 環境変数置換
-		req.URL, err = env.ReplaceEnv(req.URL)
-		if err != nil {
-			fmt.Println("Error:", err)
-			return
-		}
-		req.Body, err = env.ReplaceEnv(req.Body)
-		if err != nil {
-			fmt.Println("Error:", err)
-			return
-		}
-		for i, h := range req.Headers {
-			req.Headers[i], err = env.ReplaceEnv(h)
+		for _, req := range requests {
+			// Body上書き
+			if requestData != "" {
+				req.Body = requestData
+			}
+	
+			// Header上書き
+			if len(requestHeaders) > 0 {
+				req.Headers = request.MergeHeaders(req.Headers, requestHeaders)
+			}
+	
+			// 環境変数置換
+			req.URL, err = env.ReplaceEnv(req.URL)
 			if err != nil {
 				fmt.Println("Error:", err)
 				return
 			}
-		}
-
-		// オプション設定
-		options := store.DefaultOptions()
-		if timeout != 0 {
-			options.Timeout = timeout
-		}
-
-		// 実行
-		res, err := httpclient.Do(
-			req.Method,
-			req.URL,
-			req.Body,
-			req.Headers,
-			options,
-		)
-		if err != nil {
-			if errors.Is(err, context.DeadlineExceeded) || os.IsTimeout(err) {
-				fmt.Println("Error: Request timed out")
+			req.Body, err = env.ReplaceEnv(req.Body)
+			if err != nil {
+				fmt.Println("Error:", err)
 				return
 			}
+			for i, h := range req.Headers {
+				req.Headers[i], err = env.ReplaceEnv(h)
+				if err != nil {
+					fmt.Println("Error:", err)
+					return
+				}
+			}
+	
+			// オプション設定
+			options := store.DefaultOptions()
+			if timeout != 0 {
+				options.Timeout = timeout
+			}
+	
+			// 実行
+			res, err := httpclient.Do(
+				req.Method,
+				req.URL,
+				req.Body,
+				req.Headers,
+				options,
+			)
+			if err != nil {
+				if errors.Is(err, context.DeadlineExceeded) || os.IsTimeout(err) {
+					fmt.Println("Error: Request timed out")
+					return
+				}
+	
+				fmt.Println("Error:", err)
+				return
+			}
+	
+			outputHandler.PrintResponse(res, isVerbose) // ← verboseは後でフラグ対応
 
-			fmt.Println("Error:", err)
-			return
 		}
 
-		outputHandler.PrintResponse(res, isVerbose) // ← verboseは後でフラグ対応
 	},
 }
 

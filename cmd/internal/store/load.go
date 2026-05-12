@@ -10,26 +10,55 @@ import (
 )
 
 // 保存されたコマンド情報を構造体に書き込む処理
-func Load(name string) (*model.Request, error) {
+func Load(name string) ([]*model.Request, error) {
 	home, err := os.UserHomeDir()
 	if err != nil {
 		return nil, err
 	}
 
-	// ファイルパス生成
 	if strings.Contains(name, "..") {
 		// 不正なディレクトリアクセスを防ぐ
 		return nil, fmt.Errorf("invalid name")
 	}
-	// 拡張子を除いたファイル名を取り出す
+
+	var path string
+	var results []*model.Request
+
+	// 拡張子が付いていても実行できるように、拡張子を除いたファイル名を取り出す処理を行う
 	base := filepath.Base(name)
 	ext := filepath.Ext(name)
-    filename := strings.ReplaceAll(base, ext, "")
-	path := filepath.Join(home, ".apictl", "requests", filepath.Dir(name), filename+".json")
+	filename := strings.TrimSuffix(base, ext)
+	path = filepath.Join(home, ".apictl", "requests", filepath.Dir(name), filename+".json")
 
+	if strings.Contains(name, "*") {
+		// ディレクトリ内全件処理（ワイルドカードだったパスから各ファイルパスのスライスを取得）
+		paths, err := filepath.Glob(path)
+		if err != nil {
+			return nil, fmt.Errorf("invalid path")
+		}
+		
+		for _, p := range paths {
+			results, err = appendResults(p, results)
+			if err != nil {
+				return nil, fmt.Errorf("request not found: %s", p)
+			}
+		}
+
+	} else {
+		// 単体処理
+		results, err = appendResults(path, results)
+		if err != nil {
+			return nil, fmt.Errorf("request not found: %s", path)
+		}
+	}
+
+	return results, nil
+}
+
+func appendResults(path string, results []*model.Request) ([]*model.Request, error) {
 	b, err := os.ReadFile(path)
 	if err != nil {
-		return nil, fmt.Errorf("request not found: %s", name)
+		return nil, err
 	}
 
 	var req model.Request
@@ -37,5 +66,7 @@ func Load(name string) (*model.Request, error) {
 		return nil, err
 	}
 
-	return &req, nil
+	results = append(results, &req)
+
+	return results, nil
 }
