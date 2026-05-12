@@ -35,6 +35,7 @@ var deleteCmd = &cobra.Command{
 		err := store.Delete(name)
 		if err != nil {
 			fmt.Println(err.Error())
+			return
 		}
 
 		fmt.Println("Status Code:  " + internal.ColorStatus("204 No-Content", 204))

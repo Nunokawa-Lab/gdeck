@@ -11,11 +11,6 @@ import (
 
 // 保存されたコマンド情報を構造体に書き込む処理
 func Load(name string) ([]*model.Request, error) {
-	home, err := os.UserHomeDir()
-	if err != nil {
-		return nil, err
-	}
-
 	if strings.Contains(name, "..") {
 		// 不正なディレクトリアクセスを防ぐ
 		return nil, fmt.Errorf("invalid name")
@@ -25,10 +20,10 @@ func Load(name string) ([]*model.Request, error) {
 	var results []*model.Request
 
 	// 拡張子が付いていても実行できるように、拡張子を除いたファイル名を取り出す処理を行う
-	base := filepath.Base(name)
-	ext := filepath.Ext(name)
-	filename := strings.TrimSuffix(base, ext)
-	path = filepath.Join(home, ".apictl", "requests", filepath.Dir(name), filename+".json")
+	path, err := BuildRequestPath(name)
+	if err != nil {
+		return nil, fmt.Errorf("invalid path")
+	}
 
 	if strings.Contains(name, "*") {
 		// ディレクトリ内全件処理（ワイルドカードだったパスから各ファイルパスのスライスを取得）
