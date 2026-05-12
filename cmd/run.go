@@ -52,12 +52,12 @@ var runCmd = &cobra.Command{
 			if requestData != "" {
 				req.Body = requestData
 			}
-	
+
 			// Header上書き
 			if len(requestHeaders) > 0 {
 				req.Headers = request.MergeHeaders(req.Headers, requestHeaders)
 			}
-	
+
 			// 環境変数置換
 			req.URL, err = env.ReplaceEnv(req.URL)
 			if err != nil {
@@ -76,13 +76,13 @@ var runCmd = &cobra.Command{
 					return
 				}
 			}
-	
+
 			// オプション設定
 			options := store.DefaultOptions()
 			if timeout != 0 {
 				options.Timeout = timeout
 			}
-	
+
 			// 実行
 			res, err := httpclient.Do(
 				req.Method,
@@ -96,7 +96,7 @@ var runCmd = &cobra.Command{
 					fmt.Println("Error: Request timed out")
 					return
 				}
-	
+
 				fmt.Println("Error:", err)
 				return
 			}

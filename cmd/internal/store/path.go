@@ -13,11 +13,11 @@ func BuildRequestPath(name string) (string, error) {
 	}
 
 	dir := filepath.Join(home, ".apictl", "requests")
-	
+
 	// 拡張子を除いたファイル名を取り出す
 	base := filepath.Base(name)
 	ext := filepath.Ext(name)
-    filename := strings.TrimSuffix(base, ext)
+	filename := strings.TrimSuffix(base, ext)
 
 	path := filepath.Join(dir, filepath.Dir(name), filename+".json")
 

@@ -31,7 +31,7 @@ func Load(name string) ([]*model.Request, error) {
 		if err != nil {
 			return nil, fmt.Errorf("invalid path")
 		}
-		
+
 		for _, p := range paths {
 			results, err = appendResults(p, results)
 			if err != nil {

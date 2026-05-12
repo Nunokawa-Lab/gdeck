@@ -45,7 +45,7 @@ var showCmd = &cobra.Command{
 				fmt.Println(err.Error())
 			}
 			fmt.Printf("[%v/%v]\n---------------------------\n", i+1, reqLen)
-			fmt.Println(string(reqJSON)+"\n")
+			fmt.Println(string(reqJSON) + "\n")
 		}
 	},
 }

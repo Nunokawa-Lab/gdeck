@@ -36,10 +36,10 @@ var saveCmd = &cobra.Command{
 
 		req := &model.Request{
 			RequestName: name,
-			Method:  method,
-			URL:     url,
-			Headers: requestHeaders,
-			Body:    requestData,
+			Method:      method,
+			URL:         url,
+			Headers:     requestHeaders,
+			Body:        requestData,
 		}
 
 		err := store.Save(name, req)
