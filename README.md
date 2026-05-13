@@ -113,9 +113,9 @@ saveコマンドで登録した際に`{{HOGE}}`のような形式があれば、
 ### ◆ENV
 
  - set <br>`apictl env set KEY VALUE`
- - show: <br>``
- - list: <br>``
- - delete: <br>``
+ - show: <br>`apictl env show KEY`
+ - list: <br>`apictl env list`
+ - delete: <br>`apictl env delete KEY`
 
 
 ## バイナリの作成方法
