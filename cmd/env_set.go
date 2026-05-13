@@ -36,7 +36,7 @@ var envSetCmd = &cobra.Command{
 		key := args[0]
 		value := args[1]
 
-		err := env.SetEnv(key, value)
+		err := env.Set(key, value)
 		if err != nil {
 			fmt.Println("Error:", err)
 			return
