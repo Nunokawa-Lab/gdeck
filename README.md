@@ -110,6 +110,14 @@ saveコマンドで登録した際に`{{HOGE}}`のような形式があれば、
 ---オプション---
 
 
+### ◆ENV
+
+ - set <br>`apictl env set KEY VALUE`
+ - show: <br>``
+ - list: <br>``
+ - delete: <br>``
+
+
 ## バイナリの作成方法
 
 `go build -o apictl`
