@@ -1,8 +1,9 @@
 package cmd
 
 import (
-	"apictl/cmd/internal/env"
 	"fmt"
+
+	"github.com/nunokawa/gdeck/cmd/internal/env"
 
 	"github.com/spf13/cobra"
 )
@@ -27,8 +28,8 @@ var envShowCmd = &cobra.Command{
 	Use:   "show KEY",
 	Short: "Show environment variable",
 	Example: `
-		apictl env show TOKEN
-		apictl env show BASE_URL
+		gdeck env show TOKEN
+		gdeck env show BASE_URL
 	`,
 	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {

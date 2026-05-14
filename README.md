@@ -1,7 +1,9 @@
-# apictl(api-tester-cli)
+# gdeck(api-tester-cli)
+
 CLIからAPI接続テストを行うツール
 
 ## 使用ツール
+
 ### ◆cobra
 
 `go get github.com/spf13/cobra@latest`
@@ -17,7 +19,7 @@ root.goなどを簡単に作成してくれる便利CLI。
 
 ### ◆GET
 
-`apictl get {URL}`
+`gdeck get {URL}`
 
 ---オプション---
 
@@ -27,10 +29,9 @@ root.goなどを簡単に作成してくれる便利CLI。
 
 `-t`: タイムアウトを設定
 
-
 ### ◆POST
 
-`apictl post {URL}`
+`gdeck post {URL}`
 
 ---オプション---
 
@@ -44,10 +45,9 @@ root.goなどを簡単に作成してくれる便利CLI。
 
 `-t`: タイムアウトを設定
 
-
 ### ◆SAVE
 
-`apictl save {NAME} {METHOD} {URL}`
+`gdeck save {NAME} {METHOD} {URL}`
 
 ---オプション---
 
@@ -61,12 +61,11 @@ root.goなどを簡単に作成してくれる便利CLI。
 
 runコマンド実行時に明示的に値をセット。
 
-
 ### ◆RUN
 
-`apictl run {NAME or PATH}`
+`gdeck run {NAME or PATH}`
 
-`apictl run "{NAME or PATH}/*"` で一括実行（※ダブルクォーテーションで囲まないとzshエラー起こります）
+`gdeck run "{NAME or PATH}/*"` で一括実行（※ダブルクォーテーションで囲まないとzshエラー起こります）
 
 ---オプション---
 
@@ -82,53 +81,49 @@ runコマンド実行時に明示的に値をセット。
 
 saveコマンドで登録した際に`{{HOGE}}`のような形式があれば、実行時に値をセットできる
 
-`HOGE=batsumaru \ apictl run {SAVED COMMAND NAME}`
-
+`HOGE=batsumaru \ gdeck run {SAVED COMMAND NAME}`
 
 ### ◆SHOW
 
-`apictl show {NAME or path}`
+`gdeck show {NAME or path}`
 
-`apictl run "{NAME or PATH}/*"` で一括実行（※ダブルクォーテーションで囲まないとzshエラー起こります）
+`gdeck run "{NAME or PATH}/*"` で一括実行（※ダブルクォーテーションで囲まないとzshエラー起こります）
 
 ---オプション---
-
 
 ### ◆LIST
 
-`apictl list`
+`gdeck list`
 
 ---オプション---
-
 
 ### ◆DELETE
 
-`apictl delete {NAME or path}`
+`gdeck delete {NAME or path}`
 
-`apictl run "{NAME or PATH}/*"` で一括実行（※ダブルクォーテーションで囲まないとzshエラー起こります）
+`gdeck run "{NAME or PATH}/*"` で一括実行（※ダブルクォーテーションで囲まないとzshエラー起こります）
 
 ---オプション---
 
-
 ### ◆ENV
 
- - set <br>`apictl env set KEY VALUE`
- - show: <br>`apictl env show KEY`
- - list: <br>`apictl env list`
- - delete: <br>`apictl env delete KEY`
-
+- set <br>`gdeck env set KEY VALUE`
+- show: <br>`gdeck env show KEY`
+- list: <br>`gdeck env list`
+- delete: <br>`gdeck env delete KEY`
 
 ## バイナリの作成方法
 
-`go build -o apictl`
+`go build -o gdeck`
 
-`mv apictl /usr/local/bin/`
+`mv gdeck /usr/local/bin/`
 
-`apictl get {URL}`
+`gdeck get {URL}`
 
 シンボリックリンクを作成しておけばビルドだけで済む
 
-`ln -s $(pwd)/apictl /usr/local/bin/apictl`
+`ln -s $(pwd)/gdeck /usr/local/bin/gdeck`
 
 ## 実装時ルール
-* コミット前には必ず`go fmt`を実行する
+
+- コミット前には必ず`go fmt`を実行する

@@ -1,6 +1,6 @@
 package main
 
-import "apictl/cmd"
+import "github.com/nunokawa/gdeck/cmd"
 
 func main() {
 	// 起動

@@ -1,9 +1,10 @@
 package cmd
 
 import (
-	"apictl/cmd/internal/store"
 	"encoding/json"
 	"fmt"
+
+	"github.com/nunokawa/gdeck/cmd/internal/store"
 
 	"github.com/spf13/cobra"
 )
@@ -27,7 +28,7 @@ import (
 var showCmd = &cobra.Command{
 	Use:     "show [({path/})name]",
 	Short:   "Show Saved-Command Detail",
-	Example: "apictl show TestCommand",
+	Example: "gdeck show TestCommand",
 	Args:    cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		name := args[0]

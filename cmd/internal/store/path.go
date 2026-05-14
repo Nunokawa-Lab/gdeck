@@ -12,7 +12,7 @@ func BuildRequestPath(name string) (string, error) {
 		return "", err
 	}
 
-	dir := filepath.Join(home, ".apictl", "requests")
+	dir := filepath.Join(home, ".gdeck", "requests")
 
 	// 拡張子を除いたファイル名を取り出す
 	base := filepath.Base(name)

@@ -14,7 +14,7 @@ func List() []string {
 		return nil
 	}
 
-	dir := filepath.Join(home, ".apictl", "requests")
+	dir := filepath.Join(home, ".gdeck", "requests")
 
 	var filenames []string
 	err = filepath.WalkDir(dir, func(path string, d fs.DirEntry, err error) error {

@@ -1,10 +1,11 @@
 package output
 
 import (
-	formatter "apictl/cmd/internal"
-	"apictl/cmd/internal/model"
 	"encoding/json"
 	"fmt"
+
+	formatter "github.com/nunokawa/gdeck/cmd/internal"
+	"github.com/nunokawa/gdeck/cmd/internal/model"
 )
 
 // レスポンス共通関数

@@ -1,15 +1,16 @@
 package cmd
 
 import (
-	"apictl/cmd/internal/env"
-	"apictl/cmd/internal/httpclient"
-	outputHandler "apictl/cmd/internal/output"
-	"apictl/cmd/internal/request"
-	"apictl/cmd/internal/store"
 	"context"
 	"errors"
 	"fmt"
 	"os"
+
+	"github.com/nunokawa/gdeck/cmd/internal/env"
+	"github.com/nunokawa/gdeck/cmd/internal/httpclient"
+	outputHandler "github.com/nunokawa/gdeck/cmd/internal/output"
+	"github.com/nunokawa/gdeck/cmd/internal/request"
+	"github.com/nunokawa/gdeck/cmd/internal/store"
 
 	"github.com/spf13/cobra"
 )

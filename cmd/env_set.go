@@ -1,8 +1,9 @@
 package cmd
 
 import (
-	"apictl/cmd/internal/env"
 	"fmt"
+
+	"github.com/nunokawa/gdeck/cmd/internal/env"
 
 	"github.com/spf13/cobra"
 )
@@ -27,8 +28,8 @@ var envSetCmd = &cobra.Command{
 	Use:   "set KEY VALUE",
 	Short: "Set environment variable",
 	Example: `
-		apictl env set TOKEN abc123
-		apictl env set BASE_URL https://api.example.com
+		gdeck env set TOKEN abc123
+		gdeck env set BASE_URL https://api.example.com
 	`,
 	Args: cobra.ExactArgs(2),
 	Run: func(cmd *cobra.Command, args []string) {

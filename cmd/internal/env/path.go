@@ -13,5 +13,5 @@ func EnvPath() (string, error) {
 		return "", err
 	}
 
-	return filepath.Join(home, ".apictl", ".env"), nil
+	return filepath.Join(home, ".gdeck", ".env"), nil
 }

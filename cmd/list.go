@@ -1,9 +1,10 @@
 package cmd
 
 import (
-	"apictl/cmd/internal/store"
 	"fmt"
 	"path/filepath"
+
+	"github.com/nunokawa/gdeck/cmd/internal/store"
 
 	"github.com/spf13/cobra"
 )
@@ -27,7 +28,7 @@ import (
 var listCmd = &cobra.Command{
 	Use:     "list",
 	Short:   "Show Saved-Command List",
-	Example: "apictl list",
+	Example: "gdeck list",
 	Args:    cobra.ExactArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
 		filenames := store.List()

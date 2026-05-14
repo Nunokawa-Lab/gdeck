@@ -8,7 +8,7 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "apictl",
+	Use:   "gdeck",
 	Short: "Api Tester CLI",
 }
 

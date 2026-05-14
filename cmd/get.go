@@ -1,13 +1,14 @@
 package cmd
 
 import (
-	"apictl/cmd/internal/httpclient"
-	outputHandler "apictl/cmd/internal/output"
-	"apictl/cmd/internal/store"
 	"context"
 	"errors"
 	"fmt"
 	"os"
+
+	"github.com/nunokawa/gdeck/cmd/internal/httpclient"
+	outputHandler "github.com/nunokawa/gdeck/cmd/internal/output"
+	"github.com/nunokawa/gdeck/cmd/internal/store"
 
 	"github.com/spf13/cobra"
 )
@@ -31,7 +32,7 @@ import (
 var getCmd = &cobra.Command{
 	Use:     "get [url]",
 	Short:   "Send get request",
-	Example: "apictl get https://example.com",
+	Example: "gdeck get https://example.com",
 	Args:    cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		url := args[0]

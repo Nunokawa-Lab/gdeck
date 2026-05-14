@@ -1,8 +1,9 @@
 package cmd
 
 import (
-	"apictl/cmd/internal/env"
 	"fmt"
+
+	"github.com/nunokawa/gdeck/cmd/internal/env"
 
 	"github.com/spf13/cobra"
 )

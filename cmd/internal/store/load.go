@@ -1,12 +1,13 @@
 package store
 
 import (
-	"apictl/cmd/internal/model"
 	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/nunokawa/gdeck/cmd/internal/model"
 )
 
 // 保存されたコマンド情報を構造体に書き込む処理

@@ -1,11 +1,12 @@
 package httpclient
 
 import (
-	"apictl/cmd/internal/model"
 	"io"
 	"net/http"
 	"strings"
 	"time"
+
+	"github.com/nunokawa/gdeck/cmd/internal/model"
 )
 
 /*

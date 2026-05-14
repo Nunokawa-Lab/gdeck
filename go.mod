@@ -1,4 +1,4 @@
-module apictl
+module github.com/nunokawa/gdeck
 
 go 1.24.2
 

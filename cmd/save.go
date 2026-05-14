@@ -1,9 +1,10 @@
 package cmd
 
 import (
-	"apictl/cmd/internal/model"
-	"apictl/cmd/internal/store"
 	"fmt"
+
+	"github.com/nunokawa/gdeck/cmd/internal/model"
+	"github.com/nunokawa/gdeck/cmd/internal/store"
 
 	"github.com/spf13/cobra"
 )
@@ -27,7 +28,7 @@ import (
 var saveCmd = &cobra.Command{
 	Use:     "save [({path/})name] [method] [url]",
 	Short:   "Save request command for later use",
-	Example: "apictl save SampleCmd get https://example.com",
+	Example: "gdeck save SampleCmd get https://example.com",
 	Args:    cobra.ExactArgs(3),
 	Run: func(cmd *cobra.Command, args []string) {
 		name := args[0]

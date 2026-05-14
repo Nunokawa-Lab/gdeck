@@ -1,9 +1,10 @@
 package cmd
 
 import (
-	"apictl/cmd/internal"
-	"apictl/cmd/internal/store"
 	"fmt"
+
+	"github.com/nunokawa/gdeck/cmd/internal"
+	"github.com/nunokawa/gdeck/cmd/internal/store"
 
 	"github.com/spf13/cobra"
 )
@@ -27,7 +28,7 @@ import (
 var deleteCmd = &cobra.Command{
 	Use:     "delete [({path/})name]",
 	Short:   "Delete Saved command",
-	Example: "apictl delete getUser",
+	Example: "gdeck delete getUser",
 	Args:    cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		name := args[0]
