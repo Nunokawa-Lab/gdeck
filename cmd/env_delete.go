@@ -36,7 +36,7 @@ var envDeleteCmd = &cobra.Command{
 
 		key := args[0]
 
-		err := env.Delete(key)
+		err := env.Delete(key, envName)
 		if err != nil {
 			fmt.Println("Error:", err)
 			return
@@ -47,5 +47,7 @@ var envDeleteCmd = &cobra.Command{
 }
 
 func init() {
+	envDeleteCmd.Flags().StringVar(&envName, "env", "", "environment name")
+
 	envCmd.AddCommand(envDeleteCmd)
 }

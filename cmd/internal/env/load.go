@@ -6,14 +6,9 @@ import (
 	"strings"
 )
 
-func LoadEnv() (map[string]string, error) {
+func LoadEnv(path string) (map[string]string, error) {
 
 	envs := make(map[string]string)
-
-	path, err := EnvPath()
-	if err != nil {
-		return nil, err
-	}
 
 	file, err := os.Open(path)
 	if os.IsNotExist(err) {

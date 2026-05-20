@@ -1,9 +1,14 @@
 package env
 
-func Set(key string, value string) error {
+func Set(key string, value string, name string) error {
+
+	path, err := BuildEnvPath(name)
+	if err != nil {
+		return err
+	}
 
 	// 既存の.envを取得
-	envs, err := LoadEnv()
+	envs, err := LoadEnv(path)
 
 	if err != nil {
 		return err
@@ -12,5 +17,5 @@ func Set(key string, value string) error {
 	// 追加
 	envs[key] = value
 
-	return SaveEnv(envs)
+	return SaveEnv(path, envs)
 }

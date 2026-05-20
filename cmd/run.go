@@ -59,19 +59,31 @@ var runCmd = &cobra.Command{
 				req.Headers = request.MergeHeaders(req.Headers, requestHeaders)
 			}
 
-			// 環境変数置換
-			req.URL, err = env.ReplaceEnv(req.URL)
+			// envファイル取得
+			path, err := env.BuildEnvPath(envName)
 			if err != nil {
 				fmt.Println("Error:", err)
 				return
 			}
-			req.Body, err = env.ReplaceEnv(req.Body)
+			envs, err := env.LoadEnv(path)
+			if err != nil {
+				fmt.Println("Error:", err)
+				return
+			}
+
+			// 環境変数置換
+			req.URL, err = env.ReplaceEnv(req.URL, envs)
+			if err != nil {
+				fmt.Println("Error:", err)
+				return
+			}
+			req.Body, err = env.ReplaceEnv(req.Body, envs)
 			if err != nil {
 				fmt.Println("Error:", err)
 				return
 			}
 			for i, h := range req.Headers {
-				req.Headers[i], err = env.ReplaceEnv(h)
+				req.Headers[i], err = env.ReplaceEnv(h, envs)
 				if err != nil {
 					fmt.Println("Error:", err)
 					return
@@ -119,6 +131,8 @@ func init() {
 	runCmd.Flags().StringArrayVarP(&requestHeaders, "header", "H", []string{}, "Request header")
 	// -t
 	runCmd.Flags().IntVarP(&timeout, "timeout", "t", 10, "timeout seconds")
+	// --env
+	runCmd.Flags().StringVar(&envName, "env", "", "environment name")
 
 	// rootに登録
 	rootCmd.AddCommand(runCmd)

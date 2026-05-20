@@ -27,10 +27,16 @@ import (
 var envListCmd = &cobra.Command{
 	Use:   "list",
 	Short: "List environment variables",
-	Args:  cobra.NoArgs,
+	Args:  cobra.ExactArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
 
-		envs, err := env.LoadEnv()
+		path, err := env.BuildEnvPath(envName)
+		if err != nil {
+			fmt.Println("Error:", err)
+			return
+		}
+
+		envs, err := env.LoadEnv(path)
 		if err != nil {
 			fmt.Println("Error:", err)
 			return
@@ -48,5 +54,7 @@ var envListCmd = &cobra.Command{
 }
 
 func init() {
+	envListCmd.Flags().StringVar(&envName, "env", "", "environment name")
+
 	envCmd.AddCommand(envListCmd)
 }

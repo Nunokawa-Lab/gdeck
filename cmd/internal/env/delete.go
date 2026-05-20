@@ -2,8 +2,14 @@ package env
 
 import "fmt"
 
-func Delete(key string) error {
-	envs, err := LoadEnv()
+func Delete(key string, name string) error {
+
+	path, err := BuildEnvPath(name)
+	if err != nil {
+		return err
+	}
+
+	envs, err := LoadEnv(path)
 	if err != nil {
 		return err
 	}
@@ -15,5 +21,5 @@ func Delete(key string) error {
 	// mapから消して再保存
 	delete(envs, key)
 
-	return SaveEnv(envs)
+	return SaveEnv(path, envs)
 }

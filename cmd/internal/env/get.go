@@ -2,9 +2,14 @@ package env
 
 import "fmt"
 
-func Get(key string) (string, error) {
+func Get(key string, name string) (string, error) {
 
-	envs, err := LoadEnv()
+	path, err := BuildEnvPath(name)
+	if err != nil {
+		return "", err
+	}
+
+	envs, err := LoadEnv(path)
 	if err != nil {
 		return "", err
 	}

@@ -36,7 +36,7 @@ var envShowCmd = &cobra.Command{
 
 		key := args[0]
 
-		val, err := env.Get(key)
+		val, err := env.Get(key, envName)
 		if err != nil {
 			fmt.Println("Error:", err)
 			return
@@ -47,5 +47,7 @@ var envShowCmd = &cobra.Command{
 }
 
 func init() {
+	envShowCmd.Flags().StringVar(&envName, "env", "", "environment name")
+
 	envCmd.AddCommand(envShowCmd)
 }
