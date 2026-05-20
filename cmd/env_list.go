@@ -25,9 +25,10 @@ import (
  *   args: CLIで渡された引数（今回はURLが入る）
  */
 var envListCmd = &cobra.Command{
-	Use:   "list",
-	Short: "List environment variables",
-	Args:  cobra.ExactArgs(0),
+	Use:     "list",
+	Short:   "List environment variables",
+	Example: "gdeck env list --env dev",
+	Args:    cobra.ExactArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
 
 		path, err := env.BuildEnvPath(envName)

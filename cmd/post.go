@@ -31,7 +31,7 @@ import (
  */
 var postCmd = &cobra.Command{
 	Use:     "post [url]",
-	Short:   "Send post reequest",
+	Short:   "Send POST request",
 	Example: "gdeck post <URL> -d '<JSON>' -H 'Content-Type: application/json'",
 	Args:    cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {

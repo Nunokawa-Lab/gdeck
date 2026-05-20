@@ -21,8 +21,9 @@ import (
  *   args: CLIで渡された引数（今回はURLが入る）
  */
 var envCmd = &cobra.Command{
-	Use:   "env",
-	Short: "Manage environment variables",
+	Use:     "env",
+	Short:   "Manage environment variables",
+	Example: "gdeck env set TOKEN abc123",
 }
 
 func init() {

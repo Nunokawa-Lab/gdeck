@@ -32,9 +32,10 @@ import (
  *   args: CLIで渡された引数（今回はURLが入る）
  */
 var runCmd = &cobra.Command{
-	Use:   "run [({path/})name]",
-	Short: "Run saved request",
-	Args:  cobra.ExactArgs(1),
+	Use:     "run [({path/})name]",
+	Short:   "Run saved request",
+	Example: "gdeck run SampleCmd --env dev",
+	Args:    cobra.ExactArgs(1),
 
 	Run: func(cmd *cobra.Command, args []string) {
 		name := args[0]

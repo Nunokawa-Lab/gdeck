@@ -9,7 +9,7 @@ import (
 
 var rootCmd = &cobra.Command{
 	Use:   "gdeck",
-	Short: "Api Tester CLI",
+	Short: "API Tester CLI",
 }
 
 func Execute() {
