@@ -25,9 +25,9 @@ root.goなどを簡単に作成してくれる便利CLI。
 
 `-v`: 詳細出力
 
-`-o`: ファイルエクスポート
+`-o`: ファイル出力パス
 
-`-t`: タイムアウトを設定
+`-t`: タイムアウト（秒）
 
 ### ◆POST
 
@@ -37,13 +37,13 @@ root.goなどを簡単に作成してくれる便利CLI。
 
 `-v`: 詳細出力
 
-`-o`: ファイルエクスポート
+`-o`: ファイル出力パス
 
-`-d`: postデータを設定
+`-d`: リクエストボディ
 
-`-H`: reqeust headerを設定
+`-H`: リクエストヘッダー
 
-`-t`: タイムアウトを設定
+`-t`: タイムアウト（秒）
 
 ### ◆SAVE
 
@@ -51,66 +51,64 @@ root.goなどを簡単に作成してくれる便利CLI。
 
 ---オプション---
 
-`-d`: postデータを設定
+`-d`: リクエストボディ
 
-`-H`: reqeust headerを設定
+`-H`: リクエストヘッダー
 
 ---環境変数---
 
-`{{HOGE}}`: この形式にすることで環境変数を使用できる
-
-runコマンド実行時に明示的に値をセット。
+保存されたリクエスト内に `{{HOGE}}` のような形式があれば、`gdeck run` 実行時に環境変数置換されます。
 
 ### ◆RUN
 
 `gdeck run {NAME or PATH}`
 
-`gdeck run "{NAME or PATH}/*"` で一括実行（※ダブルクォーテーションで囲まないとzshエラー起こります）
+`gdeck run "{NAME or PATH}/*"` で複数ファイルを一括実行できます（※シェルのワイルドカード展開を防ぐため、引用符で囲んでください）。
 
 ---オプション---
 
 `-v`: 詳細出力
 
-`-d`: postデータを設定
+`-d`: リクエストボディ上書き
 
-`-H`: reqeust headerを設定
+`-H`: リクエストヘッダー上書き
 
-`-t`: タイムアウトを設定
+`-t`: タイムアウト（秒）
 
----環境変数---
+`--env`: 環境名を指定して環境変数ファイルを切り替え
 
-saveコマンドで登録した際に`{{HOGE}}`のような形式があれば、実行時に値をセットできる
+---例---
 
-`HOGE=batsumaru \ gdeck run {SAVED COMMAND NAME}`
+`gdeck run SampleCmd --env dev`
 
 ### ◆SHOW
 
-`gdeck show {NAME or path}`
+`gdeck show {NAME or PATH}`
 
-`gdeck run "{NAME or PATH}/*"` で一括実行（※ダブルクォーテーションで囲まないとzshエラー起こります）
-
----オプション---
+保存済みコマンドの詳細を表示します。
 
 ### ◆LIST
 
 `gdeck list`
 
----オプション---
+保存済みコマンドの一覧を表示します。
 
 ### ◆DELETE
 
-`gdeck delete {NAME or path}`
+`gdeck delete {NAME or PATH}`
 
-`gdeck run "{NAME or PATH}/*"` で一括実行（※ダブルクォーテーションで囲まないとzshエラー起こります）
-
----オプション---
+保存済みコマンドを削除します。
 
 ### ◆ENV
 
-- set <br>`gdeck env set KEY VALUE`
-- show: <br>`gdeck env show KEY`
-- list: <br>`gdeck env list`
-- delete: <br>`gdeck env delete KEY`
+`gdeck env` は環境変数管理のサブコマンドです。
+
+- `gdeck env set KEY VALUE [--env NAME]`
+- `gdeck env show KEY [--env NAME]`
+- `gdeck env list [--env NAME]`
+- `gdeck env delete KEY [--env NAME]`
+
+名前付き環境を使う場合は `--env` を指定します。
 
 ## バイナリの作成方法
 
