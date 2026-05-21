@@ -23,7 +23,6 @@ func Delete(name string) error {
 		// ディレクトリ内全件処理（ワイルドカードだったパスから各ファイルパスのスライスを取得）
 		paths, err := filepath.Glob(path)
 		if err != nil {
-			fmt.Println("ここ？")
 			return fmt.Errorf("invalid path")
 		}
 
@@ -37,7 +36,6 @@ func Delete(name string) error {
 	} else {
 		err = os.Remove(path)
 		if err != nil {
-			fmt.Println("これ？")
 			return fmt.Errorf("invalid name")
 		}
 	}
