@@ -1,17 +1,18 @@
 package store
 
 import (
+	"fmt"
 	"io/fs"
 	"os"
 	"path/filepath"
 )
 
 // 保存されたコマンドファイルのリストを取得
-func List() []string {
+func List() ([]string, error) {
 
 	home, err := os.UserHomeDir()
 	if err != nil {
-		return nil
+		return nil, fmt.Errorf("invalid name")
 	}
 
 	dir := filepath.Join(home, ".gdeck", "requests")
@@ -34,8 +35,8 @@ func List() []string {
 		return nil
 	})
 	if err != nil {
-		return nil
+		return nil, err
 	}
 
-	return filenames
+	return filenames, nil
 }

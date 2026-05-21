@@ -31,7 +31,10 @@ var listCmd = &cobra.Command{
 	Example: "gdeck list",
 	Args:    cobra.ExactArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
-		filenames := store.List()
+		filenames, err := store.List()
+		if err != nil {
+			fmt.Printf("Error: %s", err.Error())
+		}
 
 		for _, name := range filenames {
 			ext := filepath.Ext(name)

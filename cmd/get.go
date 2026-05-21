@@ -46,11 +46,11 @@ var getCmd = &cobra.Command{
 		res, err := httpclient.Get(url, options)
 		if err != nil {
 			if errors.Is(err, context.DeadlineExceeded) || os.IsTimeout(err) {
-				fmt.Println("Error:, Request timed out")
+				fmt.Println("Error: Request timed out")
 				return
 			}
 
-			fmt.Println("Error : ", err.Error())
+			fmt.Println("Error: ", err.Error())
 			return
 		}
 

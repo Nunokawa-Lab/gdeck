@@ -35,7 +35,7 @@ var deleteCmd = &cobra.Command{
 
 		err := store.Delete(name)
 		if err != nil {
-			fmt.Println(err.Error())
+			fmt.Println("Error: " + err.Error())
 			return
 		}
 
