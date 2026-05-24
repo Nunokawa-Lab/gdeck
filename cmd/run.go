@@ -33,43 +33,43 @@ var runCmd = &cobra.Command{
 
 	Run: func(cmd *cobra.Command, args []string) {
 
-	name := args[0]
+		name := args[0]
 
-	results, err := runner.Run(
-		name,
-		runner.RunOptions{
-			Timeout: timeout,
-			EnvName: envName,
-			Body: requestData,
-			Headers: requestHeaders,
-		},
-	)
+		results, err := runner.Run(
+			name,
+			runner.RunOptions{
+				Timeout: timeout,
+				EnvName: envName,
+				Body:    requestData,
+				Headers: requestHeaders,
+			},
+		)
 
-	if err != nil {
-		fmt.Println("Error:", err)
-		return
-	}
-
-	total := len(results)
-
-	for i, result := range results {
-
-		if result.Error != nil {
-			fmt.Println("Error:", result.Error)
-			continue
+		if err != nil {
+			fmt.Println("Error:", err)
+			return
 		}
 
-		outputHandler.PrintResponse(
-			result.Response,
-			isVerbose,
-			i+1,
-			total,
-			result.Request.Method,
-			result.Request.RequestName,
-			result.Request.URL,
-		)
-	}
-},
+		total := len(results)
+
+		for i, result := range results {
+
+			if result.Error != nil {
+				fmt.Println("Error:", result.Error)
+				continue
+			}
+
+			outputHandler.PrintResponse(
+				result.Response,
+				isVerbose,
+				i+1,
+				total,
+				result.Request.Method,
+				result.Request.RequestName,
+				result.Request.URL,
+			)
+		}
+	},
 }
 
 func init() {

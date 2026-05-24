@@ -3,8 +3,8 @@ package output
 import (
 	"encoding/json"
 	"fmt"
+	neturl "net/url"
 	"time"
-	neturl"net/url"
 
 	formatter "github.com/nunokawa/gdeck/cmd/internal"
 	"github.com/nunokawa/gdeck/cmd/internal/model"
@@ -20,7 +20,7 @@ func PrintResponse(
 	reqeustName string,
 	url string,
 ) {
-	
+
 	u, err := neturl.Parse(url)
 	if err != nil {
 		fmt.Println("Error: ", err.Error())
@@ -36,7 +36,23 @@ func PrintResponse(
 		}
 
 		fmt.Printf(
-			"┌─────────────────────────────\n│ [%v/%v] %s\n└─────────────────────────────\n%s  %s\n\n%s Status  %s\n⏳ Time    %v\n\n📨 Header\n%s\n\n📦 Body\n%s\n\n",
+			`┌─────────────────────────────
+│ [%v/%v] %s
+└─────────────────────────────
+%s  %s
+
+%s Status  %s
+⏳ Time    %v
+
+
+📨 Header
+%s
+
+
+📦 Body
+%s
+
+`,
 			currentNum,
 			len,
 			reqeustName,
@@ -51,7 +67,19 @@ func PrintResponse(
 
 	} else {
 		fmt.Printf(
-			"┌─────────────────────────────\n│ [%v/%v] %s\n└─────────────────────────────\n%s  %s\n\n%s Status  %s\n⏳ Time    %v\n\n📦 Body\n%s\n\n",
+			`┌─────────────────────────────
+│ [%v/%v] %s
+└─────────────────────────────
+%s  %s
+
+%s Status  %s
+⏳ Time    %v
+
+
+📦 Body
+%s
+
+`,
 			currentNum,
 			len,
 			reqeustName,
