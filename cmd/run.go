@@ -1,16 +1,10 @@
 package cmd
 
 import (
-	"context"
-	"errors"
 	"fmt"
-	"os"
 
-	"github.com/nunokawa/gdeck/cmd/internal/env"
-	"github.com/nunokawa/gdeck/cmd/internal/httpclient"
 	outputHandler "github.com/nunokawa/gdeck/cmd/internal/output"
-	"github.com/nunokawa/gdeck/cmd/internal/request"
-	"github.com/nunokawa/gdeck/cmd/internal/store"
+	"github.com/nunokawa/gdeck/cmd/internal/runner"
 
 	"github.com/spf13/cobra"
 )
@@ -38,88 +32,44 @@ var runCmd = &cobra.Command{
 	Args:    cobra.ExactArgs(1),
 
 	Run: func(cmd *cobra.Command, args []string) {
-		name := args[0]
 
-		// 読み込み
-		requests, err := store.Load(name)
-		if err != nil {
-			fmt.Println("Error:", err)
-			return
+	name := args[0]
+
+	results, err := runner.Run(
+		name,
+		runner.RunOptions{
+			Timeout: timeout,
+			EnvName: envName,
+			Body: requestData,
+			Headers: requestHeaders,
+		},
+	)
+
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+
+	total := len(results)
+
+	for i, result := range results {
+
+		if result.Error != nil {
+			fmt.Println("Error:", result.Error)
+			continue
 		}
 
-		reqLen := len(requests)
-
-		for i, req := range requests {
-			// Body上書き
-			if requestData != "" {
-				req.Body = requestData
-			}
-
-			// Header上書き
-			if len(requestHeaders) > 0 {
-				req.Headers = request.MergeHeaders(req.Headers, requestHeaders)
-			}
-
-			// envファイル取得
-			path, err := env.BuildEnvPath(envName)
-			if err != nil {
-				fmt.Println("Error:", err)
-				return
-			}
-			envs, err := env.LoadEnv(path)
-			if err != nil {
-				fmt.Println("Error:", err)
-				return
-			}
-
-			// 環境変数置換
-			req.URL, err = env.ReplaceEnv(req.URL, envs)
-			if err != nil {
-				fmt.Println("Error:", err)
-				return
-			}
-			req.Body, err = env.ReplaceEnv(req.Body, envs)
-			if err != nil {
-				fmt.Println("Error:", err)
-				return
-			}
-			for i, h := range req.Headers {
-				req.Headers[i], err = env.ReplaceEnv(h, envs)
-				if err != nil {
-					fmt.Println("Error:", err)
-					return
-				}
-			}
-
-			// オプション設定
-			options := store.DefaultOptions()
-			if timeout != 0 {
-				options.Timeout = timeout
-			}
-
-			// 実行
-			res, err := httpclient.Do(
-				req.Method,
-				req.URL,
-				req.Body,
-				req.Headers,
-				options,
-			)
-			if err != nil {
-				if errors.Is(err, context.DeadlineExceeded) || os.IsTimeout(err) {
-					fmt.Println("Error: Request timed out")
-					return
-				}
-
-				fmt.Println("Error:", err)
-				return
-			}
-
-			outputHandler.PrintResponse(res, isVerbose, i+1, reqLen, req.Method, req.RequestName, req.URL)
-
-		}
-
-	},
+		outputHandler.PrintResponse(
+			result.Response,
+			isVerbose,
+			i+1,
+			total,
+			result.Request.Method,
+			result.Request.RequestName,
+			result.Request.URL,
+		)
+	}
+},
 }
 
 func init() {
