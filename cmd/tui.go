@@ -24,16 +24,16 @@ import (
  *   args: CLIで渡された引数
  */
 var tuiCmd = &cobra.Command{
-	Use: "tui",
-	Short: "Start gdeck TUI",
+	Use:     "tui",
+	Short:   "Start gdeck TUI",
 	Example: "gdeck tui",
 	Run: func(cmd *cobra.Command, args []string) {
-		
+
 		err := tui.Start()
 		if err != nil {
 			fmt.Println("Error: ", err.Error())
 		}
-		
+
 	},
 }
 

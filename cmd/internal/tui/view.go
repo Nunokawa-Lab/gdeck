@@ -7,7 +7,7 @@ func (m Model) View() string {
 	s := "gdeck TUI 😎\n\n"
 
 	for i, req := range m.requests {
-		
+
 		cursor := " "
 
 		if i == m.cursor {

@@ -44,10 +44,8 @@ func PrintResponse(
 %s Status  %s
 ⏳ Time    %v
 
-
 📨 Header
 %s
-
 
 📦 Body
 %s
@@ -74,7 +72,6 @@ func PrintResponse(
 
 %s Status  %s
 ⏳ Time    %v
-
 
 📦 Body
 %s
