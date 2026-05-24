@@ -41,7 +41,7 @@ func WriteFile(res *model.Response, path string, isVerbose bool) {
 			}
 
 			content := fmt.Sprintf(
-				"Status Code: %v\n\nHeader: %s\n\nBody: %s\n\nTime: %v",
+				"Status: %v\n\nHeader: %s\n\nBody: %s\n\nTime: %v",
 				res.StatusCode,
 				formatter.FormatJSON(hBytes),
 				formatter.FormatJSON(res.Body),
@@ -73,7 +73,7 @@ func WriteFile(res *model.Response, path string, isVerbose bool) {
 		} else {
 			// それ以外はテキストを出力
 			content := fmt.Sprintf(
-				"Status Code: %v\n\nBody: %s\n\nTime: %v",
+				"Status: %v\n\nBody: %s\n\nTime: %v",
 				res.StatusCode,
 				formatter.FormatJSON(res.Body),
 				res.Time,

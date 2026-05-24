@@ -24,13 +24,13 @@ func FormatJSON(data []byte) string {
 func ColorStatus(status string, code int) string {
 	switch {
 	case code >= 200 && code < 300:
-		return "\033[42;30m " + status + " \033[0m" // 緑背景＋黒文字
+		return "\033[42;30m" + status + "\033[0m" // 緑背景＋黒文字
 	case code >= 300 && code < 400:
-		return "\033[44;37m " + status + " \033[0m" // 青背景＋白文字
+		return "\033[44;37m" + status + "\033[0m" // 青背景＋白文字
 	case code >= 400 && code < 500:
-		return "\033[43;30m " + status + " \033[0m" // 黄背景＋黒文字
+		return "\033[43;30m" + status + "\033[0m" // 黄背景＋黒文字
 	case code >= 500:
-		return "\033[41;37m " + status + " \033[0m" // 赤背景＋白文字
+		return "\033[41;37m" + status + "\033[0m" // 赤背景＋白文字
 	default:
 		return status
 	}

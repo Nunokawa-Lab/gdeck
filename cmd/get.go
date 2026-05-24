@@ -57,7 +57,7 @@ var getCmd = &cobra.Command{
 		if output != "" {
 			outputHandler.WriteFile(res, output, isVerbose)
 		} else {
-			outputHandler.PrintResponse(res, isVerbose)
+			outputHandler.PrintResponse(res, isVerbose, 1, 1, "GET", url, url)
 		}
 	},
 }

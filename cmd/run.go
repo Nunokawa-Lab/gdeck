@@ -115,8 +115,7 @@ var runCmd = &cobra.Command{
 				return
 			}
 
-			fmt.Printf("[%v/%v] %v\n---------------------------\n", i+1, reqLen, req.RequestName)
-			outputHandler.PrintResponse(res, isVerbose) // ← verboseは後でフラグ対応
+			outputHandler.PrintResponse(res, isVerbose, i+1, reqLen, req.Method, req.RequestName, req.URL)
 
 		}
 

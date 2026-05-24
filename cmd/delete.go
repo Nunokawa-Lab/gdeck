@@ -39,7 +39,7 @@ var deleteCmd = &cobra.Command{
 			return
 		}
 
-		fmt.Println("Status Code:  " + internal.ColorStatus("204 No-Content", 204))
+		fmt.Println("Status:  " + internal.ColorStatus("204 No-Content", 204))
 	},
 }
 
