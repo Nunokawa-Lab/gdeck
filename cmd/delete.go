@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/nunokawa/gdeck/cmd/internal"
+	op "github.com/nunokawa/gdeck/cmd/internal/output"
 	"github.com/nunokawa/gdeck/cmd/internal/store"
 
 	"github.com/spf13/cobra"
@@ -39,7 +39,7 @@ var deleteCmd = &cobra.Command{
 			return
 		}
 
-		fmt.Println("Status:  " + internal.ColorStatus("204 No-Content", 204))
+		fmt.Println("Status:  " + op.ColorStatus("204 No-Content", 204))
 	},
 }
 

@@ -2,6 +2,7 @@ package tui
 
 import (
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/nunokawa/gdeck/cmd/internal/runner"
 )
 
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
@@ -20,7 +21,24 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.cursor++
 			}
 		case "enter":
-			m.selected = m.requests[m.cursor]
+			selected := m.requests[m.cursor]
+
+			m.selected = selected.Name
+
+			results, err := runner.Run(
+				selected.Name,
+				runner.RunOptions{},
+			)
+			if err != nil {
+				m.errorMsg = err.Error()
+				return m, nil
+			}
+			if len(results) > 0 {
+				m.response = results[0].Response
+			}
+
+			// 成功時はエラー消す
+			m.errorMsg = ""
 		}
 	}
 

@@ -10,7 +10,7 @@ import (
 	"github.com/nunokawa/gdeck/cmd/internal/model"
 )
 
-// 保存されたコマンド情報を構造体に書き込む処理
+// 保存されたコマンドを読み込む処理
 func Load(name string) ([]*model.Request, error) {
 	if strings.Contains(name, "..") {
 		// 不正なディレクトリアクセスを防ぐ

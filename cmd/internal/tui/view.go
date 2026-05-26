@@ -1,10 +1,15 @@
 package tui
 
-import "fmt"
+import (
+	"fmt"
+	"path/filepath"
+
+	"github.com/nunokawa/gdeck/cmd/internal/output"
+)
 
 func (m Model) View() string {
 
-	s := "gdeck TUI 😎\n\n"
+	s := "\ngdeck TUI 😎\n\n"
 
 	for i, req := range m.requests {
 
@@ -15,10 +20,18 @@ func (m Model) View() string {
 			cursor = ">"
 		}
 
+		name := req.Name
+		ext := filepath.Ext(name)
+		cmdName := name[:len(name)-len(ext)]
+
+		// スタイルが崩れないように先に色付けし、色付けした文字列を考慮して幅を揃える
+		method := output.MethodColor(req.Method)
+		method = output.PadRight(method, 8)
 		s += fmt.Sprintf(
-			"%s %s\n",
+			"%s %s %s\n",
 			cursor,
-			req,
+			method,
+			cmdName,
 		)
 	}
 
@@ -30,6 +43,20 @@ func (m Model) View() string {
 	}
 
 	s += "\nq: quit\n\n"
+
+	if m.response != nil {
+
+		s += "\n--------------------\n\n"
+
+		s += output.RenderTUIResponse(
+			m.response,
+			m.requests[m.cursor].Method,
+		)
+	}
+
+	if m.errorMsg != "" {
+		s += "\n❌ " + m.errorMsg + "\n"
+	}
 
 	return s
 }

@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/nunokawa/gdeck/cmd/internal/model"
 	"github.com/nunokawa/gdeck/cmd/internal/store"
@@ -36,11 +37,11 @@ var saveCmd = &cobra.Command{
 		url := args[2]
 
 		req := &model.Request{
-			RequestName: name,
-			Method:      method,
-			URL:         url,
-			Headers:     requestHeaders,
-			Body:        requestData,
+			Name:    name,
+			Method:  strings.ToUpper(method),
+			URL:     url,
+			Headers: requestHeaders,
+			Body:    requestData,
 		}
 
 		err := store.Save(name, req)

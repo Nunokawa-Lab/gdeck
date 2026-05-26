@@ -5,10 +5,13 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"strings"
+
+	"github.com/nunokawa/gdeck/cmd/internal/model"
 )
 
 // 保存されたコマンドファイルのリストを取得
-func List() ([]string, error) {
+func List() ([]model.RequestItem, error) {
 
 	home, err := os.UserHomeDir()
 	if err != nil {
@@ -17,7 +20,7 @@ func List() ([]string, error) {
 
 	dir := filepath.Join(home, ".gdeck", "requests")
 
-	var filenames []string
+	var requestItems []model.RequestItem
 	err = filepath.WalkDir(dir, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
@@ -28,9 +31,29 @@ func List() ([]string, error) {
 			return nil
 		}
 
+		// 隠しファイルはスキップ（主に .DS_Store）
+		// Windows対応時は別の書き方にする必要あり
+		if strings.HasPrefix(filepath.Base(path), ".") {
+			return nil
+		}
+
 		// 相対パス化
 		rel, err := filepath.Rel(dir, path)
-		filenames = append(filenames, rel)
+
+		// メソッド取得
+		loadFile, err := Load(rel)
+		if err != nil {
+			return err
+		}
+		method := loadFile[0].Method
+
+		requestItems = append(
+			requestItems,
+			model.RequestItem{
+				Method: method,
+				Name:   rel,
+			},
+		)
 
 		return nil
 	})
@@ -38,5 +61,5 @@ func List() ([]string, error) {
 		return nil, err
 	}
 
-	return filenames, nil
+	return requestItems, nil
 }

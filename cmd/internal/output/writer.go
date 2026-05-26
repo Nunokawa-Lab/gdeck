@@ -6,7 +6,6 @@ import (
 	"os"
 	"time"
 
-	formatter "github.com/nunokawa/gdeck/cmd/internal"
 	"github.com/nunokawa/gdeck/cmd/internal/model"
 )
 
@@ -43,8 +42,8 @@ func WriteFile(res *model.Response, path string, isVerbose bool) {
 			content := fmt.Sprintf(
 				"Status: %v\n\nHeader: %s\n\nBody: %s\n\nTime: %v",
 				res.StatusCode,
-				formatter.FormatJSON(hBytes),
-				formatter.FormatJSON(res.Body),
+				FormatJSON(hBytes),
+				FormatJSON(res.Body),
 				res.Time,
 			)
 			helperWriteFile([]byte(content))
@@ -75,7 +74,7 @@ func WriteFile(res *model.Response, path string, isVerbose bool) {
 			content := fmt.Sprintf(
 				"Status: %v\n\nBody: %s\n\nTime: %v",
 				res.StatusCode,
-				formatter.FormatJSON(res.Body),
+				FormatJSON(res.Body),
 				res.Time,
 			)
 			helperWriteFile([]byte(content))

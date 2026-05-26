@@ -65,7 +65,7 @@ var runCmd = &cobra.Command{
 				i+1,
 				total,
 				result.Request.Method,
-				result.Request.RequestName,
+				result.Request.Name,
 				result.Request.URL,
 			)
 		}
