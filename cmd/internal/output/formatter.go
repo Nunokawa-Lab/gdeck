@@ -52,7 +52,7 @@ func SelectStatusIcon(code int) string {
 	}
 }
 
-func MethodIcon(method string) string {
+func AddIconToMethod(method string) string {
 	switch method {
 	case "GET":
 		return "🔵 GET"

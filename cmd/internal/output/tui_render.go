@@ -17,7 +17,7 @@ func RenderTUIResponse(
 			"%s %s\n"+
 			"⏳ %v\n\n"+
 			"%s",
-		MethodIcon(method),
+		AddIconToMethod(method),
 		SelectStatusIcon(res.StatusCode),
 		res.Status,
 		res.Time.Truncate(time.Millisecond),
