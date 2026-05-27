@@ -1,62 +1,53 @@
 package tui
 
 import (
-	"fmt"
-	"path/filepath"
 
-	"github.com/nunokawa/gdeck/cmd/internal/output"
+	"github.com/charmbracelet/lipgloss"
 )
 
 func (m Model) View() string {
 
-	s := "\ngdeck TUI 😎\n\n"
+	header := titleStyle.Render("gdeck TUI 😎")
+	left := m.renderList()
+	right := m.renderResponse()
+	body := lipgloss.JoinHorizontal(
+		lipgloss.Top,
+		left,
+		right,
+	)
+	footer := footerStyle.Render("q: quit")
 
-	for i, req := range m.requests {
+	return lipgloss.JoinVertical(
+		lipgloss.Left,
+		header,
+		body,
+		footer,
+	)
 
-		cursor := " "
 
-		if i == m.cursor {
-			// 一覧の位置とカーソルの位置が同じ箇所に矢印”>”を表示する
-			cursor = ">"
-		}
+	// if m.selected != "" {
+	// 	s += fmt.Sprintf(
+	// 		"\nSelected: %s\n\n",
+	// 		m.selected,
+	// 	)
+	// }
 
-		name := req.Name
-		ext := filepath.Ext(name)
-		cmdName := name[:len(name)-len(ext)]
+	// s += "\nq: quit\n\n"
 
-		// スタイルが崩れないように先に色付けし、色付けした文字列を考慮して幅を揃える
-		method := output.MethodColor(req.Method)
-		method = output.PadRight(method, 8)
-		s += fmt.Sprintf(
-			"%s %s %s\n",
-			cursor,
-			method,
-			cmdName,
-		)
-	}
 
-	if m.selected != "" {
-		s += fmt.Sprintf(
-			"\nSelected: %s\n\n",
-			m.selected,
-		)
-	}
+	// if m.response != nil {
 
-	s += "\nq: quit\n\n"
+	// 	s += "\n--------------------\n\n"
 
-	if m.response != nil {
+	// 	s += output.RenderTUIResponse(
+	// 		m.response,
+	// 		m.requests[m.cursor].Method,
+	// 	)
+	// }
 
-		s += "\n--------------------\n\n"
+	// if m.errorMsg != "" {
+	// 	s += "\n❌ " + m.errorMsg + "\n"
+	// }
 
-		s += output.RenderTUIResponse(
-			m.response,
-			m.requests[m.cursor].Method,
-		)
-	}
-
-	if m.errorMsg != "" {
-		s += "\n❌ " + m.errorMsg + "\n"
-	}
-
-	return s
+	// return s
 }

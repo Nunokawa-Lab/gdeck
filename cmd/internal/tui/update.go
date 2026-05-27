@@ -23,7 +23,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "enter":
 			selected := m.requests[m.cursor]
 
-			m.selected = selected.Name
+			m.selected = &selected
 
 			results, err := runner.Run(
 				selected.Name,
