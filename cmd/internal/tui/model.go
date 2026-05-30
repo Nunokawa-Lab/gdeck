@@ -1,6 +1,9 @@
 package tui
 
-import "github.com/nunokawa/gdeck/cmd/internal/model"
+import (
+	"github.com/charmbracelet/bubbles/spinner"
+	"github.com/nunokawa/gdeck/cmd/internal/model"
+)
 
 type Model struct {
 	requests       []model.RequestItem //リクエストアイテムリスト
@@ -11,4 +14,6 @@ type Model struct {
 	response *model.Response //実行されたリクエストレスポンス
 	loading  bool
 	errorMsg string
+
+	spinner spinner.Model
 }

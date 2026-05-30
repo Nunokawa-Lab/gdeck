@@ -7,10 +7,11 @@ import (
 )
 
 /**
-lipgloss を使用した BubbleTea(TUI) 専用のスタイルファイル
+BubbleTea(TUI) 専用のスタイルファイル
 */
 
 var (
+	// lipgloss
 	styleGET    = lipgloss.NewStyle().Foreground(lipgloss.Color("12")).Bold(true) // 青
 	stylePOST   = lipgloss.NewStyle().Foreground(lipgloss.Color("10")).Bold(true) // 緑
 	stylePUT    = lipgloss.NewStyle().Foreground(lipgloss.Color("11")).Bold(true) // 黄

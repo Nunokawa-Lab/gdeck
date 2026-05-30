@@ -1,8 +1,8 @@
 package tui
 
 import (
+	"github.com/charmbracelet/bubbles/spinner"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/nunokawa/gdeck/cmd/internal/runner"
 )
 
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
@@ -29,23 +29,31 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "enter":
 			selected := m.requests[m.cursor]
 
+			// 実行前に初期値をセット
+			m.loading = true
+			m.response = nil
+			m.errorMsg = ""
 			m.selected = &selected
 
-			results, err := runner.Run(
-				selected.Name,
-				runner.RunOptions{},
-			)
-			if err != nil {
-				m.errorMsg = err.Error()
-				return m, nil
-			}
-			if len(results) > 0 {
-				m.response = results[0].Response
-			}
-
-			// 成功時はエラー消す
-			m.errorMsg = ""
+			return m, asyncRunCmd(selected.Name, selected.Method)
 		}
+	case runFinishedMsg:
+		m.loading = false
+
+		if msg.err != nil {
+			m.errorMsg = msg.err.Error()
+			return m, nil
+		}
+
+		m.response = msg.response
+
+		return m, nil
+	case spinner.TickMsg:
+		var cmd tea.Cmd
+
+		m.spinner, cmd = m.spinner.Update(msg)
+
+		return m, cmd
 	}
 
 	return m, nil

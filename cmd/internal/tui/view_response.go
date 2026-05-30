@@ -1,19 +1,26 @@
 package tui
 
 import (
+	"fmt"
+
 	"github.com/charmbracelet/lipgloss"
 	"github.com/nunokawa/gdeck/cmd/internal/output"
 )
 
 func (m Model) renderResponse() string {
 
-	var h, s string
+	var s string
+	h := "📡 HTTP Reponse"
 
-	if m.response == nil {
+	if m.loading {
+		s = fmt.Sprintf(
+			"\n%s Sending Request...",
+			m.spinner.View(),
+		)
+	} else if m.response == nil {
 		h = "🔍 Preview"
 		s = output.RenderTUIPreview(m.currentRequest)
 	} else {
-		h = "📡 HTTP Reponse"
 		method := m.selected.Method
 		s = output.RenderTUIResponse(m.response, method)
 	}
