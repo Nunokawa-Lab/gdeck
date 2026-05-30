@@ -1,6 +1,6 @@
 # gdeck(api-tester-cli)
 
-CLIからAPI接続テストを行うツール
+CLI・TUIからAPI接続テストを行うツール
 
 ## 使用ツール
 
