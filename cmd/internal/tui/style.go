@@ -7,7 +7,7 @@ import (
 )
 
 /**
- lipgloss を使用した BubbleTea(TUI) 専用のスタイルファイル
+lipgloss を使用した BubbleTea(TUI) 専用のスタイルファイル
 */
 
 var (
@@ -19,28 +19,28 @@ var (
 	styleDark   = lipgloss.NewStyle().Foreground(lipgloss.Color("7"))             // 白/グレー
 
 	titleStyle = lipgloss.NewStyle().
-		Bold(true).
-		Foreground(lipgloss.Color("7")).
-		PaddingLeft(1).
-		MarginBottom(1)
-	
+			Bold(true).
+			Foreground(lipgloss.Color("7")).
+			PaddingLeft(1).
+			MarginBottom(1)
+
 	headerStyle = lipgloss.NewStyle().
-		Bold(true).
-		BorderForeground(lipgloss.Color("8")).
-		Foreground(lipgloss.Color("7")).
-		PaddingLeft(1)
+			Bold(true).
+			BorderForeground(lipgloss.Color("8")).
+			Foreground(lipgloss.Color("7")).
+			PaddingLeft(1)
 
 	footerStyle = lipgloss.NewStyle().
-		Bold(true).
-		Foreground(lipgloss.Color("99")).
-		PaddingLeft(1).
-		MarginTop(1)
+			Bold(true).
+			Foreground(lipgloss.Color("99")).
+			PaddingLeft(1).
+			MarginTop(1)
 
 	listStyle = lipgloss.NewStyle().
-		Border(lipgloss.RoundedBorder()).
-		BorderForeground(lipgloss.Color("8")).
-		Width(60).
-		Padding(1)
+			Border(lipgloss.RoundedBorder()).
+			BorderForeground(lipgloss.Color("8")).
+			Width(60).
+			Padding(1)
 )
 
 func methodColor(method string) string {

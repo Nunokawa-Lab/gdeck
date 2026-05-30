@@ -9,7 +9,7 @@ import (
 
 func (m Model) renderList() string {
 
-	var s string;
+	var s string
 	for i, req := range m.requests {
 
 		cursor := " "

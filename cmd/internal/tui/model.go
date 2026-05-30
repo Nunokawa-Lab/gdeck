@@ -3,11 +3,12 @@ package tui
 import "github.com/nunokawa/gdeck/cmd/internal/model"
 
 type Model struct {
-	requests []model.RequestItem
-	cursor   int    //現在の選択位置
-	selected *model.RequestItem
+	requests       []model.RequestItem //リクエストアイテムリスト
+	cursor         int                 //現在のカーソルの位置
+	selected       *model.RequestItem  //選択されたリクエストアイテム
+	currentRequest *model.Request      //カーソルが当たっているリクエスト情報
 
-	response *model.Response
+	response *model.Response //実行されたリクエストレスポンス
 	loading  bool
 	errorMsg string
 }

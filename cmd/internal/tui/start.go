@@ -2,22 +2,16 @@ package tui
 
 import (
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/nunokawa/gdeck/cmd/internal/store"
 )
 
 func Start() error {
 
-	requests, err := store.List()
+	model, err := InitialModel()
 	if err != nil {
 		return err
 	}
 
-	// bubbleteaに渡すinterfaceは Init() Update() View() をレシーバーに持っている必要あり
-	p := tea.NewProgram(
-		Model{
-			requests: requests,
-		},
-	)
+	p := tea.NewProgram(model)
 
 	_, err = p.Run()
 

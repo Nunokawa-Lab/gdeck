@@ -15,10 +15,16 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "up":
 			if m.cursor > 0 {
 				m.cursor--
+
+				m.response = nil
+				m.loadCurrentRequest()
 			}
 		case "down":
 			if m.cursor < len(m.requests)-1 {
 				m.cursor++
+
+				m.response = nil
+				m.loadCurrentRequest()
 			}
 		case "enter":
 			selected := m.requests[m.cursor]

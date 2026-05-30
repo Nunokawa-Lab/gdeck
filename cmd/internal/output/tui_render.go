@@ -24,3 +24,22 @@ func RenderTUIResponse(
 		FormatJSON(res.Body),
 	)
 }
+
+func RenderTUIPreview(req *model.Request) string {
+
+	body := "{}"
+	if req.Body != "" {
+		body = req.Body
+	}
+
+	return fmt.Sprintf(
+		"# Method\n%s \n\n"+
+			"# URL\n%v\n\n"+
+			"# Header\n%v\n\n"+
+			"# Body\n%s",
+		AddIconToMethod(req.Method),
+		req.URL,
+		req.Headers,
+		FormatJSON([]byte(body)),
+	)
+}

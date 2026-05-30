@@ -6,17 +6,21 @@ import (
 )
 
 func (m Model) renderResponse() string {
-	
-	var s string
-	
-	if m.selected != nil {
+
+	var h, s string
+
+	if m.response == nil {
+		h = "🔍 Preview"
+		s = output.RenderTUIPreview(m.currentRequest)
+	} else {
+		h = "📡 HTTP Reponse"
 		method := m.selected.Method
 		s = output.RenderTUIResponse(m.response, method)
 	}
 
 	return lipgloss.JoinVertical(
 		lipgloss.Left,
-		headerStyle.Render("📡 HTTP Reponse"),
+		headerStyle.Render(h),
 		listStyle.Render(s),
 	)
 

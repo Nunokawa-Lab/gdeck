@@ -63,4 +63,3 @@ func AddIconToMethod(method string) string {
 		return "⚪ Unknown Method"
 	}
 }
-
