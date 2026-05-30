@@ -23,6 +23,12 @@ var (
 		Foreground(lipgloss.Color("7")).
 		PaddingLeft(1).
 		MarginBottom(1)
+	
+	headerStyle = lipgloss.NewStyle().
+		Bold(true).
+		BorderForeground(lipgloss.Color("8")).
+		Foreground(lipgloss.Color("7")).
+		PaddingLeft(1)
 
 	footerStyle = lipgloss.NewStyle().
 		Bold(true).
@@ -31,8 +37,9 @@ var (
 		MarginTop(1)
 
 	listStyle = lipgloss.NewStyle().
-		Border(lipgloss.NormalBorder()).
-		Width(40).
+		Border(lipgloss.RoundedBorder()).
+		BorderForeground(lipgloss.Color("8")).
+		Width(60).
 		Padding(1)
 )
 

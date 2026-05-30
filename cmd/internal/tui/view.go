@@ -23,31 +23,4 @@ func (m Model) View() string {
 		body,
 		footer,
 	)
-
-
-	// if m.selected != "" {
-	// 	s += fmt.Sprintf(
-	// 		"\nSelected: %s\n\n",
-	// 		m.selected,
-	// 	)
-	// }
-
-	// s += "\nq: quit\n\n"
-
-
-	// if m.response != nil {
-
-	// 	s += "\n--------------------\n\n"
-
-	// 	s += output.RenderTUIResponse(
-	// 		m.response,
-	// 		m.requests[m.cursor].Method,
-	// 	)
-	// }
-
-	// if m.errorMsg != "" {
-	// 	s += "\n❌ " + m.errorMsg + "\n"
-	// }
-
-	// return s
 }

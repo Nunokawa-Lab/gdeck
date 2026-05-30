@@ -40,9 +40,7 @@ func SelectStatusIcon(code int) string {
 	switch {
 	case code >= 200 && code < 300:
 		return "✅" // success
-	case code >= 300 && code < 500:
-		return "⚠️ " // warning（半角空白は必要なため消さない）
-	case code >= 500:
+	case code >= 300:
 		return "❌" // error
 	default:
 		return ""

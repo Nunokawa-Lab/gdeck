@@ -3,11 +3,13 @@ package tui
 import (
 	"fmt"
 	"path/filepath"
+
+	"github.com/charmbracelet/lipgloss"
 )
 
 func (m Model) renderList() string {
 
-	var s string
+	var s string;
 	for i, req := range m.requests {
 
 		cursor := " "
@@ -32,5 +34,9 @@ func (m Model) renderList() string {
 		)
 	}
 
-	return listStyle.Render(s)
+	return lipgloss.JoinVertical(
+		lipgloss.Left,
+		headerStyle.Render("📂 HTTP Requests"),
+		listStyle.Render(s),
+	)
 }
