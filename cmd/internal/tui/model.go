@@ -20,6 +20,10 @@ type Model struct {
 	viewport viewport.Model
 
 	focus FocusPane
+
+	leftPaneWidth int //左paneの幅
+	rightPaneWidth int //右paneの幅
+	paneHeight int
 }
 
 type FocusPane int

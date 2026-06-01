@@ -75,7 +75,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		m.response = msg.response
 
-		// コンテンツをビューポートにセット
+		// コンテンツをviewportにセット
 		m.viewport.SetContent(m.responseContent())
 
 		return m, nil
@@ -83,6 +83,15 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.spinner, cmd = m.spinner.Update(msg)
 
 		return m, cmd
+	case tea.WindowSizeMsg:
+		// サイズセット
+		m.leftPaneWidth = int(float64(msg.Width) * 0.3)
+		m.rightPaneWidth = msg.Width - m.leftPaneWidth - 8
+		m.paneHeight = msg.Height - 8
+
+		// viewportにも高さ・幅をセット
+		m.viewport.Width = m.rightPaneWidth
+		m.viewport.Height = m.paneHeight
 	}
 
 	return m, cmd

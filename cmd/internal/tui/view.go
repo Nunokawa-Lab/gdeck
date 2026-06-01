@@ -7,8 +7,9 @@ import (
 func (m Model) View() string {
 
 	header := titleStyle.Render("gdeck TUI 😎")
-	left := m.renderList()
-	right := m.renderResponse()
+
+	left := m.renderList(m.leftPaneWidth, m.paneHeight)
+	right := m.renderResponse(m.rightPaneWidth, m.paneHeight)
 	body := lipgloss.JoinHorizontal(
 		lipgloss.Top,
 		left,

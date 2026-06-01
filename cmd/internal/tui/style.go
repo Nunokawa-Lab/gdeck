@@ -37,14 +37,6 @@ var (
 			PaddingLeft(1).
 			MarginTop(1)
 
-	listStyle = lipgloss.NewStyle().
-			Border(lipgloss.RoundedBorder()).
-			BorderForeground(lipgloss.Color("8")).
-			Width(60).
-			Padding(1)
-	borderStyle = lipgloss.NewStyle().
-			Border(lipgloss.RoundedBorder()).
-			BorderForeground(lipgloss.Color("8"))
 )
 
 func methodColor(method string) string {

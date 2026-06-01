@@ -7,7 +7,7 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-func (m Model) renderList() string {
+func (m Model) renderList(width int, height int) string {
 
 	var s string
 	for i, req := range m.requests {
@@ -37,6 +37,12 @@ func (m Model) renderList() string {
 	return lipgloss.JoinVertical(
 		lipgloss.Left,
 		headerStyle.Render("📂 HTTP Requests"),
-		listStyle.Render(s),
+		lipgloss.NewStyle().
+			Width(width).
+			Height(height).
+			Border(lipgloss.RoundedBorder()).
+			BorderForeground(lipgloss.Color("8")).
+			Padding(1).
+			Render(s),
 	)
 }

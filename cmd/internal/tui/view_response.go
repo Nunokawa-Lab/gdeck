@@ -4,7 +4,7 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-func (m Model) renderResponse() string {
+func (m Model) renderResponse(width int, height int) string {
 
 	h := "📡 HTTP Response"
 
@@ -15,9 +15,14 @@ func (m Model) renderResponse() string {
 	return lipgloss.JoinVertical(
 		lipgloss.Left,
 		headerStyle.Render(h),
-		borderStyle.Render(
-			m.viewport.View(),
-		),
+		lipgloss.NewStyle().
+			Width(width).
+			Height(height).
+			Border(lipgloss.RoundedBorder()).
+			BorderForeground(lipgloss.Color("8")).
+			Render(
+				m.viewport.View(),
+			),
 	)
 
 }
