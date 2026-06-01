@@ -2,6 +2,7 @@ package tui
 
 import (
 	"github.com/charmbracelet/bubbles/spinner"
+	"github.com/charmbracelet/bubbles/viewport"
 	"github.com/nunokawa/gdeck/cmd/internal/model"
 )
 
@@ -15,5 +16,15 @@ type Model struct {
 	loading  bool
 	errorMsg string
 
-	spinner spinner.Model
+	spinner  spinner.Model
+	viewport viewport.Model
+
+	focus FocusPane
 }
+
+type FocusPane int
+
+const (
+	FocusList     FocusPane = iota //左paneのリストにユニークな連番をあてる
+	FocusResponse                  //右pane
+)

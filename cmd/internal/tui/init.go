@@ -2,6 +2,7 @@ package tui
 
 import (
 	"github.com/charmbracelet/bubbles/spinner"
+	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/nunokawa/gdeck/cmd/internal/store"
 )
@@ -20,14 +21,19 @@ func InitialModel() (Model, error) {
 	s := spinner.New()
 	s.Spinner = spinner.Dot
 
+	vp := viewport.New(80, 20)
+
 	// bubbleteaに渡すinterfaceは Init() Update() View() をレシーバーに持っている必要あり
 	m := Model{
 		requests: requests,
 		cursor:   0,
 		spinner:  s,
+		viewport: vp,
 	}
 
 	m.loadCurrentRequest()
+
+	m.viewport.SetContent(m.responseContent())
 
 	return m, nil
 }
