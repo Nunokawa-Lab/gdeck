@@ -34,15 +34,20 @@ func (m Model) renderList(width int, height int) string {
 		)
 	}
 
+	borderStyle := activePaneStyle
+	if m.focus != FocusList {
+		borderStyle = inactivePaneStyle
+	}
+
 	return lipgloss.JoinVertical(
 		lipgloss.Left,
 		headerStyle.Render("📂 HTTP Requests"),
-		lipgloss.NewStyle().
-			Width(width).
-			Height(height).
-			Border(lipgloss.RoundedBorder()).
-			BorderForeground(lipgloss.Color("8")).
-			Padding(1).
-			Render(s),
+		borderStyle.Render(
+			lipgloss.NewStyle().
+				Width(width).
+				Height(height).
+				Padding(1).
+				Render(s),
+		),
 	)
 }

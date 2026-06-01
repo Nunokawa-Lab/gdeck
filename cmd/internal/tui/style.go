@@ -37,6 +37,13 @@ var (
 			PaddingLeft(1).
 			MarginTop(1)
 
+	activePaneStyle = lipgloss.NewStyle().
+			Border(lipgloss.RoundedBorder()).
+			BorderForeground(lipgloss.Color("14"))
+
+	inactivePaneStyle = lipgloss.NewStyle().
+			Border(lipgloss.RoundedBorder()).
+			BorderForeground(lipgloss.Color("8"))
 )
 
 func methodColor(method string) string {

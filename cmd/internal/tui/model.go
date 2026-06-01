@@ -21,9 +21,9 @@ type Model struct {
 
 	focus FocusPane
 
-	leftPaneWidth int //左paneの幅
+	leftPaneWidth  int //左paneの幅
 	rightPaneWidth int //右paneの幅
-	paneHeight int
+	paneHeight     int
 }
 
 type FocusPane int
