@@ -12,15 +12,15 @@ func (m Model) renderResponse(width int, height int) string {
 		h = "🔍 Preview"
 	}
 
-	borderStyle := inactivePaneStyle
+	paneStyle := inactivePaneStyle
 	if m.focus == FocusResponse {
-		borderStyle = activePaneStyle
+		paneStyle = activePaneStyle
 	}
 
 	return lipgloss.JoinVertical(
 		lipgloss.Left,
 		headerStyle.Render(h),
-		borderStyle.Render(
+		paneStyle.Render(
 			lipgloss.NewStyle().
 				Width(width).
 				Height(height).

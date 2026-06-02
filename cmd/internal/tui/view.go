@@ -6,7 +6,7 @@ import (
 
 func (m Model) View() string {
 
-	header := titleStyle.Render("gdeck TUI 😎")
+	header := titleStyle.Render("\ngdeck TUI 😎")
 
 	left := m.renderList(m.leftPaneWidth, m.paneHeight)
 	right := m.renderResponse(m.rightPaneWidth, m.paneHeight)

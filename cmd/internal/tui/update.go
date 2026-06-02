@@ -87,7 +87,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		// サイズセット
 		m.leftPaneWidth = int(float64(msg.Width) * 0.3)
 		m.rightPaneWidth = msg.Width - m.leftPaneWidth - 8
-		m.paneHeight = msg.Height - 8
+		m.paneHeight = msg.Height - 12
 
 		// viewportにも高さ・幅をセット
 		m.viewport.Width = m.rightPaneWidth

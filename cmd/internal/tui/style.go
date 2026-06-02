@@ -38,10 +38,12 @@ var (
 			MarginTop(1)
 
 	activePaneStyle = lipgloss.NewStyle().
+			Padding(1).
 			Border(lipgloss.RoundedBorder()).
 			BorderForeground(lipgloss.Color("14"))
 
 	inactivePaneStyle = lipgloss.NewStyle().
+			Padding(1).
 			Border(lipgloss.RoundedBorder()).
 			BorderForeground(lipgloss.Color("8"))
 )

@@ -15,8 +15,9 @@ func (m Model) renderList(width int, height int) string {
 		cursor := " "
 
 		if i == m.cursor {
-			// 一覧の位置とカーソルの位置が同じ箇所に矢印”>”を表示する
-			cursor = ">"
+			// 一覧の位置とカーソルの位置が同じ箇所に専用マークを表示する
+			cursor = "▌"
+			cursor = styleDark.Render(cursor)
 		}
 
 		name := req.Name
@@ -34,19 +35,18 @@ func (m Model) renderList(width int, height int) string {
 		)
 	}
 
-	borderStyle := activePaneStyle
+	paneStyle := activePaneStyle
 	if m.focus != FocusList {
-		borderStyle = inactivePaneStyle
+		paneStyle = inactivePaneStyle
 	}
 
 	return lipgloss.JoinVertical(
 		lipgloss.Left,
-		headerStyle.Render("📂 HTTP Requests"),
-		borderStyle.Render(
+		headerStyle.Render("📂 Requests"),
+		paneStyle.Render(
 			lipgloss.NewStyle().
 				Width(width).
 				Height(height).
-				Padding(1).
 				Render(s),
 		),
 	)
