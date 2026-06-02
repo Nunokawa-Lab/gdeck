@@ -27,6 +27,7 @@ func (m Model) renderList(width int, height int) string {
 		// スタイルが崩れないように先に色付けし、色付けした文字列を考慮して幅を揃える
 		method := methodColor(req.Method)
 		method = padRight(method, 8)
+
 		s += fmt.Sprintf(
 			"%s %s %s\n",
 			cursor,
@@ -42,7 +43,7 @@ func (m Model) renderList(width int, height int) string {
 
 	return lipgloss.JoinVertical(
 		lipgloss.Left,
-		headerStyle.Render("📂 Requests"),
+		headerLine("📂 Requests", width, (m.focus == FocusList)),
 		paneStyle.Render(
 			lipgloss.NewStyle().
 				Width(width).

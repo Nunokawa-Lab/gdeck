@@ -25,12 +25,20 @@ var (
 			PaddingLeft(1).
 			MarginBottom(1)
 
-	headerStyle = lipgloss.NewStyle().
-			Bold(true).
-			BorderForeground(lipgloss.Color("8")).
-			Foreground(lipgloss.Color("7")).
-			PaddingLeft(1)
+	activeHeaderTitleStyle = lipgloss.NewStyle().
+			Foreground(lipgloss.Color("14")).
+			Bold(true)
 
+	inactiveHeaderTitleStyle = lipgloss.NewStyle().
+			Foreground(lipgloss.Color("7")).
+			Bold(true)
+
+	activeHeaderStyle = lipgloss.NewStyle().
+			Foreground(lipgloss.Color("14"))
+
+	inactiveHeaderStyle = lipgloss.NewStyle().
+			Foreground(lipgloss.Color("8"))
+	
 	footerStyle = lipgloss.NewStyle().
 			Bold(true).
 			Foreground(lipgloss.Color("99")).
@@ -39,12 +47,12 @@ var (
 
 	activePaneStyle = lipgloss.NewStyle().
 			Padding(1).
-			Border(lipgloss.RoundedBorder()).
+			Border(lipgloss.NormalBorder(), false, true, true, true).
 			BorderForeground(lipgloss.Color("14"))
 
 	inactivePaneStyle = lipgloss.NewStyle().
 			Padding(1).
-			Border(lipgloss.RoundedBorder()).
+			Border(lipgloss.NormalBorder(), false, true, true, true).
 			BorderForeground(lipgloss.Color("8"))
 )
 

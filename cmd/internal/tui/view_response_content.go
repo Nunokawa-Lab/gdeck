@@ -6,14 +6,10 @@ import (
 	"github.com/nunokawa/gdeck/cmd/internal/output"
 )
 
-/*
-*
-
-	出力テキストを返す
-	 ┗ロード
-	 ┗プレビュー
-	 ┗レスポンス
-*/
+// 出力テキストを返す
+//	┗ロード
+//	┗プレビュー
+//	┗レスポンス
 func (m Model) responseContent() string {
 
 	if m.loading {
