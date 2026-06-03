@@ -17,6 +17,7 @@ type Model struct {
 	errorMsg string
 
 	spinner  spinner.Model
+	leftViewport viewport.Model
 	viewport viewport.Model
 
 	focus FocusPane
@@ -24,6 +25,8 @@ type Model struct {
 	leftPaneWidth  int //左paneの幅
 	rightPaneWidth int //右paneの幅
 	paneHeight     int
+
+	displayRequestCnt int //現在の左ペインの高さに対して、表示されているリクエストリストの数
 }
 
 type FocusPane int

@@ -29,7 +29,13 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 					m.response = nil
 					m.loadCurrentRequest()
+					m.leftViewport.SetContent(m.requestListContent())
 					m.viewport.SetContent(m.responseContent())
+
+					// スクロール
+					if m.cursor <= m.displayRequestCnt {
+						m.leftViewport.ScrollUp(2)
+					}
 				}
 			case "down":
 				if m.cursor < len(m.requests)-1 {
@@ -37,7 +43,13 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 					m.response = nil
 					m.loadCurrentRequest()
+					m.leftViewport.SetContent(m.requestListContent())
 					m.viewport.SetContent(m.responseContent())
+
+					// スクロール
+					if m.cursor >= m.displayRequestCnt {
+						m.leftViewport.ScrollDown(2)
+					}
 				}
 			case "enter":
 				selected := m.requests[m.cursor]
@@ -89,11 +101,16 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		// サイズセット
 		m.leftPaneWidth = int(float64(msg.Width) * 0.35)
 		m.rightPaneWidth = msg.Width - m.leftPaneWidth - 8
-		m.paneHeight = msg.Height - 12
+		m.paneHeight = msg.Height - 11
 
 		// viewportにも高さ・幅をセット
+		m.leftViewport.Width = m.leftPaneWidth
+		m.leftViewport.Height = m.paneHeight
 		m.viewport.Width = m.rightPaneWidth
 		m.viewport.Height = m.paneHeight
+
+		// 表示中のリクエスト数セット（ペイン領域の高さの1/2が表示されている）
+		m.displayRequestCnt = m.paneHeight / 2
 	}
 
 	return m, cmd

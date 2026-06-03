@@ -13,6 +13,7 @@ func (m Model) Init() tea.Cmd {
 }
 
 func InitialModel() (Model, error) {
+
 	requests, err := store.List()
 	if err != nil {
 		return Model{}, err
@@ -28,11 +29,13 @@ func InitialModel() (Model, error) {
 		requests: requests,
 		cursor:   0,
 		spinner:  s,
+		leftViewport: vp,
 		viewport: vp,
 	}
 
 	m.loadCurrentRequest()
 
+	m.leftViewport.SetContent(m.requestListContent())
 	m.viewport.SetContent(m.responseContent())
 
 	return m, nil
