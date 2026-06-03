@@ -25,7 +25,7 @@ func (m Model) renderResponse(width int, height int) string {
 				Width(width).
 				Height(height).
 				Render(
-					m.viewport.View(),
+					m.rightViewport.View(),
 				),
 		),
 	)

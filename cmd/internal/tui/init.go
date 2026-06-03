@@ -30,13 +30,13 @@ func InitialModel() (Model, error) {
 		cursor:   0,
 		spinner:  s,
 		leftViewport: vp,
-		viewport: vp,
+		rightViewport: vp,
 	}
 
 	m.loadCurrentRequest()
 
 	m.leftViewport.SetContent(m.requestListContent())
-	m.viewport.SetContent(m.responseContent())
+	m.rightViewport.SetContent(m.responseContent())
 
 	return m, nil
 }

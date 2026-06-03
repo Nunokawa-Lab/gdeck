@@ -18,7 +18,7 @@ type Model struct {
 
 	spinner  spinner.Model
 	leftViewport viewport.Model
-	viewport viewport.Model
+	rightViewport viewport.Model
 
 	focus FocusPane
 

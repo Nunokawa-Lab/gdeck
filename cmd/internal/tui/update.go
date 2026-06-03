@@ -30,7 +30,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					m.response = nil
 					m.loadCurrentRequest()
 					m.leftViewport.SetContent(m.requestListContent())
-					m.viewport.SetContent(m.responseContent())
+					m.rightViewport.SetContent(m.responseContent())
 
 					// スクロール
 					if m.cursor <= m.displayRequestCnt {
@@ -44,7 +44,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					m.response = nil
 					m.loadCurrentRequest()
 					m.leftViewport.SetContent(m.requestListContent())
-					m.viewport.SetContent(m.responseContent())
+					m.rightViewport.SetContent(m.responseContent())
 
 					// スクロール
 					if m.cursor >= m.displayRequestCnt {
@@ -60,7 +60,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.errorMsg = ""
 				m.selected = &selected
 				// ローディングUI表示
-				m.viewport.SetContent(m.responseContent())
+				m.rightViewport.SetContent(m.responseContent())
 
 				return m, asyncRunCmd(selected.Name, selected.Method)
 			}
@@ -72,9 +72,9 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			switch msg.String() {
 
 			case "up":
-				m.viewport.ScrollUp(1)
+				m.rightViewport.ScrollUp(1)
 			case "down":
-				m.viewport.ScrollDown(1)
+				m.rightViewport.ScrollDown(1)
 			}
 
 			return m, nil
@@ -90,7 +90,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.response = msg.response
 
 		// コンテンツをviewportにセット
-		m.viewport.SetContent(m.responseContent())
+		m.rightViewport.SetContent(m.responseContent())
 
 		return m, nil
 	case spinner.TickMsg:
@@ -106,8 +106,8 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		// viewportにも高さ・幅をセット
 		m.leftViewport.Width = m.leftPaneWidth
 		m.leftViewport.Height = m.paneHeight
-		m.viewport.Width = m.rightPaneWidth
-		m.viewport.Height = m.paneHeight
+		m.rightViewport.Width = m.rightPaneWidth
+		m.rightViewport.Height = m.paneHeight
 
 		// 表示中のリクエスト数セット（ペイン領域の高さの1/2が表示されている）
 		m.displayRequestCnt = m.paneHeight / 2
