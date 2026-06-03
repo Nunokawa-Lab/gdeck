@@ -26,14 +26,17 @@ func (m Model) renderList(width int, height int) string {
 
 		// スタイルが崩れないように先に色付けし、色付けした文字列を考慮して幅を揃える
 		method := methodColor(req.Method)
-		method = padRight(method, 8)
+		method = padRight(method, 10)
 
-		s += fmt.Sprintf(
-			"%s %s %s\n",
+		row := fmt.Sprintf(
+			"%s %s %s",
 			cursor,
 			method,
 			cmdName,
 		)
+
+		s += lipgloss.NewStyle().PaddingBottom(1).Render(row)
+		s += "\n"
 	}
 
 	paneStyle := activePaneStyle

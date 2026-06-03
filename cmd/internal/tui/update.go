@@ -87,7 +87,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		return m, cmd
 	case tea.WindowSizeMsg:
 		// サイズセット
-		m.leftPaneWidth = int(float64(msg.Width) * 0.3)
+		m.leftPaneWidth = int(float64(msg.Width) * 0.35)
 		m.rightPaneWidth = msg.Width - m.leftPaneWidth - 8
 		m.paneHeight = msg.Height - 12
 
