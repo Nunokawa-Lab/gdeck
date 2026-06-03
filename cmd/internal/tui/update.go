@@ -47,6 +47,8 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.response = nil
 				m.errorMsg = ""
 				m.selected = &selected
+				// ローディングUI表示
+				m.viewport.SetContent(m.responseContent())
 
 				return m, asyncRunCmd(selected.Name, selected.Method)
 			}
