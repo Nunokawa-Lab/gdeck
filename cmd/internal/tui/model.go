@@ -16,8 +16,8 @@ type Model struct {
 	loading  bool
 	errorMsg string
 
-	spinner  spinner.Model
-	leftViewport viewport.Model
+	spinner       spinner.Model
+	leftViewport  viewport.Model
 	rightViewport viewport.Model
 
 	focus FocusPane

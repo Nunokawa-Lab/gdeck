@@ -10,7 +10,7 @@ import (
 func (m Model) requestListContent() string {
 
 	var s string
-	
+
 	for i, req := range m.requests {
 
 		cursor := " "

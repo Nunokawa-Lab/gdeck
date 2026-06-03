@@ -16,8 +16,8 @@ var (
 	stylePOST   = lipgloss.NewStyle().Foreground(lipgloss.Color("15")).Background(lipgloss.Color("2")).Bold(true) // 緑
 	stylePUT    = lipgloss.NewStyle().Foreground(lipgloss.Color("15")).Background(lipgloss.Color("3")).Bold(true) // 黄
 	stylePATCH  = lipgloss.NewStyle().Foreground(lipgloss.Color("15")).Background(lipgloss.Color("5")).Bold(true) // 紫
-	styleDELETE = lipgloss.NewStyle().Foreground(lipgloss.Color("15")).Background(lipgloss.Color("1")).Bold(true)  // 赤
-	styleDark   = lipgloss.NewStyle().Foreground(lipgloss.Color("7"))             // 白/グレー
+	styleDELETE = lipgloss.NewStyle().Foreground(lipgloss.Color("15")).Background(lipgloss.Color("1")).Bold(true) // 赤
+	styleDark   = lipgloss.NewStyle().Foreground(lipgloss.Color("7"))                                             // 白/グレー
 
 	titleStyle = lipgloss.NewStyle().
 			Bold(true).
@@ -26,19 +26,19 @@ var (
 			MarginBottom(1)
 
 	activeHeaderTitleStyle = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("14")).
-			Bold(true)
+				Foreground(lipgloss.Color("14")).
+				Bold(true)
 
 	inactiveHeaderTitleStyle = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("7")).
-			Bold(true)
+					Foreground(lipgloss.Color("7")).
+					Bold(true)
 
 	activeHeaderStyle = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("14"))
+				Foreground(lipgloss.Color("14"))
 
 	inactiveHeaderStyle = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("8"))
-	
+				Foreground(lipgloss.Color("8"))
+
 	footerStyle = lipgloss.NewStyle().
 			Bold(true).
 			Foreground(lipgloss.Color("99")).
@@ -51,9 +51,9 @@ var (
 			BorderForeground(lipgloss.Color("14"))
 
 	inactivePaneStyle = lipgloss.NewStyle().
-			Padding(1).
-			Border(lipgloss.NormalBorder(), false, true, true, true).
-			BorderForeground(lipgloss.Color("8"))
+				Padding(1).
+				Border(lipgloss.NormalBorder(), false, true, true, true).
+				BorderForeground(lipgloss.Color("8"))
 )
 
 func methodColor(method string) string {

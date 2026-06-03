@@ -26,10 +26,10 @@ func InitialModel() (Model, error) {
 
 	// bubbleteaに渡すinterfaceは Init() Update() View() をレシーバーに持っている必要あり
 	m := Model{
-		requests: requests,
-		cursor:   0,
-		spinner:  s,
-		leftViewport: vp,
+		requests:      requests,
+		cursor:        0,
+		spinner:       s,
+		leftViewport:  vp,
 		rightViewport: vp,
 	}
 
