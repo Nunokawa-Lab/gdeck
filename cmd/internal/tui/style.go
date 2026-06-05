@@ -12,12 +12,12 @@ BubbleTea(TUI) 専用のスタイルファイル
 
 var (
 	// lipgloss
-	styleGET    = lipgloss.NewStyle().Foreground(lipgloss.Color("255")).Background(lipgloss.Color("24")).Bold(true).Padding(0,1) // 青
-	stylePOST   = lipgloss.NewStyle().Foreground(lipgloss.Color("255")).Background(lipgloss.Color("28")).Bold(true).Padding(0,1) // 緑
-	stylePUT    = lipgloss.NewStyle().Foreground(lipgloss.Color("255")).Background(lipgloss.Color("130")).Bold(true).Padding(0,1) // 黄
-	stylePATCH  = lipgloss.NewStyle().Foreground(lipgloss.Color("255")).Background(lipgloss.Color("60")).Bold(true).Padding(0,1) // 紫
-	styleDELETE = lipgloss.NewStyle().Foreground(lipgloss.Color("255")).Background(lipgloss.Color("88")).Bold(true).Padding(0,1) // 赤
-	styleDark   = lipgloss.NewStyle().Foreground(lipgloss.Color("7"))                                             // 白/グレー
+	styleGET    = lipgloss.NewStyle().Foreground(lipgloss.Color("255")).Background(lipgloss.Color("24")).Bold(true).Padding(0, 1)  // 青
+	stylePOST   = lipgloss.NewStyle().Foreground(lipgloss.Color("255")).Background(lipgloss.Color("28")).Bold(true).Padding(0, 1)  // 緑
+	stylePUT    = lipgloss.NewStyle().Foreground(lipgloss.Color("255")).Background(lipgloss.Color("130")).Bold(true).Padding(0, 1) // 黄
+	stylePATCH  = lipgloss.NewStyle().Foreground(lipgloss.Color("255")).Background(lipgloss.Color("60")).Bold(true).Padding(0, 1)  // 紫
+	styleDELETE = lipgloss.NewStyle().Foreground(lipgloss.Color("255")).Background(lipgloss.Color("88")).Bold(true).Padding(0, 1)  // 赤
+	styleDark   = lipgloss.NewStyle().Foreground(lipgloss.Color("7"))                                                              // 白/グレー
 
 	titleStyle = lipgloss.NewStyle().
 			Bold(true).

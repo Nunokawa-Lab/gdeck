@@ -23,7 +23,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		// 左pane挙動
 		if m.focus == FocusList {
 			m.rightViewport.SetContent(m.responseContent())
-			
+
 			switch msg.String() {
 			case "up":
 				if m.cursor > 0 {

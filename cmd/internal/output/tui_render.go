@@ -48,13 +48,13 @@ func RenderTUIPreview(req *model.Request) string {
 
 	return fmt.Sprintf(
 		"%s\n\n"+
-		"%s\n\n\n"+
-		"Headers\n"+
-		"────────────────────────\n"+
-		"%s\n\n\n"+
-		"Body\n"+
-		"────────────────────────\n"+
-		"%s",
+			"%s\n\n\n"+
+			"Headers\n"+
+			"────────────────────────\n"+
+			"%s\n\n\n"+
+			"Body\n"+
+			"────────────────────────\n"+
+			"%s",
 		AddIconToMethod(req.Method),
 		req.URL,
 		req.Headers,
