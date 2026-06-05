@@ -6,10 +6,10 @@ import (
 
 func (m Model) renderResponse(width int, height int) string {
 
-	h := "📡 HTTP Response"
+	h := "📡 Response"
 
 	if m.response == nil {
-		h = "🔍 Preview"
+		h = "🔍 Request Preview"
 	}
 
 	paneStyle := inactivePaneStyle
