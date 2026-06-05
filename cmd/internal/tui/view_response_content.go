@@ -31,5 +31,7 @@ func (m Model) responseContent() string {
 	return output.RenderTUIResponse(
 		m.response,
 		m.selected.Method,
+		m.rightViewport.Width,
+		m.focus == FocusResponse,
 	)
 }

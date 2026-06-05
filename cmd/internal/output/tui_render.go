@@ -2,25 +2,39 @@ package output
 
 import (
 	"fmt"
+	"strings"
 	"time"
 
+	"github.com/charmbracelet/lipgloss"
 	"github.com/nunokawa/gdeck/cmd/internal/model"
 )
 
 func RenderTUIResponse(
 	res *model.Response,
 	method string,
+	width int,
+	active bool,
 ) string {
+	if width <= 0 {
+		width = 1
+	}
+
+	separatorStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("14"))
+	if !active {
+		separatorStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("8"))
+	}
 
 	return fmt.Sprintf(
-		"%s \n"+
-			"%s %s\n"+
+		"%s  |  "+
+			"%s %s  |  "+
 			"⏳ %v\n\n"+
-			"%s",
+			"%s\n\n"+
+			"▼ Body\n\n%s",
 		AddIconToMethod(method),
 		SelectStatusIcon(res.StatusCode),
 		res.Status,
 		res.Time.Truncate(time.Millisecond),
+		separatorStyle.Render(strings.Repeat("─", width)),
 		FormatJSON(res.Body),
 	)
 }
