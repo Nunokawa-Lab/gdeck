@@ -12,11 +12,11 @@ BubbleTea(TUI) 専用のスタイルファイル
 
 var (
 	// lipgloss
-	styleGET    = lipgloss.NewStyle().Foreground(lipgloss.Color("15")).Background(lipgloss.Color("4")).Bold(true) // 青
-	stylePOST   = lipgloss.NewStyle().Foreground(lipgloss.Color("15")).Background(lipgloss.Color("2")).Bold(true) // 緑
-	stylePUT    = lipgloss.NewStyle().Foreground(lipgloss.Color("15")).Background(lipgloss.Color("3")).Bold(true) // 黄
-	stylePATCH  = lipgloss.NewStyle().Foreground(lipgloss.Color("15")).Background(lipgloss.Color("5")).Bold(true) // 紫
-	styleDELETE = lipgloss.NewStyle().Foreground(lipgloss.Color("15")).Background(lipgloss.Color("1")).Bold(true) // 赤
+	styleGET    = lipgloss.NewStyle().Foreground(lipgloss.Color("255")).Background(lipgloss.Color("24")).Bold(true).Padding(0,1) // 青
+	stylePOST   = lipgloss.NewStyle().Foreground(lipgloss.Color("255")).Background(lipgloss.Color("28")).Bold(true).Padding(0,1) // 緑
+	stylePUT    = lipgloss.NewStyle().Foreground(lipgloss.Color("255")).Background(lipgloss.Color("130")).Bold(true).Padding(0,1) // 黄
+	stylePATCH  = lipgloss.NewStyle().Foreground(lipgloss.Color("255")).Background(lipgloss.Color("60")).Bold(true).Padding(0,1) // 紫
+	styleDELETE = lipgloss.NewStyle().Foreground(lipgloss.Color("255")).Background(lipgloss.Color("88")).Bold(true).Padding(0,1) // 赤
 	styleDark   = lipgloss.NewStyle().Foreground(lipgloss.Color("7"))                                             // 白/グレー
 
 	titleStyle = lipgloss.NewStyle().
@@ -59,15 +59,15 @@ var (
 func methodColor(method string) string {
 	switch method {
 	case "GET":
-		return styleGET.Render(" GET ")
+		return styleGET.Render("GET")
 	case "POST":
-		return stylePOST.Render(" POST ")
+		return stylePOST.Render("POST")
 	case "PUT":
-		return stylePUT.Render(" PUT ")
+		return stylePUT.Render("PUT")
 	case "PATCH":
-		return stylePATCH.Render(" PATCH ")
+		return stylePATCH.Render("PATCH")
 	case "DELETE":
-		return styleDELETE.Render(" DELETE ")
+		return styleDELETE.Render("DELETE")
 	default:
 		return styleDark.Render("Unknown")
 	}
