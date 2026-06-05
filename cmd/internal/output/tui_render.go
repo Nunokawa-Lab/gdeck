@@ -41,16 +41,20 @@ func RenderTUIResponse(
 
 func RenderTUIPreview(req *model.Request) string {
 
-	body := "{}"
+	body := "(no body)"
 	if req.Body != "" {
 		body = req.Body
 	}
 
 	return fmt.Sprintf(
-		"# Method\n%s \n\n"+
-			"# URL\n%v\n\n"+
-			"# Header\n%v\n\n"+
-			"# Body\n%s",
+		"%s\n\n"+
+		"%s\n\n\n"+
+		"Headers\n"+
+		"────────────────────────\n"+
+		"%s\n\n\n"+
+		"Body\n"+
+		"────────────────────────\n"+
+		"%s",
 		AddIconToMethod(req.Method),
 		req.URL,
 		req.Headers,
