@@ -1,127 +1,166 @@
-# gdeck(api-tester-cli)
+# gdeck
 
-CLI・TUIからAPI接続テストを行うツール
+**gdeck** は、CLI と TUI の両方で API テストを実行できる軽量なツールです。
 
-## 使用ツール
+- 🚀 シンプルな HTTP リクエスト実行
+- 📁 保存済みリクエスト管理
+- 🎛️ インタラクティブ TUI モード
+- ♻️ 環境変数置換対応
 
-### ◆cobra
+---
 
-`go get github.com/spf13/cobra@latest`
+## はじめに
 
-### ◆cobra-cli
+### インストール
 
-root.goなどを簡単に作成してくれる便利CLI。
-いつか導入する。
+```bash
+go build -o gdeck
+mv gdeck /usr/local/bin/
+```
 
-`go install github.com/spf13/cobra-cli@latest`
+または、ローカルで試すだけなら:
 
-## 使い方
+```bash
+go build -o gdeck
+```
 
-### ◆GET
+> macOS では `ln -s $(pwd)/gdeck /usr/local/bin/gdeck` でシンボリックリンクを作成できます。
 
-`gdeck get {URL}`
+---
 
----オプション---
+## 使い方ガイド
 
-`-v`: 詳細出力
+### 1. GET リクエスト
 
-`-o`: ファイル出力パス
+```bash
+gdeck get https://example.com/api/status
+```
 
-`-t`: タイムアウト（秒）
+#### オプション
+- `-v`: 詳細出力
+- `-o`: ファイル出力パス
+- `-t`: タイムアウト（秒）
 
-### ◆POST
+---
 
-`gdeck post {URL}`
+### 2. POST リクエスト
 
----オプション---
+```bash
+gdeck post https://example.com/api/items -d '{"name":"test"}'
+```
 
-`-v`: 詳細出力
+#### オプション
+- `-v`: 詳細出力
+- `-o`: ファイル出力パス
+- `-d`: リクエストボディ
+- `-H`: リクエストヘッダー
+- `-t`: タイムアウト（秒）
 
-`-o`: ファイル出力パス
+---
 
-`-d`: リクエストボディ
+### 3. 保存して再利用
 
-`-H`: リクエストヘッダー
+```bash
+gdeck save SampleCmd POST https://example.com/api/items
+```
 
-`-t`: タイムアウト（秒）
+#### 保存時オプション
+- `-d`: リクエストボディ
+- `-H`: リクエストヘッダー
 
-### ◆SAVE
+保存済みコマンド内の `{{HOGE}}` 形式は、`gdeck run` 実行時に環境変数として置換されます。
 
-`gdeck save {NAME} {METHOD} {URL}`
+---
 
----オプション---
+### 4. 保存済みコマンドの実行
 
-`-d`: リクエストボディ
+```bash
+gdeck run SampleCmd
+```
 
-`-H`: リクエストヘッダー
+複数ファイルを一括実行する場合:
 
----環境変数---
+```bash
+gdeck run "saved_commands/*"
+```
 
-保存されたリクエスト内に `{{HOGE}}` のような形式があれば、`gdeck run` 実行時に環境変数置換されます。
+#### オプション
+- `-v`: 詳細出力
+- `-d`: リクエストボディ上書き
+- `-H`: リクエストヘッダー上書き
+- `-t`: タイムアウト（秒）
+- `--env`: 環境名を指定して環境変数ファイルを切り替え
 
-### ◆RUN
+#### 例
 
-`gdeck run {NAME or PATH}`
+```bash
+gdeck run SampleCmd --env dev
+```
 
-`gdeck run "{NAME or PATH}/*"` で複数ファイルを一括実行できます（※シェルのワイルドカード展開を防ぐため、引用符で囲んでください）。
+---
 
----オプション---
+### 5. 保存済みコマンドの確認
 
-`-v`: 詳細出力
+```bash
+gdeck show SampleCmd
+```
 
-`-d`: リクエストボディ上書き
+```bash
+gdeck list
+```
 
-`-H`: リクエストヘッダー上書き
+---
 
-`-t`: タイムアウト（秒）
+### 6. 削除
 
-`--env`: 環境名を指定して環境変数ファイルを切り替え
+```bash
+gdeck delete SampleCmd
+```
 
----例---
+---
 
-`gdeck run SampleCmd --env dev`
+## TUI モード
 
-### ◆SHOW
+`gdeck tui`
 
-`gdeck show {NAME or PATH}`
+gdeck の TUI は、保存済みリクエストを左右ペインで見ながら操作できるインタラクティブ画面です。
 
-保存済みコマンドの詳細を表示します。
+### TUI の特徴
 
-### ◆LIST
+- 左ペイン: 保存リクエスト一覧
+- 右ペイン: 選択中リクエストのプレビュー / レスポンス
+- `↑` / `↓`: リクエスト選択
+- `Enter`: 選択中リクエスト実行
+- `←` / `→`: ペイン切り替え
+- `q` / `ctrl+c`: 終了
 
-`gdeck list`
+---
 
-保存済みコマンドの一覧を表示します。
+## 環境変数管理 (`env`)
 
-### ◆DELETE
+`gdeck env` では、環境変数の登録・参照・削除が可能です。
 
-`gdeck delete {NAME or PATH}`
+```bash
+gdeck env set KEY VALUE [--env NAME]
+gdeck env show KEY [--env NAME]
+gdeck env list [--env NAME]
+gdeck env delete KEY [--env NAME]
+```
 
-保存済みコマンドを削除します。
+`--env` を指定すると、名前付き環境を切り替えて利用できます。
 
-### ◆ENV
+---
 
-`gdeck env` は環境変数管理のサブコマンドです。
+## 便利なヒント
 
-- `gdeck env set KEY VALUE [--env NAME]`
-- `gdeck env show KEY [--env NAME]`
-- `gdeck env list [--env NAME]`
-- `gdeck env delete KEY [--env NAME]`
+- `gdeck tui` で直感的に保存リクエストを操作できます。
+- 保存済みリクエストでは `{{KEY}}` を使い、実行時に値を置換できます。
+- 開発時は `go fmt ./...` を忘れずに実行してください。
 
-名前付き環境を使う場合は `--env` を指定します。
+---
 
-## バイナリの作成方法
+## 開発メモ
 
-`go build -o gdeck`
-
-`mv gdeck /usr/local/bin/`
-
-`gdeck get {URL}`
-
-シンボリックリンクを作成しておけばビルドだけで済む
-
-`ln -s $(pwd)/gdeck /usr/local/bin/gdeck`
-
-## 実装時ルール
-
-- コミット前には必ず`go fmt`を実行する
+- CLI は `cobra` を使用しています。
+- TUI は `bubbletea` / `lipgloss` で構築しています。
+- コード修正後は `go fmt` を実行してください。
