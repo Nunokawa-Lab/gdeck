@@ -96,6 +96,12 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case spinner.TickMsg:
 		m.spinner, cmd = m.spinner.Update(msg)
 
+		if m.loading {
+			m.rightViewport.SetContent(
+				m.responseContent(),
+			)
+		}
+
 		return m, cmd
 	case tea.WindowSizeMsg:
 		// サイズセット
