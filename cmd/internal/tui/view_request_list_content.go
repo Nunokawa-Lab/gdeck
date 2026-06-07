@@ -3,6 +3,7 @@ package tui
 import (
 	"fmt"
 	"path/filepath"
+	"strings"
 
 	"github.com/charmbracelet/lipgloss"
 )
@@ -10,6 +11,7 @@ import (
 func (m Model) requestListContent() string {
 
 	var s string
+	rows := make([]string, 0)
 
 	for i, req := range m.requests {
 
@@ -36,9 +38,11 @@ func (m Model) requestListContent() string {
 			cmdName,
 		)
 
-		s += lipgloss.NewStyle().PaddingBottom(1).Render(row)
-		s += "\n"
+		row = lipgloss.NewStyle().PaddingBottom(1).Render(row)
+		rows = append(rows, row)
 	}
+
+	s = strings.Join(rows, "\n")
 
 	return s
 }
