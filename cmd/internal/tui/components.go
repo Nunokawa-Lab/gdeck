@@ -7,12 +7,13 @@ import (
 
 // ペインの上部を文字列計算し生成
 func headerLine(title string, width int, isActive bool) string {
-	// 罫線等特殊文字の影響か、3文字分落ちるため最初に帳尻合わせる
-	width += 3
 
 	if width <= 2 {
 		return "┌" + title + "┐"
 	}
+
+	// 罫線等特殊文字の影響か、3文字分落ちるため最初に帳尻合わせる
+	width += 3
 
 	// 角を引いた長さ
 	inner := width - 2
@@ -28,7 +29,13 @@ func headerLine(title string, width int, isActive bool) string {
 
 	// タイトルが入らない場合はタイトルを消して全体を横線で埋める
 	if cl > inner-left {
-		return "┌" + strings.Repeat("─", inner) + "┐"
+		line := "┌" + strings.Repeat("─", inner+1) + "┐"
+		if isActive {
+			line = activeColorStyle.Render(line)
+		} else {
+			line = inactiveColorStyle.Render(line)
+		}
+		return line
 	}
 
 	// 右側の横線を残りで埋める
@@ -40,13 +47,63 @@ func headerLine(title string, width int, isActive bool) string {
 	leftContent := "┌" + strings.Repeat("─", left)
 	rightContent := strings.Repeat("─", right) + "┐"
 	if isActive {
-		leftContent = activeHeaderStyle.Render(leftContent)
-		rightContent = activeHeaderStyle.Render(rightContent)
+		leftContent = activeColorStyle.Render(leftContent)
+		rightContent = activeColorStyle.Render(rightContent)
 		content = activeHeaderTitleStyle.Render(content)
 	} else {
-		leftContent = inactiveHeaderStyle.Render(leftContent)
-		rightContent = inactiveHeaderStyle.Render(rightContent)
+		leftContent = inactiveColorStyle.Render(leftContent)
+		rightContent = inactiveColorStyle.Render(rightContent)
 		content = inactiveHeaderTitleStyle.Render(content)
+	}
+
+	return leftContent + content + rightContent
+}
+
+func footerLine(text string, width int, isActive bool) string {
+
+	if width <= 2 {
+		return "└" + text + "┘"
+	}
+
+	// 罫線等特殊文字の影響か、3文字分落ちるため最初に帳尻合わせる
+	width += 3
+	if remainder := width % 2; remainder == 1 {
+		// 3足して2で割ると必ずあまりは0か1
+		// 余りが出る時は1落とされるため帳尻合わせのため+1
+		width += 1
+	}
+
+	// 角を引いた長さ
+	inner := width - 2
+
+	content := " " + text + " "
+	cl := utf8.RuneCountInString(content) // runeで長さを数える
+
+	// テキストを真ん中に表示させるために半分で計算
+	separator := (inner - cl) / 2
+
+	// タイトルが入らない場合はタイトルを消して全体を横線で埋める
+	if cl > inner-separator {
+		line := "└" + strings.Repeat("─", inner-1) + "┘"
+		if isActive {
+			line = activeColorStyle.Render(line)
+		} else {
+			line = inactiveColorStyle.Render(line)
+		}
+		return line
+	}
+
+	leftContent := "└" + strings.Repeat("─", separator)
+	rightContent := strings.Repeat("─", separator) + "┘"
+
+	if isActive {
+		leftContent = activeColorStyle.Render(leftContent)
+		rightContent = activeColorStyle.Render(rightContent)
+		content = activeLeftPaneFooterStyle.Render(content)
+	} else {
+		leftContent = inactiveColorStyle.Render(leftContent)
+		rightContent = inactiveColorStyle.Render(rightContent)
+		content = inactiveLeftPaneFooterStyle.Render(content)
 	}
 
 	return leftContent + content + rightContent

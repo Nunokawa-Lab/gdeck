@@ -33,10 +33,10 @@ var (
 					Foreground(lipgloss.Color("7")).
 					Bold(true)
 
-	activeHeaderStyle = lipgloss.NewStyle().
+	activeColorStyle = lipgloss.NewStyle().
 				Foreground(lipgloss.Color("14"))
 
-	inactiveHeaderStyle = lipgloss.NewStyle().
+	inactiveColorStyle = lipgloss.NewStyle().
 				Foreground(lipgloss.Color("8"))
 
 	footerStyle = lipgloss.NewStyle().
@@ -45,15 +45,33 @@ var (
 			PaddingLeft(1).
 			MarginTop(1)
 
-	activePaneStyle = lipgloss.NewStyle().
+	activeLeftPaneStyle = lipgloss.NewStyle().
+			Padding(1, 1, 0, 1).
+			Border(lipgloss.NormalBorder(), false, true, false, true).
+			BorderForeground(lipgloss.Color("14"))
+
+	inactiveLeftPaneStyle = lipgloss.NewStyle().
+				Padding(1, 1, 0, 1).
+				Border(lipgloss.NormalBorder(), false, true, false, true).
+				BorderForeground(lipgloss.Color("8"))
+
+	activeRightPaneStyle = lipgloss.NewStyle().
 			Padding(1, 1, 0, 1).
 			Border(lipgloss.NormalBorder(), false, true, true, true).
 			BorderForeground(lipgloss.Color("14"))
 
-	inactivePaneStyle = lipgloss.NewStyle().
+	inactiveRightPaneStyle = lipgloss.NewStyle().
 				Padding(1, 1, 0, 1).
 				Border(lipgloss.NormalBorder(), false, true, true, true).
 				BorderForeground(lipgloss.Color("8"))
+
+	activeLeftPaneFooterStyle = lipgloss.NewStyle().
+				Foreground(lipgloss.Color("14")).
+				Bold(true)
+
+	inactiveLeftPaneFooterStyle = lipgloss.NewStyle().
+				Foreground(lipgloss.Color("7")).
+				Bold(true)
 )
 
 func methodColor(method string) string {

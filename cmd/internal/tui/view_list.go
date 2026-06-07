@@ -6,9 +6,9 @@ import (
 
 func (m Model) renderList(width int, height int) string {
 
-	paneStyle := activePaneStyle
+	paneStyle := activeLeftPaneStyle
 	if m.focus != FocusList {
-		paneStyle = inactivePaneStyle
+		paneStyle = inactiveLeftPaneStyle
 	}
 
 	return lipgloss.JoinVertical(
@@ -22,5 +22,6 @@ func (m Model) renderList(width int, height int) string {
 					m.leftViewport.View(),
 				),
 		),
+		footerLine("footer text", width, (m.focus == FocusList)),
 	)
 }

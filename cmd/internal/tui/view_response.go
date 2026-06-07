@@ -12,9 +12,9 @@ func (m Model) renderResponse(width int, height int) string {
 		h = "🔍 Request Preview"
 	}
 
-	paneStyle := inactivePaneStyle
+	paneStyle := inactiveRightPaneStyle
 	if m.focus == FocusResponse {
-		paneStyle = activePaneStyle
+		paneStyle = activeRightPaneStyle
 	}
 
 	return lipgloss.JoinVertical(
