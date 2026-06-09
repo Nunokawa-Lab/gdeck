@@ -3,6 +3,8 @@ package tui
 import (
 	"strings"
 	"unicode/utf8"
+
+	"github.com/charmbracelet/lipgloss"
 )
 
 // ペインの上部を文字列計算し生成
@@ -107,4 +109,20 @@ func footerLine(text string, width int, isActive bool) string {
 	}
 
 	return leftContent + content + rightContent
+}
+
+// 検索窓
+func (m Model) searchBar() string {
+
+	if !m.searchMode {
+		return ""
+	}
+
+	title := searchTitleStyle.Render("🔍 Search")
+
+	input := m.searchInput.View()
+
+	box := searchBoxStyle.Render(input)
+
+	return lipgloss.JoinVertical(lipgloss.Left, title, box)
 }

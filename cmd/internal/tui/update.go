@@ -2,15 +2,38 @@ package tui
 
 import (
 	"github.com/charmbracelet/bubbles/spinner"
+	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
 )
 
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var cmd tea.Cmd
 
+	// 検索モード中の挙動
+	if m.searchMode {
+
+		switch msg := msg.(type) {
+		case tea.KeyMsg:
+			switch msg.String() {
+			case "esc":
+				m.resetSearch()
+				return m, nil
+			}
+		}
+
+		// カーソルを点滅させるためにBlinkMsg型も含めて全msgをUpdate()に渡す必要あり
+		m.searchInput, cmd = m.searchInput.Update(msg)
+
+		// 絞り込み
+		m.applySearch(m.searchInput.Value())
+		m.leftViewport.SetContent(m.requestListContent())
+		return m, cmd
+
+	}
+
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
-		// 共通
+
 		switch msg.String() {
 		case "q", "ctrl+c":
 			return m, tea.Quit
@@ -18,6 +41,11 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.focus = FocusList
 		case "right":
 			m.focus = FocusResponse
+		case "/":
+			m.searchMode = true
+			m.searchInput.SetValue("")
+			m.searchInput.Focus()
+			return m, textinput.Blink
 		}
 
 		// 左pane挙動
@@ -35,7 +63,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					m.rightViewport.SetContent(m.responseContent())
 
 					// スクロール
-					if m.cursor <= ( (len(m.requests)-1) - m.displayRequestCnt ) {
+					if m.cursor <= ((len(m.requests) - 1) - m.displayRequestCnt) {
 						m.leftViewport.ScrollUp(2)
 					}
 				}

@@ -2,8 +2,10 @@ package tui
 
 import (
 	"github.com/charmbracelet/bubbles/spinner"
+	"github.com/charmbracelet/bubbles/textinput"
 	"github.com/charmbracelet/bubbles/viewport"
 	"github.com/nunokawa/gdeck/cmd/internal/model"
+	"github.com/nunokawa/gdeck/cmd/internal/store"
 )
 
 type Model struct {
@@ -27,6 +29,11 @@ type Model struct {
 	paneHeight     int
 
 	displayRequestCnt int //現在の左ペインの高さに対して、表示されているリクエストリストの数
+
+	searchMode       bool
+	filteredRequests []model.RequestItem
+
+	searchInput textinput.Model
 }
 
 type FocusPane int
@@ -35,3 +42,20 @@ const (
 	FocusList     FocusPane = iota //左paneのリストにユニークな連番をあてる
 	FocusResponse                  //右pane
 )
+
+func (m *Model) loadCurrentRequest() {
+	forcusedRequest := m.requests[m.cursor]
+
+	reqs, err := store.Load(forcusedRequest.Name)
+
+	if err != nil {
+		m.errorMsg = err.Error()
+		return
+	}
+
+	if len(reqs) == 0 {
+		return
+	}
+
+	m.currentRequest = reqs[0]
+}

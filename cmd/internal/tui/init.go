@@ -2,6 +2,7 @@ package tui
 
 import (
 	"github.com/charmbracelet/bubbles/spinner"
+	"github.com/charmbracelet/bubbles/textinput"
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/nunokawa/gdeck/cmd/internal/store"
@@ -9,7 +10,10 @@ import (
 
 func (m Model) Init() tea.Cmd {
 	// 次の回転イベントを返す（予約）
-	return m.spinner.Tick
+	return tea.Batch(
+		m.spinner.Tick,
+		textinput.Blink,
+	)
 }
 
 func InitialModel() (Model, error) {
@@ -19,10 +23,18 @@ func InitialModel() (Model, error) {
 		return Model{}, err
 	}
 
+	// spinner new create
 	s := spinner.New()
 	s.Spinner = spinner.Dot
 
+	// viewport new create
 	vp := viewport.New(80, 20)
+
+	// textinput new create
+	ti := textinput.New()
+	ti.CharLimit = 100
+	ti.Width = 30
+	ti.Placeholder = "get-comment"
 
 	// bubbleteaに渡すinterfaceは Init() Update() View() をレシーバーに持っている必要あり
 	m := Model{
@@ -31,6 +43,7 @@ func InitialModel() (Model, error) {
 		spinner:       s,
 		leftViewport:  vp,
 		rightViewport: vp,
+		searchInput:   ti,
 	}
 
 	m.loadCurrentRequest()

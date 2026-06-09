@@ -46,9 +46,9 @@ var (
 			MarginTop(1)
 
 	activeLeftPaneStyle = lipgloss.NewStyle().
-			Padding(1, 1, 0, 1).
-			Border(lipgloss.NormalBorder(), false, true, false, true).
-			BorderForeground(lipgloss.Color("14"))
+				Padding(1, 1, 0, 1).
+				Border(lipgloss.NormalBorder(), false, true, false, true).
+				BorderForeground(lipgloss.Color("14"))
 
 	inactiveLeftPaneStyle = lipgloss.NewStyle().
 				Padding(1, 1, 0, 1).
@@ -56,9 +56,9 @@ var (
 				BorderForeground(lipgloss.Color("8"))
 
 	activeRightPaneStyle = lipgloss.NewStyle().
-			Padding(1, 1, 0, 1).
-			Border(lipgloss.NormalBorder(), false, true, true, true).
-			BorderForeground(lipgloss.Color("14"))
+				Padding(1, 1, 0, 1).
+				Border(lipgloss.NormalBorder(), false, true, true, true).
+				BorderForeground(lipgloss.Color("14"))
 
 	inactiveRightPaneStyle = lipgloss.NewStyle().
 				Padding(1, 1, 0, 1).
@@ -66,12 +66,18 @@ var (
 				BorderForeground(lipgloss.Color("8"))
 
 	activeLeftPaneFooterStyle = lipgloss.NewStyle().
-				Foreground(lipgloss.Color("14")).
-				Bold(true)
+					Foreground(lipgloss.Color("14")).
+					Bold(true)
 
 	inactiveLeftPaneFooterStyle = lipgloss.NewStyle().
-				Foreground(lipgloss.Color("7")).
-				Bold(true)
+					Foreground(lipgloss.Color("7")).
+					Bold(true)
+
+	searchStyle = lipgloss.NewStyle().Padding(0, 1, 1, 1)
+
+	searchTitleStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("99")).Bold(true)
+
+	searchBoxStyle = lipgloss.NewStyle().Padding(0, 1)
 )
 
 func methodColor(method string) string {

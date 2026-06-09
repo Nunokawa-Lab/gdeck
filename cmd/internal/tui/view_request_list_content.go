@@ -13,7 +13,12 @@ func (m Model) requestListContent() string {
 	var s string
 	rows := make([]string, 0)
 
-	for i, req := range m.requests {
+	requests := m.requests
+	if len(m.filteredRequests) > 0 {
+		requests = m.filteredRequests
+	}
+
+	for i, req := range requests {
 
 		cursor := " "
 
