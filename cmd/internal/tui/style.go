@@ -21,7 +21,7 @@ var (
 
 	titleStyle = lipgloss.NewStyle().
 			Bold(true).
-			Foreground(lipgloss.Color("7")).
+			Foreground(lipgloss.Color("223")).
 			PaddingLeft(1).
 			MarginBottom(1)
 
@@ -74,8 +74,6 @@ var (
 					Bold(true)
 
 	searchStyle = lipgloss.NewStyle().Padding(0, 1, 1, 1)
-
-	searchTitleStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("99")).Bold(true)
 
 	searchBoxStyle = lipgloss.NewStyle().Padding(0, 1)
 )

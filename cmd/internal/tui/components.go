@@ -8,7 +8,7 @@ import (
 )
 
 // ペインの上部を文字列計算し生成
-func headerLine(title string, width int, isActive bool) string {
+func painHeaderLine(title string, width int, isActive bool) string {
 
 	if width <= 2 {
 		return "┌" + title + "┐"
@@ -61,7 +61,7 @@ func headerLine(title string, width int, isActive bool) string {
 	return leftContent + content + rightContent
 }
 
-func footerLine(text string, width int, isActive bool) string {
+func painFooterLine(text string, width int, isActive bool) string {
 
 	if width <= 2 {
 		return "└" + text + "┘"
@@ -118,11 +118,20 @@ func (m Model) searchBar() string {
 		return ""
 	}
 
-	title := searchTitleStyle.Render("🔍 Search")
-
 	input := m.searchInput.View()
 
 	box := searchBoxStyle.Render(input)
 
-	return lipgloss.JoinVertical(lipgloss.Left, title, box)
+	return lipgloss.JoinVertical(lipgloss.Left, box)
+}
+
+// フッター
+func (m Model) footer() string {
+
+	ft := "↑↓ Move&Scroll   ↵ Run   ←→ Focus   / SearchMode   q Quit"
+	if m.searchMode {
+		ft = "↑↓ Select   ↵ Confirm   esc Cancel"
+	}
+
+	return footerStyle.Render(ft)
 }

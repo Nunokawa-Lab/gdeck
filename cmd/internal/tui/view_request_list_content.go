@@ -14,7 +14,7 @@ func (m Model) requestListContent() string {
 	rows := make([]string, 0)
 
 	requests := m.requests
-	if len(m.filteredRequests) > 0 {
+	if m.searchMode {
 		requests = m.filteredRequests
 	}
 

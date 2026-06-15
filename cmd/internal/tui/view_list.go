@@ -15,7 +15,7 @@ func (m Model) renderList(width int, height int) string {
 
 	return lipgloss.JoinVertical(
 		lipgloss.Left,
-		headerLine("📂 Requests", width, (m.focus == FocusList)),
+		painHeaderLine("📂 Requests", width, (m.focus == FocusList)),
 		paneStyle.Render(
 			lipgloss.NewStyle().
 				Width(width).
@@ -24,7 +24,7 @@ func (m Model) renderList(width int, height int) string {
 					m.leftViewport.View(),
 				),
 		),
-		footerLine(m.requestFooterText(), width, (m.focus == FocusList)),
+		painFooterLine(m.requestFooterText(), width, (m.focus == FocusList)),
 	)
 }
 

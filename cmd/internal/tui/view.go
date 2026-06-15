@@ -17,7 +17,7 @@ func (m Model) View() string {
 		left,
 		right,
 	)
-	footer := footerStyle.Render("↑↓ Move   Enter Run   ←→ Focus   q Quit")
+	footer := m.footer()
 
 	return lipgloss.JoinVertical(
 		lipgloss.Left,

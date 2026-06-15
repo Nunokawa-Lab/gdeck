@@ -19,7 +19,7 @@ func (m Model) renderResponse(width int, height int) string {
 
 	return lipgloss.JoinVertical(
 		lipgloss.Left,
-		headerLine(h, width, m.focus == FocusResponse),
+		painHeaderLine(h, width, m.focus == FocusResponse),
 		paneStyle.Render(
 			lipgloss.NewStyle().
 				Width(width).
