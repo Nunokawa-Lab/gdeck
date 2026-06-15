@@ -18,6 +18,11 @@ func (m Model) requestListContent() string {
 		requests = m.filteredRequests
 	}
 
+	if len(requests) < 1 {
+		s = "Oh!!\nNo-Hits :("
+		return s
+	} 
+
 	for i, req := range requests {
 
 		cursor := " "

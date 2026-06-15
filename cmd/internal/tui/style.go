@@ -11,13 +11,29 @@ BubbleTea(TUI) 専用のスタイルファイル
 */
 
 var (
-	// lipgloss
-	styleGET    = lipgloss.NewStyle().Foreground(lipgloss.Color("255")).Background(lipgloss.Color("24")).Bold(true).Padding(0, 1)  // 青
-	stylePOST   = lipgloss.NewStyle().Foreground(lipgloss.Color("255")).Background(lipgloss.Color("28")).Bold(true).Padding(0, 1)  // 緑
-	stylePUT    = lipgloss.NewStyle().Foreground(lipgloss.Color("255")).Background(lipgloss.Color("130")).Bold(true).Padding(0, 1) // 黄
-	stylePATCH  = lipgloss.NewStyle().Foreground(lipgloss.Color("255")).Background(lipgloss.Color("60")).Bold(true).Padding(0, 1)  // 紫
-	styleDELETE = lipgloss.NewStyle().Foreground(lipgloss.Color("255")).Background(lipgloss.Color("88")).Bold(true).Padding(0, 1)  // 赤
-	styleDark   = lipgloss.NewStyle().Foreground(lipgloss.Color("7"))                                                              // 白/グレー
+	// ========== クラシックにするならこれ ==========
+	// styleGET    = lipgloss.NewStyle().Foreground(lipgloss.Color("255")).Background(lipgloss.Color("24")).Bold(true).Padding(0, 1)  // 青
+	// stylePOST   = lipgloss.NewStyle().Foreground(lipgloss.Color("255")).Background(lipgloss.Color("28")).Bold(true).Padding(0, 1)  // 緑
+	// stylePUT    = lipgloss.NewStyle().Foreground(lipgloss.Color("255")).Background(lipgloss.Color("130")).Bold(true).Padding(0, 1) // 黄
+	// stylePATCH  = lipgloss.NewStyle().Foreground(lipgloss.Color("255")).Background(lipgloss.Color("60")).Bold(true).Padding(0, 1)  // 紫
+	// styleDELETE = lipgloss.NewStyle().Foreground(lipgloss.Color("255")).Background(lipgloss.Color("88")).Bold(true).Padding(0, 1)  // 赤
+
+
+	// ========== パステルにするならこれ ==========
+	// styleGetPastel    = lipgloss.NewStyle().Foreground(lipgloss.Color("17")).Background(lipgloss.Color("153")).Bold(true).Padding(0, 1) // パステル青
+	// stylePostPastel   = lipgloss.NewStyle().Foreground(lipgloss.Color("17")).Background(lipgloss.Color("157")).Bold(true).Padding(0, 1) // パステル緑
+	// stylePutPastel    = lipgloss.NewStyle().Foreground(lipgloss.Color("17")).Background(lipgloss.Color("229")).Bold(true).Padding(0, 1) // パステル黄
+	// stylePatchPastel  = lipgloss.NewStyle().Foreground(lipgloss.Color("17")).Background(lipgloss.Color("182")).Bold(true).Padding(0, 1) // パステルピンク
+	// styleDeletePastel = lipgloss.NewStyle().Foreground(lipgloss.Color("17")).Background(lipgloss.Color("217")).Bold(true).Padding(0, 1) // パステル赤
+
+	// ========== ダーク系ならこれ ==========
+	styleGetDark    = lipgloss.NewStyle().Foreground(lipgloss.Color("87")).Background(lipgloss.Color("235")).Bold(true).Padding(0, 1)  // 薄い青
+	stylePostDark   = lipgloss.NewStyle().Foreground(lipgloss.Color("114")).Background(lipgloss.Color("235")).Bold(true).Padding(0, 1) // 薄い緑
+	stylePutDark    = lipgloss.NewStyle().Foreground(lipgloss.Color("221")).Background(lipgloss.Color("235")).Bold(true).Padding(0, 1) // 薄い黄
+	stylePatchDark  = lipgloss.NewStyle().Foreground(lipgloss.Color("183")).Background(lipgloss.Color("235")).Bold(true).Padding(0, 1) // 薄い紫
+	styleDeleteDark = lipgloss.NewStyle().Foreground(lipgloss.Color("210")).Background(lipgloss.Color("235")).Bold(true).Padding(0, 1) // 薄い赤
+
+	styleDark = lipgloss.NewStyle().Foreground(lipgloss.Color("7")) // 白/グレー
 
 	titleStyle = lipgloss.NewStyle().
 			Bold(true).
@@ -81,15 +97,15 @@ var (
 func methodColor(method string) string {
 	switch method {
 	case "GET":
-		return styleGET.Render("GET")
+		return styleGetDark.Render("GET")
 	case "POST":
-		return stylePOST.Render("POST")
+		return stylePostDark.Render("POST")
 	case "PUT":
-		return stylePUT.Render("PUT")
+		return stylePutDark.Render("PUT")
 	case "PATCH":
-		return stylePATCH.Render("PATCH")
+		return stylePatchDark.Render("PATCH")
 	case "DELETE":
-		return styleDELETE.Render("DELETE")
+		return styleDeleteDark.Render("DELETE")
 	default:
 		return styleDark.Render("Unknown")
 	}

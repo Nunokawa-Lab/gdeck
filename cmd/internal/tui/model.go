@@ -44,7 +44,12 @@ const (
 )
 
 func (m *Model) loadCurrentRequest() {
-	forcusedRequest := m.requests[m.cursor]
+
+	requests := m.requests
+	if m.searchMode && len(m.filteredRequests) > 0 {
+		requests = m.filteredRequests
+	}
+	forcusedRequest := requests[m.cursor]
 
 	reqs, err := store.Load(forcusedRequest.Name)
 

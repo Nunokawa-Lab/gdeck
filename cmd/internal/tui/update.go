@@ -27,6 +27,10 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		// 絞り込み
 		m.applySearch(m.searchInput.Value())
 		m.leftViewport.SetContent(m.requestListContent())
+		m.response = nil
+		m.cursor = 0
+		m.loadCurrentRequest()
+		m.rightViewport.SetContent(m.responseContent())
 		return m, cmd
 
 	}
