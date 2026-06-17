@@ -19,7 +19,7 @@ func (m Model) requestListContent() string {
 	}
 
 	if len(requests) < 1 {
-		s = "Oh!!\nNo-Hits :("
+		s = "No hits! Sent from 2070? 🛸🌌\n\n[ try another kw … ]"
 		return s
 	} 
 

@@ -6,6 +6,12 @@ import (
 	"github.com/nunokawa/gdeck/cmd/internal/model"
 )
 
+func (m *Model) initSearch() {
+	m.searchMode = true
+	m.searchInput.SetValue("")
+	m.searchInput.Focus()
+}
+
 func (m *Model) applySearch(text string) {
 	if text == "" {
 		m.filteredRequests = m.requests
@@ -32,5 +38,5 @@ func (m *Model) resetSearch() {
 	m.searchInput.Blur()
 	m.searchInput.SetValue("")
 
-	m.filteredRequests = m.requests
+	m.filteredRequests = []model.RequestItem{}
 }

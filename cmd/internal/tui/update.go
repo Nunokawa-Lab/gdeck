@@ -17,20 +17,47 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			switch msg.String() {
 			case "esc":
 				m.resetSearch()
+				m.leftViewport.SetContent(m.requestListContent())
 				return m, nil
+
+			case "up":
+				if m.cursor > 0 {
+					m.cursor--
+
+					m.response = nil 
+
+					// スクロール
+					if m.cursor <= ((len(m.filteredRequests) - 1) - m.displayRequestCnt) {
+						m.leftViewport.ScrollUp(2)
+					}
+				}
+			case "down":
+				if m.cursor < len(m.filteredRequests)-1 {
+					m.cursor++
+
+					m.response = nil
+
+					// スクロール
+					if m.cursor >= m.displayRequestCnt {
+						m.leftViewport.ScrollDown(2)
+					}
+				}
+			default:
+				// 各値を初期値に戻す
+				m.response = nil
+				m.cursor = 0
 			}
 		}
 
 		// カーソルを点滅させるためにBlinkMsg型も含めて全msgをUpdate()に渡す必要あり
 		m.searchInput, cmd = m.searchInput.Update(msg)
 
-		// 絞り込み
+		// 絞り込み（けどここでは初期値セット）
 		m.applySearch(m.searchInput.Value())
-		m.leftViewport.SetContent(m.requestListContent())
-		m.response = nil
-		m.cursor = 0
 		m.loadCurrentRequest()
+		m.leftViewport.SetContent(m.requestListContent())
 		m.rightViewport.SetContent(m.responseContent())
+
 		return m, cmd
 
 	}
@@ -46,9 +73,16 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "right":
 			m.focus = FocusResponse
 		case "/":
-			m.searchMode = true
-			m.searchInput.SetValue("")
-			m.searchInput.Focus()
+			// 検索モード初期設定
+			m.initSearch()
+
+			// 他の各値も初期値に戻す
+			m.focus = FocusList
+			m.response = nil
+			m.cursor = 0
+			m.loadCurrentRequest()
+			m.rightViewport.SetContent(m.responseContent())
+
 			return m, textinput.Blink
 		}
 
