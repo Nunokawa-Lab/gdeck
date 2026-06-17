@@ -18,7 +18,6 @@ var (
 	// stylePATCH  = lipgloss.NewStyle().Foreground(lipgloss.Color("255")).Background(lipgloss.Color("60")).Bold(true).Padding(0, 1)  // 紫
 	// styleDELETE = lipgloss.NewStyle().Foreground(lipgloss.Color("255")).Background(lipgloss.Color("88")).Bold(true).Padding(0, 1)  // 赤
 
-
 	// ========== パステルにするならこれ ==========
 	// styleGetPastel    = lipgloss.NewStyle().Foreground(lipgloss.Color("17")).Background(lipgloss.Color("153")).Bold(true).Padding(0, 1) // パステル青
 	// stylePostPastel   = lipgloss.NewStyle().Foreground(lipgloss.Color("17")).Background(lipgloss.Color("157")).Bold(true).Padding(0, 1) // パステル緑

@@ -24,7 +24,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				if m.cursor > 0 {
 					m.cursor--
 
-					m.response = nil 
+					m.response = nil
 
 					// スクロール
 					if m.cursor <= ((len(m.filteredRequests) - 1) - m.displayRequestCnt) {

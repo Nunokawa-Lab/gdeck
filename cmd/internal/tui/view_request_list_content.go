@@ -21,7 +21,7 @@ func (m Model) requestListContent() string {
 	if len(requests) < 1 {
 		s = "No hits! Sent from 2070? 🛸🌌\n\n[ try another kw … ]"
 		return s
-	} 
+	}
 
 	for i, req := range requests {
 
