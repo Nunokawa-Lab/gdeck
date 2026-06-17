@@ -21,6 +21,11 @@ func (m Model) responseContent() string {
 		)
 	}
 
+	if m.currentRequest == nil {
+		// 検索後0件ヒットだった場合に入る
+		return fmt.Sprintln("Listening for your signals 📡✨")
+	}
+
 	if m.response == nil {
 
 		return output.RenderTUIPreview(

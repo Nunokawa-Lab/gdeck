@@ -52,7 +52,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		// カーソルを点滅させるためにBlinkMsg型も含めて全msgをUpdate()に渡す必要あり
 		m.searchInput, cmd = m.searchInput.Update(msg)
 
-		// 絞り込み（けどここでは初期値セット）
+		// 絞り込み
 		m.applySearch(m.searchInput.Value())
 		m.loadCurrentRequest()
 		m.leftViewport.SetContent(m.requestListContent())

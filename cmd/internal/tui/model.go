@@ -46,8 +46,14 @@ const (
 func (m *Model) loadCurrentRequest() {
 
 	requests := m.requests
-	if m.searchMode && len(m.filteredRequests) > 0 {
-		requests = m.filteredRequests
+	if m.searchMode {
+		if len(m.filteredRequests) > 0 {
+			requests = m.filteredRequests
+		} else {
+			// 検索モード中に0件ヒットの場合は空を格納
+			m.currentRequest = nil
+			return
+		}
 	}
 	forcusedRequest := requests[m.cursor]
 
