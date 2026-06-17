@@ -1,8 +1,6 @@
 package tui
 
 import (
-	"fmt"
-
 	"github.com/charmbracelet/lipgloss"
 )
 
@@ -29,18 +27,25 @@ func (m Model) renderList(width int, height int) string {
 }
 
 func (m Model) requestFooterText() string {
-	requestCount := len(m.requests)
+
+	requests := m.requests
+	if m.searchMode {
+		requests = m.filteredRequests
+	}
+
+	requestCount := len(requests)
 	visibleCount := m.displayRequestCnt
 
+	// 表示中の高さに収まる場合、最後までスクロールしている場合もh何もテキストを出さない
 	if visibleCount <= 0 || requestCount <= visibleCount {
-		return "No more …"
+		return ""
 	}
 
-	// スクロールされ隠れた上の行数を数える
+	// 残り件数が0以下なら末尾に到達している
 	remaining := requestCount - visibleCount - (m.leftViewport.YOffset / 2)
 	if remaining <= 0 {
-		return "End."
+		return ""
 	}
 
-	return fmt.Sprintf("↓ More %d …", remaining)
+	return "↓ More …"
 }
