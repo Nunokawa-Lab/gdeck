@@ -42,11 +42,61 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 						m.leftViewport.ScrollDown(2)
 					}
 				}
+			case "enter":
+				selected := m.filteredRequests[m.cursor]
+
+				// 実行前に初期値をセット
+				m.loading = true
+				m.response = nil
+				m.errorMsg = ""
+				m.selected = &selected
+				// ローディングUI表示
+				m.rightViewport.SetContent(m.responseContent())
+
+				return m, asyncRunCmd(selected.Name, selected.Method)
 			default:
 				// 各値を初期値に戻す
 				m.response = nil
 				m.cursor = 0
 			}
+		case runFinishedMsg:
+			m.loading = false
+
+			if msg.err != nil {
+				m.errorMsg = msg.err.Error()
+				return m, nil
+			}
+
+			m.response = msg.response
+
+			// コンテンツをviewportにセット
+			m.rightViewport.SetContent(m.responseContent())
+
+			return m, nil
+		case spinner.TickMsg:
+			m.spinner, cmd = m.spinner.Update(msg)
+
+			if m.loading {
+				m.rightViewport.SetContent(
+					m.responseContent(),
+				)
+			}
+
+			return m, cmd
+		case tea.WindowSizeMsg:
+			// サイズセット
+			m.leftPaneWidth = int(float64(msg.Width) * 0.35)
+			m.rightPaneWidth = msg.Width - m.leftPaneWidth - 8
+			m.paneHeight = msg.Height - 11
+
+			// viewportにも高さ・幅をセット
+			m.leftViewport.Width = m.leftPaneWidth
+			m.leftViewport.Height = m.paneHeight
+			m.rightViewport.Width = m.rightPaneWidth
+			m.rightViewport.Height = m.paneHeight
+
+			// 表示中のリクエスト数セット（ペイン領域の高さの1/2が表示されている）
+			m.displayRequestCnt = m.paneHeight / 2
 		}
 
 		// カーソルを点滅させるためにBlinkMsg型も含めて全msgをUpdate()に渡す必要あり
