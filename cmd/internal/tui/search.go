@@ -39,4 +39,5 @@ func (m *Model) resetSearch() {
 	m.searchInput.SetValue("")
 
 	m.filteredRequests = []model.RequestItem{}
+	m.cursor = 0
 }
