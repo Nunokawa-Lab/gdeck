@@ -16,9 +16,13 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case tea.KeyMsg:
 			switch msg.String() {
 			case "esc":
-				m.cursor = 0 //0にしないパターンもあるためresetSearch()には含めない
+				// 検索モードを解除しつつカーソルは実行したものに当てる
+				selected := m.filteredRequests[m.cursor] //リセットする前にカーソルの当たっているリクエスト取得
 				m.resetSearch()
+				m.setSelectedRequest(selected.Name)
+
 				m.leftViewport.SetContent(m.requestListContent())
+				m.rightViewport.SetContent(m.responseContent())
 				return m, nil
 			case "up":
 				if m.cursor > 0 {
