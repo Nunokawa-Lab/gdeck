@@ -79,4 +79,4 @@ func (m *Model) setSelectedRequest(selectedName string) {
 			break
 		}
 	}
-} 
+}
