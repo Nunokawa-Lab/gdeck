@@ -5,6 +5,8 @@ import (
 	"github.com/nunokawa/gdeck/cmd/internal/runner"
 )
 
+/** 非同期処理を定義するファイル */
+
 // 非同期でrunを実行
 // bubbleteaは`tea.Cmd`が返されると内部的にgoroutineを別タスクで実行してくれる
 func asyncRunCmd(name string, method string) tea.Cmd {

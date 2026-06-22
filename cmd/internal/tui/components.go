@@ -138,7 +138,7 @@ func (m Model) searchBar() string {
 // フッター
 func (m Model) footer() string {
 
-	ft := "↑↓ Move&Scroll   ↵ Run   ←→ Focus   / SearchMode   q Quit"
+	ft := "↑↓ Move&Scroll   ↵ Run   d Delete   ←→ Focus   / SearchMode   q Quit"
 	if m.searchMode {
 		ft = "↑↓ Select   ↵ Confirm   esc Cancel"
 	}

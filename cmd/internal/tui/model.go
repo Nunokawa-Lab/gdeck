@@ -5,7 +5,6 @@ import (
 	"github.com/charmbracelet/bubbles/textinput"
 	"github.com/charmbracelet/bubbles/viewport"
 	"github.com/nunokawa/gdeck/cmd/internal/model"
-	"github.com/nunokawa/gdeck/cmd/internal/store"
 )
 
 type Model struct {
@@ -43,40 +42,3 @@ const (
 	FocusResponse                  //右pane
 )
 
-func (m *Model) loadCurrentRequest() {
-
-	requests := m.requests
-	if m.searchMode {
-		if len(m.filteredRequests) > 0 {
-			requests = m.filteredRequests
-		} else {
-			// 検索モード中に0件ヒットの場合は空を格納
-			m.currentRequest = nil
-			return
-		}
-	}
-	forcusedRequest := requests[m.cursor]
-
-	reqs, err := store.Load(forcusedRequest.Name)
-
-	if err != nil {
-		m.errorMsg = err.Error()
-		return
-	}
-
-	if len(reqs) == 0 {
-		return
-	}
-
-	m.currentRequest = reqs[0]
-}
-
-// 選択したリクエストにカーソルを置くメソッド
-func (m *Model) setSelectedRequest(selectedName string) {
-	for i, req := range m.requests {
-		if req.Name == selectedName {
-			m.cursor = i
-			break
-		}
-	}
-}
