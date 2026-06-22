@@ -70,3 +70,13 @@ func (m *Model) loadCurrentRequest() {
 
 	m.currentRequest = reqs[0]
 }
+
+// 選択したリクエストにカーソルを置くメソッド
+func (m *Model) setSelectedRequest(selectedName string) {
+	for i, req := range m.requests {
+		if req.Name == selectedName {
+			m.cursor = i
+			break
+		}
+	}
+} 
