@@ -4,6 +4,7 @@ import (
 	"github.com/charmbracelet/bubbles/spinner"
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/nunokawa/gdeck/cmd/internal/store"
 )
 
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
@@ -124,6 +125,35 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
+		if m.deleteConfirm {
+			switch msg.String() {
+			case "y":
+				// 削除
+				err := store.Delete(m.currentRequest.Name)
+				if err != nil {
+					m.errorMsg = err.Error()
+					return m, nil
+				}
+
+				// リクエストを再読み込み
+				m.requests, err = store.List()
+				if err != nil {
+					m.errorMsg = err.Error()
+					return m, nil
+				}
+
+				m.leftViewport.SetContent(m.requestListContent())
+				m.rightViewport.SetContent(m.responseContent())
+
+				m.deleteConfirm = false
+
+			case "n":
+				m.deleteConfirm = false
+			}
+
+			return m, nil
+		}
+
 
 		switch msg.String() {
 		case "q", "ctrl+c":
@@ -191,6 +221,10 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.rightViewport.SetContent(m.responseContent())
 
 				return m, asyncRunCmd(selected.Name, selected.Method)
+			case "d":
+				// 選択中リクエストの削除確認をだす
+				m.deleteConfirm = true
+
 			}
 		}
 

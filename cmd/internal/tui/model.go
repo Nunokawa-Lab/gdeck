@@ -33,6 +33,8 @@ type Model struct {
 	filteredRequests []model.RequestItem
 
 	searchInput textinput.Model
+
+	deleteConfirm bool
 }
 
 type FocusPane int

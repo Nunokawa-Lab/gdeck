@@ -59,6 +59,12 @@ var (
 			Foreground(lipgloss.Color("99")).
 			PaddingLeft(1).
 			MarginTop(1)
+	
+	footerDeleteStyle = lipgloss.NewStyle().
+			Bold(true).
+			Foreground(lipgloss.Color("5")).
+			PaddingLeft(1).
+			MarginTop(1)
 
 	activeLeftPaneStyle = lipgloss.NewStyle().
 				Padding(1, 1, 0, 1).
