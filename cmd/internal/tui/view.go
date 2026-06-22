@@ -6,7 +6,7 @@ import (
 
 func (m Model) View() string {
 
-	header := titleStyle.Render("\ngdeck TUI 😎")
+	header := titleStyle.Render("gdeck TUI 😎")
 
 	search := searchStyle.Render(m.searchBar())
 

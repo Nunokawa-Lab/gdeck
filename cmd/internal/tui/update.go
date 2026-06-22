@@ -100,6 +100,11 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.rightPaneWidth = msg.Width - m.leftPaneWidth - 8
 			m.paneHeight = msg.Height - 11
 
+			// 奇数は正しい高さを割り出せないため偶数にする（改行含め2行でひとかたまりのため2の倍数が正）
+			if m.paneHeight%2 != 0 {
+				m.paneHeight++
+			}
+
 			// viewportにも高さ・幅をセット
 			m.leftViewport.Width = m.leftPaneWidth
 			m.leftViewport.Height = m.paneHeight
@@ -270,7 +275,12 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		// サイズセット
 		m.leftPaneWidth = int(float64(msg.Width) * 0.35)
 		m.rightPaneWidth = msg.Width - m.leftPaneWidth - 8
-		m.paneHeight = msg.Height - 11
+		m.paneHeight = msg.Height - 13
+
+		// 奇数は正しい高さを割り出せないため偶数にする（改行含め2行でひとかたまりのため2の倍数が正）
+		if m.paneHeight%2 != 0 {
+			m.paneHeight++
+		}
 
 		// viewportにも高さ・幅をセット
 		m.leftViewport.Width = m.leftPaneWidth

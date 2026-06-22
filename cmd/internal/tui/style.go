@@ -38,6 +38,8 @@ var (
 			Bold(true).
 			Foreground(lipgloss.Color("223")).
 			PaddingLeft(1).
+			MarginTop(1).
+			PaddingTop(1).
 			MarginBottom(1)
 
 	activeHeaderTitleStyle = lipgloss.NewStyle().
@@ -58,13 +60,15 @@ var (
 			Bold(true).
 			Foreground(lipgloss.Color("99")).
 			PaddingLeft(1).
-			MarginTop(1)
+			MarginTop(1).
+			PaddingBottom(1)
 
 	footerDeleteStyle = lipgloss.NewStyle().
 				Bold(true).
 				Foreground(lipgloss.Color("5")).
 				PaddingLeft(1).
-				MarginTop(1)
+				MarginTop(1).
+				PaddingBottom(1)
 
 	activeLeftPaneStyle = lipgloss.NewStyle().
 				Padding(1, 1, 0, 1).
