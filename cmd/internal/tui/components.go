@@ -143,7 +143,7 @@ func (m Model) footer() string {
 		ft = "↑↓ Select   ↵ Confirm   esc Cancel"
 	}
 	if m.deleteConfirm {
-		ft = "⚠️  Delete "+m.currentRequest.Name+" ?   y Yes   n No"
+		ft = "⚠️  Delete " + m.currentRequest.Name + " ?   y Yes   n No"
 		return footerDeleteStyle.Render(ft)
 	}
 

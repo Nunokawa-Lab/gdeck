@@ -154,7 +154,6 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, nil
 		}
 
-
 		switch msg.String() {
 		case "q", "ctrl+c":
 			return m, tea.Quit

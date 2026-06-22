@@ -2,9 +2,9 @@ package tui
 
 import (
 	"strings"
-	
-	"github.com/nunokawa/gdeck/cmd/internal/store"
+
 	"github.com/nunokawa/gdeck/cmd/internal/model"
+	"github.com/nunokawa/gdeck/cmd/internal/store"
 )
 
 /** modelの状態を変更する処理を実装するファイル */
@@ -43,7 +43,6 @@ func (m *Model) resetSearch() {
 
 	m.filteredRequests = []model.RequestItem{}
 }
-
 
 // カーソルの当たっているリクエストをロードするメソッド
 func (m *Model) loadCurrentRequest() {

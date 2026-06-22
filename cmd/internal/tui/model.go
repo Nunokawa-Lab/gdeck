@@ -43,4 +43,3 @@ const (
 	FocusList     FocusPane = iota //左paneのリストにユニークな連番をあてる
 	FocusResponse                  //右pane
 )
-
