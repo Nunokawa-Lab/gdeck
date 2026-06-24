@@ -31,8 +31,9 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 					m.response = nil
 
-					// スクロール
-					if m.cursor <= ((len(m.filteredRequests) - 1) - m.displayRequestCnt) {
+					// スクロール判定：カーソルが見える範囲の上を超えたら
+					firstVisibleIndex := m.leftViewport.YOffset / 2
+					if m.cursor < firstVisibleIndex {
 						m.leftViewport.ScrollUp(2)
 					}
 				}
@@ -42,8 +43,10 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 					m.response = nil
 
-					// スクロール
-					if m.cursor >= m.displayRequestCnt {
+					// スクロール判定：カーソルが見える範囲の下を超えたら
+					firstVisibleIndex := m.leftViewport.YOffset / 2
+					lastVisibleIndex := firstVisibleIndex + m.displayRequestCnt - 1
+					if m.cursor > lastVisibleIndex {
 						m.leftViewport.ScrollDown(2)
 					}
 				}
@@ -188,30 +191,35 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			case "up":
 				if m.cursor > 0 {
 					m.cursor--
-
-					m.response = nil
-					m.loadCurrentRequest()
-					m.leftViewport.SetContent(m.requestListContent())
-					m.rightViewport.SetContent(m.responseContent())
-
-					// スクロール
-					if m.cursor <= ((len(m.requests) - 1) - m.displayRequestCnt) {
+					
+					// スクロール判定：カーソルが見える範囲の上を超えたら
+					firstVisibleIndex := m.leftViewport.YOffset / 2
+					if m.cursor < firstVisibleIndex {
 						m.leftViewport.ScrollUp(2)
 					}
-				}
-			case "down":
-				if m.cursor < len(m.requests)-1 {
-					m.cursor++
 
 					m.response = nil
 					m.loadCurrentRequest()
 					m.leftViewport.SetContent(m.requestListContent())
 					m.rightViewport.SetContent(m.responseContent())
 
-					// スクロール
-					if m.cursor >= m.displayRequestCnt {
+				}
+			case "down":
+				if m.cursor < len(m.requests) - 1 {
+					m.cursor++
+					
+					// スクロール判定：カーソルが見える範囲の下を超えたら
+					firstVisibleIndex := m.leftViewport.YOffset / 2
+					lastVisibleIndex := firstVisibleIndex + m.displayRequestCnt - 1
+					if m.cursor > lastVisibleIndex {
 						m.leftViewport.ScrollDown(2)
 					}
+
+					m.response = nil
+					m.loadCurrentRequest()
+					m.leftViewport.SetContent(m.requestListContent())
+					m.rightViewport.SetContent(m.responseContent())
+
 				}
 			case "enter":
 				selected := m.requests[m.cursor]
