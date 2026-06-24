@@ -178,6 +178,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.response = nil
 			m.cursor = 0
 			m.loadCurrentRequest()
+			m.leftViewport.SetContent(m.requestListContent())
 			m.rightViewport.SetContent(m.responseContent())
 
 			return m, textinput.Blink
