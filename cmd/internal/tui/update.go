@@ -192,7 +192,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			case "up":
 				if m.cursor > 0 {
 					m.cursor--
-					
+
 					// スクロール判定：カーソルが見える範囲の上を超えたら
 					firstVisibleIndex := m.leftViewport.YOffset / 2
 					if m.cursor < firstVisibleIndex {
@@ -206,9 +206,9 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 				}
 			case "down":
-				if m.cursor < len(m.requests) - 1 {
+				if m.cursor < len(m.requests)-1 {
 					m.cursor++
-					
+
 					// スクロール判定：カーソルが見える範囲の下を超えたら
 					firstVisibleIndex := m.leftViewport.YOffset / 2
 					lastVisibleIndex := firstVisibleIndex + m.displayRequestCnt - 1
