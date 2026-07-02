@@ -11,7 +11,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var cmd tea.Cmd
 
 	// 検索モード中の挙動
-	if m.searchMode {
+	if m.mode == ModeSearch {
 
 		switch msg := msg.(type) {
 		case tea.KeyMsg:
@@ -23,7 +23,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.setSelectedRequest(selected.Name)
 
 				// もしキープした位置がスクロールしないと見えない位置なら、見える位置までオフセットを調整
-				if m.displayRequestCnt < m.cursor + 1 {
+				if m.displayRequestCnt < m.cursor+1 {
 					m.leftViewport.YOffset = ((m.cursor + 1) - m.displayRequestCnt) * 2
 				}
 
@@ -88,7 +88,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.setSelectedRequest(selected.Name)
 
 			// もしキープした位置がスクロールしないと見えない位置なら、見える位置までオフセットを調整
-			if m.displayRequestCnt < m.cursor + 1 {
+			if m.displayRequestCnt < m.cursor+1 {
 				m.leftViewport.YOffset = ((m.cursor + 1) - m.displayRequestCnt) * 2
 			}
 
@@ -143,7 +143,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
-		if m.deleteConfirm {
+		if m.mode == ModeDeleteConfirm {
 			switch msg.String() {
 			case "y":
 				// 削除
@@ -163,10 +163,10 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.leftViewport.SetContent(m.requestListContent())
 				m.rightViewport.SetContent(m.responseContent())
 
-				m.deleteConfirm = false
+				m.mode = ModeNormal
 
 			case "n":
-				m.deleteConfirm = false
+				m.mode = ModeNormal
 			}
 
 			return m, nil
@@ -245,9 +245,8 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 				return m, asyncRunCmd(selected.Name, selected.Method)
 			case "d":
-				// 選択中リクエストの削除確認をだす
-				m.deleteConfirm = true
-
+				// 削除確認モードオン
+				m.mode = ModeDeleteConfirm
 			}
 		}
 

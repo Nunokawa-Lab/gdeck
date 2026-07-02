@@ -124,7 +124,7 @@ func painFooterLine(text string, width int, isActive bool) string {
 // 検索窓
 func (m Model) searchBar() string {
 
-	if !m.searchMode {
+	if m.mode != ModeSearch {
 		return ""
 	}
 
@@ -138,14 +138,23 @@ func (m Model) searchBar() string {
 // フッター
 func (m Model) footer() string {
 
-	ft := "↑↓ Move&Scroll   ↵ Run   d Delete   ←→ Focus   / SearchMode   q Quit"
-	if m.searchMode {
-		ft = "↑↓ Select   ↵ Confirm   esc Cancel"
-	}
-	if m.deleteConfirm {
-		ft = "⚠️  Delete " + m.currentRequest.Name + " ?   y Yes   n No"
-		return footerDeleteStyle.Render(ft)
+	var (
+		text  string
+		style = footerStyle
+	)
+
+	switch m.mode {
+
+	case ModeSearch:
+		text = "↑↓ Select   ↵ Confirm   esc Cancel"
+
+	case ModeDeleteConfirm:
+		text = "⚠️  Delete " + m.currentRequest.Name + " ?   y Yes   n No"
+		style = footerDeleteStyle
+
+	default:
+		text = "↑↓ Move&Scroll   ↵ Run   d Delete   ←→ Focus   / SearchMode   q Quit"
 	}
 
-	return footerStyle.Render(ft)
+	return style.Render(text)
 }

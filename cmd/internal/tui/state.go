@@ -10,7 +10,7 @@ import (
 /** modelの状態を変更する処理を実装するファイル */
 
 func (m *Model) initSearch() {
-	m.searchMode = true
+	m.mode = ModeSearch
 	m.searchInput.SetValue("")
 	m.searchInput.Focus()
 }
@@ -36,7 +36,7 @@ func (m *Model) applySearch(text string) {
 }
 
 func (m *Model) resetSearch() {
-	m.searchMode = false
+	m.mode = ModeNormal
 
 	m.searchInput.Blur()
 	m.searchInput.SetValue("")
@@ -48,7 +48,7 @@ func (m *Model) resetSearch() {
 func (m *Model) loadCurrentRequest() {
 
 	requests := m.requests
-	if m.searchMode {
+	if m.mode == ModeSearch {
 		if len(m.filteredRequests) > 0 {
 			requests = m.filteredRequests
 		} else {

@@ -29,12 +29,11 @@ type Model struct {
 
 	displayRequestCnt int //現在の左ペインの高さに対して、表示されているリクエストリストの数
 
-	searchMode       bool
 	filteredRequests []model.RequestItem
 
 	searchInput textinput.Model
 
-	deleteConfirm bool
+	mode Mode
 }
 
 type FocusPane int
@@ -42,4 +41,12 @@ type FocusPane int
 const (
 	FocusList     FocusPane = iota //左paneのリストにユニークな連番をあてる
 	FocusResponse                  //右pane
+)
+
+type Mode int
+
+const (
+	ModeNormal Mode = iota
+	ModeSearch
+	ModeDeleteConfirm
 )

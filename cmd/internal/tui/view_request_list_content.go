@@ -14,12 +14,12 @@ func (m Model) requestListContent() string {
 	rows := make([]string, 0)
 
 	requests := m.requests
-	if m.searchMode {
+	if m.mode == ModeSearch {
 		requests = m.filteredRequests
 	}
 
 	if len(requests) < 1 {
-		s = "No hits! Sent from 2070? 🛸🌌\n\n[ try another kw … ]"
+		s = "No hits. Sent from 2070 ? 🪐🛸🌌\n\n[ try another kw … ]"
 		return s
 	}
 

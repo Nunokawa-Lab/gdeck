@@ -29,7 +29,7 @@ func (m Model) renderList(width int, height int) string {
 func (m Model) requestFooterText() string {
 
 	requests := m.requests
-	if m.searchMode {
+	if m.mode == ModeSearch {
 		requests = m.filteredRequests
 	}
 
