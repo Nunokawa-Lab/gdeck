@@ -17,10 +17,15 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case tea.KeyMsg:
 			switch msg.String() {
 			case "esc":
-				// 検索モードを解除しつつカーソルは実行したものに当てる
+				// 検索モードを解除しつつカーソルは当てていたリクエストの位置をキープする
 				selected := m.filteredRequests[m.cursor] //リセットする前にカーソルの当たっているリクエスト取得
 				m.resetSearch()
 				m.setSelectedRequest(selected.Name)
+
+				// もしキープした位置がスクロールしないと見えない位置なら、見える位置までオフセットを調整
+				if m.displayRequestCnt < m.cursor + 1 {
+					m.leftViewport.YOffset = ((m.cursor + 1) - m.displayRequestCnt) * 2
+				}
 
 				m.leftViewport.SetContent(m.requestListContent())
 				m.rightViewport.SetContent(m.responseContent())
@@ -81,6 +86,11 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			selected := m.filteredRequests[m.cursor]
 			m.resetSearch()
 			m.setSelectedRequest(selected.Name)
+
+			// もしキープした位置がスクロールしないと見えない位置なら、見える位置までオフセットを調整
+			if m.displayRequestCnt < m.cursor + 1 {
+				m.leftViewport.YOffset = ((m.cursor + 1) - m.displayRequestCnt) * 2
+			}
 
 			// コンテンツをviewportにセット
 			m.leftViewport.SetContent(m.requestListContent())
