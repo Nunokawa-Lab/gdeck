@@ -4,7 +4,7 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-func (m Model) renderList(width int, height int) string {
+func (m Model) renderLeftPane(width int, height int) string {
 
 	paneStyle := activeLeftPaneStyle
 	if m.focus != FocusList {

@@ -82,3 +82,34 @@ func (m *Model) setSelectedRequest(selectedName string) {
 		}
 	}
 }
+
+func (m *Model) showPreview() {
+	m.rightPaneView = RightPanePreview
+	m.loading = false
+	m.response = nil
+}
+
+func (m *Model) startLoading(selected *model.RequestItem) {
+	m.rightPaneView = RightPaneLoading
+	m.loading = true
+	m.response = nil
+	m.errorMsg = ""
+	m.selected = selected
+}
+
+func (m *Model) showResponse(res *model.Response) {
+	m.rightPaneView = RightPaneResponse
+	m.loading = false
+	m.response = res
+}
+
+func (m *Model) initSave() {
+	m.mode = ModeSave
+	m.focus = FocusResponse
+}
+
+func (m *Model) resetSave() {
+	m.mode = ModeNormal
+	m.focus = FocusList
+	m.showPreview()
+}

@@ -13,30 +13,30 @@ import (
 //	┗レスポンス
 func (m Model) responseContent() string {
 
-	if m.loading {
+	switch m.rightPaneView {
 
+	case RightPaneLoading:
 		return fmt.Sprintf(
 			"\n%s Sending Request...",
 			m.spinner.View(),
 		)
-	}
 
-	if m.currentRequest == nil {
-		// 検索後0件ヒットだった場合に入る
-		return fmt.Sprintln("Listening for your signals 📡✨")
-	}
-
-	if m.response == nil {
-
-		return output.RenderTUIPreview(
-			m.currentRequest,
+	case RightPaneResponse:
+		if m.response == nil {
+			// フォールバック（通常は来ない）
+			return fmt.Sprintln("Listening for your signals 📡✨")
+		}
+		return output.RenderTUIResponse(
+			m.response,
+			m.selected.Method,
+			m.rightViewport.Width,
+			m.focus == FocusResponse,
 		)
-	}
 
-	return output.RenderTUIResponse(
-		m.response,
-		m.selected.Method,
-		m.rightViewport.Width,
-		m.focus == FocusResponse,
-	)
+	default: // RightPanePreview
+		if m.currentRequest == nil {
+			return fmt.Sprintln("Listening for your signals 📡✨")
+		}
+		return output.RenderTUIPreview(m.currentRequest)
+	}
 }

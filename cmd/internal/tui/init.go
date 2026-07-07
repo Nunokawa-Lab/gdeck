@@ -44,6 +44,7 @@ func InitialModel() (Model, error) {
 		leftViewport:  vp,
 		rightViewport: vp,
 		searchInput:   ti,
+		rightPaneView: RightPanePreview,
 	}
 
 	m.loadCurrentRequest()

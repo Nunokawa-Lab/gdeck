@@ -14,7 +14,8 @@ type Model struct {
 	currentRequest *model.Request      //カーソルが当たっているリクエスト情報
 
 	response *model.Response //実行されたリクエストレスポンス
-	loading  bool
+	rightPaneView RightPaneView // 右ペインの表示状態（表示判定には使用しないようにする）
+	loading       bool // rightPaneView と同期して更新する
 	errorMsg string
 
 	spinner       spinner.Model
@@ -50,4 +51,13 @@ const (
 	ModeSearch
 	ModeDeleteConfirm
 	ModeSave
+)
+
+type RightPaneView int
+
+const (
+	RightPanePreview RightPaneView = iota
+	RightPaneLoading
+	RightPaneResponse
+	// リクエストの新規作成も右ペイン領域を使用するが Mode で管理する
 )

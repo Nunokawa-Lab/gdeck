@@ -34,7 +34,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				if m.cursor > 0 {
 					m.cursor--
 
-					m.response = nil
+					m.showPreview()
 
 					// スクロール判定：カーソルが見える範囲の上を超えたら
 					firstVisibleIndex := m.leftViewport.YOffset / 2
@@ -46,7 +46,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				if m.cursor < len(m.filteredRequests)-1 {
 					m.cursor++
 
-					m.response = nil
+					m.showPreview()
 
 					// スクロール判定：カーソルが見える範囲の下を超えたら
 					firstVisibleIndex := m.leftViewport.YOffset / 2
@@ -58,29 +58,23 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			case "enter":
 				selected := m.filteredRequests[m.cursor]
 
-				// 実行前に初期値をセット
-				m.loading = true
-				m.response = nil
-				m.errorMsg = ""
-				m.selected = &selected
-				// ローディングUI表示
+				m.startLoading(&selected)
 				m.rightViewport.SetContent(m.responseContent())
 
 				return m, asyncRunCmd(selected.Name, selected.Method)
 			default:
 				// 各値を初期値に戻す
-				m.response = nil
+				m.showPreview()
 				m.cursor = 0
 			}
 		case runFinishedMsg:
-			m.loading = false
-
 			if msg.err != nil {
 				m.errorMsg = msg.err.Error()
+				m.showPreview()
 				return m, nil
 			}
 
-			m.response = msg.response
+			m.showResponse(msg.response)
 
 			// 検索モードを解除しつつカーソルは実行したものに当てる
 			selected := m.filteredRequests[m.cursor]
@@ -100,7 +94,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case spinner.TickMsg:
 			m.spinner, cmd = m.spinner.Update(msg)
 
-			if m.loading {
+			if m.rightPaneView == RightPaneLoading {
 				m.rightViewport.SetContent(
 					m.responseContent(),
 				)
@@ -175,20 +169,17 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	}
 
 	/** 保存モード時の挙動 */
-	switch msg := msg.(type) {
-	case tea.KeyMsg:
-		switch msg.String() {
-		case "esc":
-			// フォーカスを左ペインへ
-			m.focus = FocusList
-
-			// 保存モード終了
-			m.mode = ModeNormal
-
-			return m, nil
+	if m.mode == ModeSave {
+		switch msg := msg.(type) {
+		case tea.KeyMsg:
+			switch msg.String() {
+			case "esc":
+				m.resetSave()
+				return m, nil
+			}
 		}
+		return m, nil
 	}
-	
 
 	/** 通常時の挙動 */
 	switch msg := msg.(type) {
@@ -207,7 +198,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 			// 他の各値も初期値に戻す
 			m.focus = FocusList
-			m.response = nil
+			m.showPreview()
 			m.cursor = 0
 			m.loadCurrentRequest()
 			m.leftViewport.SetContent(m.requestListContent())
@@ -215,11 +206,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 			return m, textinput.Blink
 		case "s":
-			// 保存モードオン
-			m.mode = ModeSave
-
-			// フォーカスを右ペインへ
-			m.focus = FocusResponse
+			m.initSave()
 			return m, nil
 		}
 
@@ -238,7 +225,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 						m.leftViewport.ScrollUp(2)
 					}
 
-					m.response = nil
+					m.showPreview()
 					m.loadCurrentRequest()
 					m.leftViewport.SetContent(m.requestListContent())
 					m.rightViewport.SetContent(m.responseContent())
@@ -255,7 +242,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 						m.leftViewport.ScrollDown(2)
 					}
 
-					m.response = nil
+					m.showPreview()
 					m.loadCurrentRequest()
 					m.leftViewport.SetContent(m.requestListContent())
 					m.rightViewport.SetContent(m.responseContent())
@@ -264,12 +251,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			case "enter":
 				selected := m.requests[m.cursor]
 
-				// 実行前に初期値をセット
-				m.loading = true
-				m.response = nil
-				m.errorMsg = ""
-				m.selected = &selected
-				// ローディングUI表示
+				m.startLoading(&selected)
 				m.rightViewport.SetContent(m.responseContent())
 
 				return m, asyncRunCmd(selected.Name, selected.Method)
@@ -295,14 +277,13 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, nil
 		}
 	case runFinishedMsg:
-		m.loading = false
-
 		if msg.err != nil {
 			m.errorMsg = msg.err.Error()
+			m.showPreview()
 			return m, nil
 		}
 
-		m.response = msg.response
+		m.showResponse(msg.response)
 
 		// コンテンツをviewportにセット
 		m.rightViewport.SetContent(m.responseContent())
@@ -311,7 +292,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case spinner.TickMsg:
 		m.spinner, cmd = m.spinner.Update(msg)
 
-		if m.loading {
+		if m.rightPaneView == RightPaneLoading {
 			m.rightViewport.SetContent(
 				m.responseContent(),
 			)

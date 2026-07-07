@@ -10,8 +10,8 @@ func (m Model) View() string {
 
 	search := searchStyle.Render(m.searchBar())
 
-	left := m.renderList(m.leftPaneWidth, m.paneHeight)
-	right := m.renderResponse(m.rightPaneWidth, m.paneHeight)
+	left := m.renderLeftPane(m.leftPaneWidth, m.paneHeight)
+	right := m.renderRightPane(m.rightPaneWidth, m.paneHeight)
 	body := lipgloss.JoinHorizontal(
 		lipgloss.Top,
 		left,
