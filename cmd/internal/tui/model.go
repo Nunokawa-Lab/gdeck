@@ -49,4 +49,5 @@ const (
 	ModeNormal Mode = iota
 	ModeSearch
 	ModeDeleteConfirm
+	ModeSave
 )

@@ -10,7 +10,7 @@ import (
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var cmd tea.Cmd
 
-	// 検索モード中の挙動
+	/** 検索モード中の挙動 */
 	if m.mode == ModeSearch {
 
 		switch msg := msg.(type) {
@@ -141,9 +141,10 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	}
 
-	switch msg := msg.(type) {
-	case tea.KeyMsg:
-		if m.mode == ModeDeleteConfirm {
+	/** 削除確認モード中の挙動 */
+	if m.mode == ModeDeleteConfirm {
+		switch msg := msg.(type) {
+		case tea.KeyMsg:
 			switch msg.String() {
 			case "y":
 				// 削除
@@ -168,9 +169,30 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			case "n":
 				m.mode = ModeNormal
 			}
+		}
+
+		return m, nil
+	}
+
+	/** 保存モード時の挙動 */
+	switch msg := msg.(type) {
+	case tea.KeyMsg:
+		switch msg.String() {
+		case "esc":
+			// フォーカスを左ペインへ
+			m.focus = FocusList
+
+			// 保存モード終了
+			m.mode = ModeNormal
 
 			return m, nil
 		}
+	}
+	
+
+	/** 通常時の挙動 */
+	switch msg := msg.(type) {
+	case tea.KeyMsg:
 
 		switch msg.String() {
 		case "q", "ctrl+c":
@@ -192,6 +214,13 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.rightViewport.SetContent(m.responseContent())
 
 			return m, textinput.Blink
+		case "s":
+			// 保存モードオン
+			m.mode = ModeSave
+
+			// フォーカスを右ペインへ
+			m.focus = FocusResponse
+			return m, nil
 		}
 
 		// 左pane挙動
