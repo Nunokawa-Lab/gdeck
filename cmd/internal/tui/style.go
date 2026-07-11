@@ -70,6 +70,14 @@ var (
 				MarginTop(1).
 				PaddingBottom(1)
 
+	errorMsgStyle = lipgloss.NewStyle().
+			Bold(true).
+			Foreground(lipgloss.Color("203"))
+
+	successMsgStyle = lipgloss.NewStyle().
+			Bold(true).
+			Foreground(lipgloss.Color("42"))
+
 	activeLeftPaneStyle = lipgloss.NewStyle().
 				Padding(1, 1, 0, 1).
 				Border(lipgloss.NormalBorder(), false, true, false, true).

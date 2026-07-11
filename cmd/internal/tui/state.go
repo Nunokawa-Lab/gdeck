@@ -3,6 +3,7 @@ package tui
 import (
 	"strings"
 
+	tea "github.com/charmbracelet/bubbletea"
 	"github.com/nunokawa/gdeck/cmd/internal/model"
 	"github.com/nunokawa/gdeck/cmd/internal/store"
 )
@@ -106,10 +107,67 @@ func (m *Model) showResponse(res *model.Response) {
 func (m *Model) initSave() {
 	m.mode = ModeSave
 	m.focus = FocusResponse
+	m.saveForm.focus = focusSaveFieldName
+	m.errorMsg = ""
+	m.saveForm.name.Focus()
 }
 
 func (m *Model) resetSave() {
 	m.mode = ModeNormal
 	m.focus = FocusList
+	m.saveForm.AllBlurFormFiled()
+	m.saveForm.AllClearFormFiled()
+	m.errorMsg = ""
 	m.showPreview()
+}
+
+// 全てのsaveFormのフォーカスカーソルを消す
+func (sf *saveForm) AllBlurFormFiled() {
+	sf.name.Blur()
+	sf.method.Blur()
+	sf.url.Blur()
+}
+
+// 全てのsaveFormの入力値を消す
+func (sf *saveForm) AllClearFormFiled() {
+	sf.name.SetValue("")
+	sf.method.SetValue("")
+	sf.url.SetValue("")
+}
+
+// saveForm.focusに設定
+func (sf *saveForm) focusSaveFormFiled(focus SaveFocusFiled) {
+	sf.AllBlurFormFiled()
+
+	switch focus {
+	case 0:
+		sf.focus = focusSaveFieldName
+		sf.name.Focus()
+	case 1:
+		sf.focus = focusSaveFieldMethod
+		sf.method.Focus()
+	case 2:
+		sf.focus = focusSaveFieldURL
+		sf.url.Focus()
+	}
+}
+
+// saveFormの更新
+// saveForm.focusの値でどのフォームを更新するか切り分け
+func (sf *saveForm) updateForm(msg tea.Msg) (tea.Cmd) {
+	var cmd tea.Cmd
+	switch sf.focus {
+	case focusSaveFieldName:
+		sf.name, cmd = sf.name.Update(msg)
+	case focusSaveFieldMethod:
+		sf.method, cmd = sf.method.Update(msg)
+	case focusSaveFieldURL:
+		sf.url, cmd = sf.url.Update(msg)
+	}
+	return cmd
+}
+
+func (m *Model) startSaveLoading() {
+	m.loading = true
+	m.errorMsg = ""
 }

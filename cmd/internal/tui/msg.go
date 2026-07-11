@@ -8,3 +8,11 @@ type runFinishedMsg struct {
 	response *model.Response
 	err      error
 }
+
+type saveFinishedMsg struct {
+	name string
+	err error
+}
+
+// 自動消去用
+type clearStatusMsg struct{}

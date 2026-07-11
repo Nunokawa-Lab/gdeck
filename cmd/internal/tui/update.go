@@ -1,14 +1,26 @@
 package tui
 
 import (
+	"fmt"
+	"strings"
+	"time"
+
 	"github.com/charmbracelet/bubbles/spinner"
+	// "github.com/charmbracelet/bubbles/textarea"
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/nunokawa/gdeck/cmd/internal/model"
 	"github.com/nunokawa/gdeck/cmd/internal/store"
 )
 
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var cmd tea.Cmd
+
+	switch msg.(type) {
+	case clearStatusMsg:
+		m.statusMsg = ""
+		return m, nil
+	}
 
 	/** 検索モード中の挙動 */
 	if m.mode == ModeSearch {
@@ -144,6 +156,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				// 削除
 				err := store.Delete(m.currentRequest.Name)
 				if err != nil {
+					// TODO エラーを画面に出すようにする
 					m.errorMsg = err.Error()
 					return m, nil
 				}
@@ -175,10 +188,74 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			switch msg.String() {
 			case "esc":
 				m.resetSave()
+				m.leftViewport.SetContent(m.requestListContent())
+				m.rightViewport.SetContent(m.responseContent())
+				return m, nil
+			case "enter":
+				name := strings.TrimSpace(m.saveForm.name.Value())
+				method := strings.ToUpper(strings.TrimSpace(m.saveForm.method.Value()))
+				url := strings.TrimSpace(m.saveForm.url.Value())
+
+				if name == "" || method == "" || url == "" {
+					m.errorMsg = "Name, Method, and URL are required"
+					return m, nil
+				}
+
+				m.errorMsg = ""
+				req := &model.Request{
+					Name:   name,
+					Method: method,
+					URL:    url,
+				}
+
+				m.startSaveLoading()
+
+				return m, asyncSaveCmd(req)
+			case "up", "shift+tab":
+				m.errorMsg = ""
+				if m.saveForm.focus > 0 {
+					m.saveForm.focus--
+					m.saveForm.focusSaveFormFiled(m.saveForm.focus)
+				}
+			case "down", "tab":
+				m.errorMsg = ""
+				focus := m.saveForm.toIntFocus()
+				if (focus + 1) < m.saveFormCount {
+					m.saveForm.focus++
+					m.saveForm.focusSaveFormFiled(m.saveForm.focus)
+				}
+			default:
+				m.errorMsg = ""
+			}
+		case saveFinishedMsg:
+			if msg.err != nil {
+				m.errorMsg = msg.err.Error()
 				return m, nil
 			}
+
+			// リクエストを再読み込み
+			requests, err := store.List()
+			if err != nil {
+				m.errorMsg = err.Error()
+				return m, nil
+			}
+			m.requests = requests
+
+			m.cursor = 0
+			m.leftViewport.YOffset = 0
+			m.statusMsg = fmt.Sprintf("✓ Saved %s", msg.name)
+			m.resetSave()
+
+			m.leftViewport.SetContent(m.requestListContent())
+			m.rightViewport.SetContent(m.responseContent())
+
+			// 2秒間だけ成功メッセージ表示
+			return m, clearStatusAfter(2 * time.Second)
 		}
-		return m, nil
+
+		cmd = m.saveForm.updateForm(msg)
+
+		return m, cmd
 	}
 
 	/** 通常時の挙動 */
@@ -207,7 +284,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, textinput.Blink
 		case "s":
 			m.initSave()
-			return m, nil
+			return m, textinput.Blink
 		}
 
 		// 左pane挙動

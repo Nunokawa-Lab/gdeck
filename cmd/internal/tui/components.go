@@ -153,11 +153,18 @@ func (m Model) footer() string {
 		style = footerDeleteStyle
 	
 	case ModeSave:
-		text = "↵ Confirm   esc Cancel"
+		text = "↑↓ MoveField   ↵ Confirm   esc Cancel"
 
 	default:
 		text = "↑↓ Move&Scroll   ↵ Run   s Save   d Delete   ←→ Focus   / SearchMode   q Quit"
 	}
 
-	return style.Render(text)
+	status := successMsgStyle.Render(m.statusMsg)
+
+	shortcut := style.Render(text)
+	if m.statusMsg == "" {
+		return shortcut
+	}
+
+	return lipgloss.JoinVertical(lipgloss.Left, status, shortcut)
 }

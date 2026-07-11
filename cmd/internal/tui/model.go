@@ -16,7 +16,8 @@ type Model struct {
 	response *model.Response //実行されたリクエストレスポンス
 	rightPaneView RightPaneView // 右ペインの表示状態（表示判定には使用しないようにする）
 	loading       bool // rightPaneView と同期して更新する
-	errorMsg string
+	errorMsg  string
+	statusMsg string // フッター表示用の一時メッセージ（成功など）
 
 	spinner       spinner.Model
 	leftViewport  viewport.Model
@@ -33,6 +34,9 @@ type Model struct {
 	filteredRequests []model.RequestItem
 
 	searchInput textinput.Model
+
+	saveForm saveForm
+	saveFormCount int
 
 	mode Mode
 }
@@ -61,3 +65,24 @@ const (
 	RightPaneResponse
 	// リクエストの新規作成も右ペイン領域を使用するが Mode で管理する
 )
+
+type SaveFocusFiled int
+
+const (
+	focusSaveFieldName SaveFocusFiled = iota
+	focusSaveFieldMethod
+	focusSaveFieldURL
+)
+
+// saveコマンド用フォーム
+type saveForm struct {
+	name textinput.Model
+	method textinput.Model
+	url textinput.Model
+	focus SaveFocusFiled // 縦に並んだtextinput毎のフォーカス
+}
+
+// 比較や計算する時に型不整合が起きない用のInt変換
+func (sf *saveForm) toIntFocus() int {
+	return int(sf.focus)
+}
