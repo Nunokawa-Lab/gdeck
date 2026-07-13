@@ -83,7 +83,7 @@ func InitialModel() (Model, error) {
 		searchInput:   ti,
 		rightPaneView: RightPanePreview,
 		saveForm:  sf,
-		saveFormCount: 3,
+		saveFormFieldCount: 3,
 	}
 
 	m.loadCurrentRequest()

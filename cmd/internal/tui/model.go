@@ -36,7 +36,7 @@ type Model struct {
 	searchInput textinput.Model
 
 	saveForm saveForm
-	saveFormCount int
+	saveFormFieldCount int
 
 	mode Mode
 }

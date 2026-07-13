@@ -220,7 +220,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			case "down", "tab":
 				m.errorMsg = ""
 				focus := m.saveForm.toIntFocus()
-				if (focus + 1) < m.saveFormCount {
+				if (focus + 1) < m.saveFormFieldCount {
 					m.saveForm.focus++
 					m.saveForm.focusSaveFormFiled(m.saveForm.focus)
 				}
