@@ -74,9 +74,11 @@ Authorization: Bearer {{TOKEN}}`
 	saveFormBody.SetWidth(80)
 	saveFormBody.SetHeight(15)
 	saveFormBody.ShowLineNumbers = false
-	saveFormBody.Placeholder = `{
+	saveFormBody.Placeholder = `Use {{WEBHOOK_URL}} for env substitution
+
+{
   "role": "admin",
-  "sort": "desc"
+  "webhook-url": "{{WEBHOOK_URL}}"
 }`
 
 	// saveform init
