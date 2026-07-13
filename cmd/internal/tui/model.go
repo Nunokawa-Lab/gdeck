@@ -13,11 +13,11 @@ type Model struct {
 	selected       *model.RequestItem  //選択されたリクエストアイテム
 	currentRequest *model.Request      //カーソルが当たっているリクエスト情報
 
-	response *model.Response //実行されたリクエストレスポンス
-	rightPaneView RightPaneView // 右ペインの表示状態（表示判定には使用しないようにする）
-	loading       bool // rightPaneView と同期して更新する
-	errorMsg  string
-	statusMsg string // フッター表示用の一時メッセージ（成功など）
+	response      *model.Response //実行されたリクエストレスポンス
+	rightPaneView RightPaneView   // 右ペインの表示状態（表示判定には使用しないようにする）
+	loading       bool            // rightPaneView と同期して更新する
+	errorMsg      string
+	statusMsg     string // フッター表示用の一時メッセージ（成功など）
 
 	spinner       spinner.Model
 	leftViewport  viewport.Model
@@ -35,7 +35,7 @@ type Model struct {
 
 	searchInput textinput.Model
 
-	saveForm saveForm
+	saveForm           saveForm
 	saveFormFieldCount int
 
 	mode Mode
@@ -76,10 +76,10 @@ const (
 
 // saveコマンド用フォーム
 type saveForm struct {
-	name textinput.Model
+	name   textinput.Model
 	method textinput.Model
-	url textinput.Model
-	focus SaveFocusFiled // 縦に並んだtextinput毎のフォーカス
+	url    textinput.Model
+	focus  SaveFocusFiled // 縦に並んだtextinput毎のフォーカス
 }
 
 // 比較や計算する時に型不整合が起きない用のInt変換

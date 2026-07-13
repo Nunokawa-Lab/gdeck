@@ -69,20 +69,19 @@ func (m Model) renderNewRequest(width int, height int) string {
 			"URL",
 			m.saveForm.url.View(),
 		}
-	
+
 		if m.errorMsg != "" {
 			formParts = append([]string{
 				errorMsgStyle.Render("⚠️  " + m.errorMsg),
 				"",
 			}, formParts...)
 		}
-	
+
 		form = lipgloss.JoinVertical(
 			lipgloss.Left,
 			formParts...,
 		)
 	}
-
 
 	return lipgloss.JoinVertical(
 		lipgloss.Left,
@@ -94,4 +93,4 @@ func (m Model) renderNewRequest(width int, height int) string {
 				Render(form),
 		),
 	)
-} 
+}

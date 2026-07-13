@@ -37,15 +37,15 @@ func InitialModel() (Model, error) {
 	ti.Placeholder = "get-comment"
 
 	// textarea new create
-// 	ta := textarea.New()
-// 	ta.CharLimit = 0 // 制限なし
-// 	ta.SetWidth(60)  // TODO 要検討
-// 	ta.SetHeight(15)  // TODO 要検討
-// 	// ta.Prompt = ""
-// 	ta.ShowLineNumbers = false
-// 	ta.Placeholder = `GetSampleUsers GET https://api.example.com/v1/users
-// -H "Authorization: Bearer {{AUTH_TOKEN}}"
-// -d '{"role": "admin"}'`
+	// 	ta := textarea.New()
+	// 	ta.CharLimit = 0 // 制限なし
+	// 	ta.SetWidth(60)  // TODO 要検討
+	// 	ta.SetHeight(15)  // TODO 要検討
+	// 	// ta.Prompt = ""
+	// 	ta.ShowLineNumbers = false
+	// 	ta.Placeholder = `GetSampleUsers GET https://api.example.com/v1/users
+	// -H "Authorization: Bearer {{AUTH_TOKEN}}"
+	// -d '{"role": "admin"}'`
 
 	// name-textinput new create
 	saveFormName := textinput.New()
@@ -67,22 +67,22 @@ func InitialModel() (Model, error) {
 
 	// saveform init
 	sf := saveForm{
-		name: saveFormName,
+		name:   saveFormName,
 		method: saveFormMethod,
-		url: saveFormUrl,
-		focus: focusSaveFieldName,
+		url:    saveFormUrl,
+		focus:  focusSaveFieldName,
 	}
 
 	// bubbleteaに渡すinterfaceは Init() Update() View() をレシーバーに持っている必要あり
 	m := Model{
-		requests:      requests,
-		cursor:        0,
-		spinner:       s,
-		leftViewport:  vp,
-		rightViewport: vp,
-		searchInput:   ti,
-		rightPaneView: RightPanePreview,
-		saveForm:  sf,
+		requests:           requests,
+		cursor:             0,
+		spinner:            s,
+		leftViewport:       vp,
+		rightViewport:      vp,
+		searchInput:        ti,
+		rightPaneView:      RightPanePreview,
+		saveForm:           sf,
 		saveFormFieldCount: 3,
 	}
 

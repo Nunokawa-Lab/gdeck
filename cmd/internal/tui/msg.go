@@ -11,7 +11,7 @@ type runFinishedMsg struct {
 
 type saveFinishedMsg struct {
 	name string
-	err error
+	err  error
 }
 
 // 自動消去用

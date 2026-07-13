@@ -151,7 +151,7 @@ func (m Model) footer() string {
 	case ModeDeleteConfirm:
 		text = "⚠️  Delete " + m.currentRequest.Name + " ?   y Yes   n No"
 		style = footerDeleteStyle
-	
+
 	case ModeSave:
 		text = "↑↓ MoveField   ↵ Confirm   esc Cancel"
 

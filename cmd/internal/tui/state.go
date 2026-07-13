@@ -154,7 +154,7 @@ func (sf *saveForm) focusSaveFormFiled(focus SaveFocusFiled) {
 
 // saveFormの更新
 // saveForm.focusの値でどのフォームを更新するか切り分け
-func (sf *saveForm) updateForm(msg tea.Msg) (tea.Cmd) {
+func (sf *saveForm) updateForm(msg tea.Msg) tea.Cmd {
 	var cmd tea.Cmd
 	switch sf.focus {
 	case focusSaveFieldName:
