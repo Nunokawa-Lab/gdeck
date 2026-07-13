@@ -125,6 +125,7 @@ func (sf *saveForm) AllBlurFormFiled() {
 	sf.name.Blur()
 	sf.method.Blur()
 	sf.url.Blur()
+	sf.header.Blur()
 	sf.body.Blur()
 }
 
@@ -133,6 +134,7 @@ func (sf *saveForm) AllClearFormFiled() {
 	sf.name.SetValue("")
 	sf.method.SetValue("")
 	sf.url.SetValue("")
+	sf.header.SetValue("")
 	sf.body.SetValue("")
 }
 
@@ -150,6 +152,9 @@ func (sf *saveForm) focusSaveFormFiled(focus SaveFocusFiled) tea.Cmd {
 		sf.focus = focusSaveFieldURL
 		return sf.url.Focus()
 	case 3:
+		sf.focus = focusSaveFieldHeader
+		return sf.header.Focus()
+	case 4:
 		sf.focus = focusSaveFieldBody
 		return sf.body.Focus()
 	}
@@ -168,6 +173,8 @@ func (sf *saveForm) updateForm(msg tea.Msg) tea.Cmd {
 		sf.method, cmd = sf.method.Update(msg)
 	case focusSaveFieldURL:
 		sf.url, cmd = sf.url.Update(msg)
+	case focusSaveFieldHeader:
+		sf.header, cmd = sf.header.Update(msg)
 	case focusSaveFieldBody:
 		sf.body, cmd = sf.body.Update(msg)
 	}

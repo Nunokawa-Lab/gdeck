@@ -73,6 +73,7 @@ const (
 	focusSaveFieldName SaveFocusFiled = iota
 	focusSaveFieldMethod
 	focusSaveFieldURL
+	focusSaveFieldHeader
 	focusSaveFieldBody
 )
 
@@ -81,6 +82,7 @@ type saveForm struct {
 	name   textinput.Model
 	method textinput.Model
 	url    textinput.Model
+	header textarea.Model
 	body   textarea.Model
 	focus  SaveFocusFiled // 縦に並んだtextinput毎のフォーカス
 }

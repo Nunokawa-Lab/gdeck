@@ -69,6 +69,9 @@ func (m Model) renderNewRequest(width int, height int) string {
 			"URL",
 			m.saveForm.url.View(),
 			"",
+			"Headers",
+			m.saveForm.header.View(),
+			"",
 			"Body",
 			m.saveForm.body.View(),
 		}

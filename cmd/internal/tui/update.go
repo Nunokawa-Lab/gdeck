@@ -202,14 +202,22 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				}
 
 				// 任意項目
+				var headers []string
+				for _, line := range strings.Split(m.saveForm.header.Value(), "\n") {
+					line = strings.TrimSpace(line)
+					if line != "" {
+						headers = append(headers, line)
+					}
+				}
 				body := m.saveForm.body.Value()
 
 				m.errorMsg = ""
 				req := &model.Request{
-					Name:   name,
-					Method: method,
-					URL:    url,
-					Body:   body,
+					Name:    name,
+					Method:  method,
+					URL:     url,
+					Headers: headers,
+					Body:    body,
 				}
 
 				m.startSaveLoading()

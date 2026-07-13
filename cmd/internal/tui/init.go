@@ -56,6 +56,18 @@ func InitialModel() (Model, error) {
 	saveFormUrl.Width = 80
 	saveFormUrl.Placeholder = "https://api.example.com/v1/users"
 
+	// header-textarea new create
+	saveFormHeader := textarea.New()
+	saveFormHeader.CharLimit = 0 // 制限なし
+	saveFormHeader.SetWidth(80)
+	saveFormHeader.SetHeight(5)
+	saveFormHeader.ShowLineNumbers = false
+	saveFormHeader.Placeholder = `One header per line
+Use {{TOKEN}} for env substitution
+
+Content-Type: application/json
+Authorization: Bearer {{TOKEN}}`
+
 	// body-textarea new create
 	saveFormBody := textarea.New()
 	saveFormBody.CharLimit = 0 // 制限なし
@@ -72,6 +84,7 @@ func InitialModel() (Model, error) {
 		name:   saveFormName,
 		method: saveFormMethod,
 		url:    saveFormUrl,
+		header: saveFormHeader,
 		body:   saveFormBody,
 		focus:  focusSaveFieldName,
 	}
@@ -86,7 +99,7 @@ func InitialModel() (Model, error) {
 		searchInput:        ti,
 		rightPaneView:      RightPanePreview,
 		saveForm:           sf,
-		saveFormFieldCount: 4,
+		saveFormFieldCount: 5,
 	}
 
 	m.loadCurrentRequest()
