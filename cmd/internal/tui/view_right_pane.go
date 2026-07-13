@@ -68,6 +68,9 @@ func (m Model) renderNewRequest(width int, height int) string {
 			"",
 			"URL",
 			m.saveForm.url.View(),
+			"",
+			"Body",
+			m.saveForm.body.View(),
 		}
 
 		if m.errorMsg != "" {

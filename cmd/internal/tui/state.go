@@ -109,7 +109,6 @@ func (m *Model) initSave() {
 	m.focus = FocusResponse
 	m.saveForm.focus = focusSaveFieldName
 	m.errorMsg = ""
-	m.saveForm.name.Focus()
 }
 
 func (m *Model) resetSave() {
@@ -126,6 +125,7 @@ func (sf *saveForm) AllBlurFormFiled() {
 	sf.name.Blur()
 	sf.method.Blur()
 	sf.url.Blur()
+	sf.body.Blur()
 }
 
 // 全てのsaveFormの入力値を消す
@@ -133,27 +133,32 @@ func (sf *saveForm) AllClearFormFiled() {
 	sf.name.SetValue("")
 	sf.method.SetValue("")
 	sf.url.SetValue("")
+	sf.body.SetValue("")
 }
 
 // saveForm.focusに設定
-func (sf *saveForm) focusSaveFormFiled(focus SaveFocusFiled) {
+func (sf *saveForm) focusSaveFormFiled(focus SaveFocusFiled) tea.Cmd {
 	sf.AllBlurFormFiled()
-
 	switch focus {
 	case 0:
 		sf.focus = focusSaveFieldName
-		sf.name.Focus()
+		return sf.name.Focus()
 	case 1:
 		sf.focus = focusSaveFieldMethod
-		sf.method.Focus()
+		return sf.method.Focus()
 	case 2:
 		sf.focus = focusSaveFieldURL
-		sf.url.Focus()
+		return sf.url.Focus()
+	case 3:
+		sf.focus = focusSaveFieldBody
+		return sf.body.Focus()
 	}
+	return nil
 }
 
 // saveFormの更新
 // saveForm.focusの値でどのフォームを更新するか切り分け
+// カーソルのBlink（点滅）も担当
 func (sf *saveForm) updateForm(msg tea.Msg) tea.Cmd {
 	var cmd tea.Cmd
 	switch sf.focus {
@@ -163,6 +168,8 @@ func (sf *saveForm) updateForm(msg tea.Msg) tea.Cmd {
 		sf.method, cmd = sf.method.Update(msg)
 	case focusSaveFieldURL:
 		sf.url, cmd = sf.url.Update(msg)
+	case focusSaveFieldBody:
+		sf.body, cmd = sf.body.Update(msg)
 	}
 	return cmd
 }

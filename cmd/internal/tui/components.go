@@ -153,7 +153,7 @@ func (m Model) footer() string {
 		style = footerDeleteStyle
 
 	case ModeSave:
-		text = "↑↓ MoveField   ↵ Confirm   esc Cancel"
+		text = "↓ tab   ↑ shift+tab   ctrl+s Confirm   esc Cancel"
 
 	default:
 		text = "↑↓ Move&Scroll   ↵ Run   s Save   d Delete   ←→ Focus   / SearchMode   q Quit"

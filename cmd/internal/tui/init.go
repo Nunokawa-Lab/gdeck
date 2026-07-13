@@ -2,6 +2,7 @@ package tui
 
 import (
 	"github.com/charmbracelet/bubbles/spinner"
+	"github.com/charmbracelet/bubbles/textarea"
 	"github.com/charmbracelet/bubbles/textinput"
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
@@ -13,6 +14,7 @@ func (m Model) Init() tea.Cmd {
 	return tea.Batch(
 		m.spinner.Tick,
 		textinput.Blink,
+		textarea.Blink,
 	)
 }
 
@@ -36,17 +38,6 @@ func InitialModel() (Model, error) {
 	ti.Width = 30
 	ti.Placeholder = "get-comment"
 
-	// textarea new create
-	// 	ta := textarea.New()
-	// 	ta.CharLimit = 0 // 制限なし
-	// 	ta.SetWidth(60)  // TODO 要検討
-	// 	ta.SetHeight(15)  // TODO 要検討
-	// 	// ta.Prompt = ""
-	// 	ta.ShowLineNumbers = false
-	// 	ta.Placeholder = `GetSampleUsers GET https://api.example.com/v1/users
-	// -H "Authorization: Bearer {{AUTH_TOKEN}}"
-	// -d '{"role": "admin"}'`
-
 	// name-textinput new create
 	saveFormName := textinput.New()
 	saveFormName.CharLimit = 100
@@ -65,11 +56,23 @@ func InitialModel() (Model, error) {
 	saveFormUrl.Width = 80
 	saveFormUrl.Placeholder = "https://api.example.com/v1/users"
 
+	// body-textarea new create
+	saveFormBody := textarea.New()
+	saveFormBody.CharLimit = 0 // 制限なし
+	saveFormBody.SetWidth(80)
+	saveFormBody.SetHeight(15)
+	saveFormBody.ShowLineNumbers = false
+	saveFormBody.Placeholder = `{
+  "role": "admin",
+  "sort": "desc"
+}`
+
 	// saveform init
 	sf := saveForm{
 		name:   saveFormName,
 		method: saveFormMethod,
 		url:    saveFormUrl,
+		body:   saveFormBody,
 		focus:  focusSaveFieldName,
 	}
 
@@ -83,7 +86,7 @@ func InitialModel() (Model, error) {
 		searchInput:        ti,
 		rightPaneView:      RightPanePreview,
 		saveForm:           sf,
-		saveFormFieldCount: 3,
+		saveFormFieldCount: 4,
 	}
 
 	m.loadCurrentRequest()

@@ -191,38 +191,42 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.leftViewport.SetContent(m.requestListContent())
 				m.rightViewport.SetContent(m.responseContent())
 				return m, nil
-			case "enter":
+			case "ctrl+s":
+				// 必須項目
 				name := strings.TrimSpace(m.saveForm.name.Value())
 				method := strings.ToUpper(strings.TrimSpace(m.saveForm.method.Value()))
 				url := strings.TrimSpace(m.saveForm.url.Value())
-
 				if name == "" || method == "" || url == "" {
 					m.errorMsg = "Name, Method, and URL are required"
 					return m, nil
 				}
+
+				// 任意項目
+				body := m.saveForm.body.Value()
 
 				m.errorMsg = ""
 				req := &model.Request{
 					Name:   name,
 					Method: method,
 					URL:    url,
+					Body:   body,
 				}
 
 				m.startSaveLoading()
 
 				return m, asyncSaveCmd(req)
-			case "up", "shift+tab":
+			case "shift+tab":
 				m.errorMsg = ""
 				if m.saveForm.focus > 0 {
 					m.saveForm.focus--
-					m.saveForm.focusSaveFormFiled(m.saveForm.focus)
+					return m, m.saveForm.focusSaveFormFiled(m.saveForm.focus)
 				}
-			case "down", "tab":
+			case "tab":
 				m.errorMsg = ""
 				focus := m.saveForm.toIntFocus()
 				if (focus + 1) < m.saveFormFieldCount {
 					m.saveForm.focus++
-					m.saveForm.focusSaveFormFiled(m.saveForm.focus)
+					return m, m.saveForm.focusSaveFormFiled(m.saveForm.focus)
 				}
 			default:
 				m.errorMsg = ""
@@ -284,7 +288,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, textinput.Blink
 		case "s":
 			m.initSave()
-			return m, textinput.Blink
+			return m, m.saveForm.focusSaveFormFiled(focusSaveFieldName)
 		}
 
 		// 左pane挙動

@@ -2,6 +2,7 @@ package tui
 
 import (
 	"github.com/charmbracelet/bubbles/spinner"
+	"github.com/charmbracelet/bubbles/textarea"
 	"github.com/charmbracelet/bubbles/textinput"
 	"github.com/charmbracelet/bubbles/viewport"
 	"github.com/nunokawa/gdeck/cmd/internal/model"
@@ -72,6 +73,7 @@ const (
 	focusSaveFieldName SaveFocusFiled = iota
 	focusSaveFieldMethod
 	focusSaveFieldURL
+	focusSaveFieldBody
 )
 
 // saveコマンド用フォーム
@@ -79,6 +81,7 @@ type saveForm struct {
 	name   textinput.Model
 	method textinput.Model
 	url    textinput.Model
+	body   textarea.Model
 	focus  SaveFocusFiled // 縦に並んだtextinput毎のフォーカス
 }
 
