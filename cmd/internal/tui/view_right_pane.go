@@ -53,6 +53,10 @@ func (m Model) renderNewRequest(width int, height int) string {
 
 	var form string
 
+	var labelStyle = lipgloss.NewStyle().
+    Bold(true).
+	Underline(true)
+
 	if m.loading {
 		form = fmt.Sprintf(
 			"\n%s Saving Request...",
@@ -60,19 +64,19 @@ func (m Model) renderNewRequest(width int, height int) string {
 		)
 	} else {
 		formParts := []string{
-			"Name",
+			labelStyle.Render("Name"),
 			m.saveForm.name.View(),
 			"",
-			"Method",
+			labelStyle.Render("Method"),
 			m.saveForm.method.View(),
 			"",
-			"URL",
+			labelStyle.Render("URL"),
 			m.saveForm.url.View(),
 			"",
-			"Headers",
+			labelStyle.Render("Headers"),
 			m.saveForm.header.View(),
 			"",
-			"Body",
+			labelStyle.Render("Body"),
 			m.saveForm.body.View(),
 		}
 

@@ -3,6 +3,8 @@ package tui
 import (
 	"strings"
 
+	"github.com/charmbracelet/bubbles/textarea"
+	"github.com/charmbracelet/bubbles/textinput"
 	"github.com/charmbracelet/lipgloss"
 )
 
@@ -109,7 +111,48 @@ var (
 	searchStyle = lipgloss.NewStyle().Padding(0, 1, 1, 1)
 
 	searchBoxStyle = lipgloss.NewStyle().Padding(0, 1)
+
+	// saveForm: 文字色はターミナルデフォルト（Foreground/Background なし）
+	saveFormInputTextStyle = lipgloss.NewStyle()
+
+	saveFormInputPlaceholderStyle = lipgloss.NewStyle().
+					Foreground(lipgloss.Color("240"))
 )
+
+// charmbracelet/bubbles/textarea が持つスタイル構造体を定義
+func saveFormTextareaStyle() textarea.Style {
+	text := saveFormInputTextStyle
+
+	return textarea.Style{
+		Base:             lipgloss.NewStyle(),
+		CursorLine:       text,
+		CursorLineNumber: lipgloss.NewStyle(),
+		EndOfBuffer:      lipgloss.NewStyle(),
+		LineNumber:       saveFormInputPlaceholderStyle,
+		Placeholder:      saveFormInputPlaceholderStyle,
+		Prompt:           saveFormInputPlaceholderStyle,
+		Text:             text,
+	}
+}
+
+// charmbracelet/bubbles/textinput にスタイルを適用
+func applySaveFormTextInputStyle(ti *textinput.Model) {
+	ti.TextStyle = saveFormInputTextStyle
+	ti.PlaceholderStyle = saveFormInputPlaceholderStyle
+	ti.PromptStyle = saveFormInputPlaceholderStyle
+	ti.Cursor.Style = saveFormInputTextStyle
+	ti.Cursor.TextStyle = saveFormInputTextStyle
+}
+
+// charmbracelet/bubbles/textarea にスタイルを適用
+func applySaveFormTextareaStyle(ta *textarea.Model) {
+	width := ta.Width()
+	style := saveFormTextareaStyle()
+	ta.FocusedStyle = style
+	ta.BlurredStyle = style
+	ta.Prompt = "┃"
+	ta.SetWidth(width)
+}
 
 func methodColor(method string) string {
 	switch method {

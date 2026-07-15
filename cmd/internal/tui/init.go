@@ -43,43 +43,48 @@ func InitialModel() (Model, error) {
 	saveFormName.CharLimit = 100
 	saveFormName.Width = 80
 	saveFormName.Placeholder = "GetSampleUsers"
+	applySaveFormTextInputStyle(&saveFormName)
 
 	// method-textinput new create
 	saveFormMethod := textinput.New()
 	saveFormMethod.CharLimit = 10
 	saveFormMethod.Width = 20
 	saveFormMethod.Placeholder = "GET"
+	applySaveFormTextInputStyle(&saveFormMethod)
 
 	// url-textinput new create
 	saveFormUrl := textinput.New()
 	saveFormUrl.CharLimit = 0
 	saveFormUrl.Width = 80
 	saveFormUrl.Placeholder = "https://api.example.com/v1/users"
+	applySaveFormTextInputStyle(&saveFormUrl)
 
 	// header-textarea new create
 	saveFormHeader := textarea.New()
 	saveFormHeader.CharLimit = 0 // 制限なし
 	saveFormHeader.SetWidth(80)
 	saveFormHeader.SetHeight(5)
-	saveFormHeader.ShowLineNumbers = false
+	saveFormHeader.ShowLineNumbers = true
 	saveFormHeader.Placeholder = `One header per line
 Use {{TOKEN}} for env substitution
 
 Content-Type: application/json
 Authorization: Bearer {{TOKEN}}`
+	applySaveFormTextareaStyle(&saveFormHeader)
 
 	// body-textarea new create
 	saveFormBody := textarea.New()
 	saveFormBody.CharLimit = 0 // 制限なし
 	saveFormBody.SetWidth(80)
 	saveFormBody.SetHeight(15)
-	saveFormBody.ShowLineNumbers = false
+	saveFormBody.ShowLineNumbers = true
 	saveFormBody.Placeholder = `Use {{WEBHOOK_URL}} for env substitution
 
 {
   "role": "admin",
   "webhook-url": "{{WEBHOOK_URL}}"
 }`
+	applySaveFormTextareaStyle(&saveFormBody)
 
 	// saveform init
 	sf := saveForm{
