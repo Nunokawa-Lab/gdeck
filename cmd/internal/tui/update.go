@@ -184,6 +184,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				if m.errorMsg != "" {
 					m.mode = ModeNormal
 					m.errorMsg = ""
+					m.rightViewport.SetContent(m.responseContent())
 				}
 			}
 		}

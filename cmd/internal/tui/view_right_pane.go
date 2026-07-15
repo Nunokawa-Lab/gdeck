@@ -18,13 +18,17 @@ func (m Model) renderRightPane(width int, height int) string {
 func (m Model) renderResponse(width int, height int) string {
 
 	var h string
-	switch m.rightPaneView {
-	case RightPaneResponse:
+	if m.errorMsg != "" {
 		h = "📡 Response"
-	case RightPaneLoading:
-		h = "📡 Response" // TODO "⏳ Running... " とかにしてもいいかも
-	default:
-		h = "🔍 Request Preview"
+	} else {
+		switch m.rightPaneView {
+		case RightPaneResponse:
+			h = "📡 Response"
+		case RightPaneLoading:
+			h = "📡 Running..."
+		default:
+			h = "🔍 Request Preview"
+		}
 	}
 
 	paneStyle := inactiveRightPaneStyle

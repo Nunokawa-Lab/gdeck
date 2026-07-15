@@ -149,11 +149,10 @@ func (m Model) footer() string {
 		text = "↑↓ Select   ↵ Confirm   esc Cancel"
 
 	case ModeDeleteConfirm:
-		text = "⚠️  Delete " + m.currentRequest.Name + " ?   "
 		if m.errorMsg == "" {
-			text += "y Yes   n No"
+			text = "⚠️  Delete " + m.currentRequest.Name + " ?   y Yes   n No"
 		} else {
-			text += "esc Cancel"
+			text = "esc Cancel"
 		}
 		style = footerDeleteStyle
 
