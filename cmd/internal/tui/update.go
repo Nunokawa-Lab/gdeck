@@ -179,6 +179,12 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			case "n":
 				m.mode = ModeNormal
 				m.errorMsg = ""
+			case "esc":
+				// エラーで失敗した時にフッターの説明に「esc」がでるため、errorMsgに値がある時だけ動作させる
+				if m.errorMsg != "" {
+					m.mode = ModeNormal
+					m.errorMsg = ""
+				}
 			}
 		}
 
