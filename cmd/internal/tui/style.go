@@ -38,9 +38,8 @@ var (
 
 	titleStyle = lipgloss.NewStyle().
 			Bold(true).
-			Foreground(lipgloss.Color("223")).
+			Foreground(lipgloss.Color("99")).
 			PaddingLeft(1).
-			MarginTop(1).
 			PaddingTop(1).
 			MarginBottom(1)
 
