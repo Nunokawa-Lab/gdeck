@@ -54,8 +54,8 @@ func (m Model) renderNewRequest(width int, height int) string {
 	var form string
 
 	var labelStyle = lipgloss.NewStyle().
-    Bold(true).
-	Underline(true)
+		Bold(true).
+		Underline(true)
 
 	if m.loading {
 		form = fmt.Sprintf(
