@@ -13,6 +13,10 @@ import (
 //	┗レスポンス
 func (m Model) responseContent() string {
 
+	if m.errorMsg != "" {
+		return fmt.Sprintf("Error: %s", m.errorMsg)
+	}
+
 	switch m.rightPaneView {
 
 	case RightPaneLoading:

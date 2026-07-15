@@ -156,8 +156,8 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				// 削除
 				err := store.Delete(m.currentRequest.Name)
 				if err != nil {
-					// TODO エラーを画面に出すようにする
 					m.errorMsg = err.Error()
+					m.rightViewport.SetContent(m.responseContent())
 					return m, nil
 				}
 
@@ -168,6 +168,9 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					return m, nil
 				}
 
+				// 現在のカーソルの当たっているリクエストを再取得
+				m.loadCurrentRequest()
+
 				m.leftViewport.SetContent(m.requestListContent())
 				m.rightViewport.SetContent(m.responseContent())
 
@@ -175,6 +178,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 			case "n":
 				m.mode = ModeNormal
+				m.errorMsg = ""
 			}
 		}
 
