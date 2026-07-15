@@ -8,9 +8,10 @@ import (
 
 // 出力テキストを返す
 //
-//	┗ロード
-//	┗プレビュー
-//	┗レスポンス
+//	 ┗エラー
+//		┗ロード
+//		┗プレビュー
+//		┗レスポンス
 func (m Model) responseContent() string {
 
 	if m.errorMsg != "" {

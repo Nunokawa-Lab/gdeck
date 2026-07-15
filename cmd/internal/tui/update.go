@@ -277,6 +277,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	/** 通常時の挙動 */
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
+		m.errorMsg = ""
 
 		switch msg.String() {
 		case "q", "ctrl+c":
@@ -373,6 +374,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		if msg.err != nil {
 			m.errorMsg = msg.err.Error()
 			m.showPreview()
+			m.rightViewport.SetContent(m.responseContent())
 			return m, nil
 		}
 
