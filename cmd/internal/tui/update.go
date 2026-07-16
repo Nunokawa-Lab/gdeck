@@ -250,7 +250,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 				m.startSaveLoading()
 
-				// tea.Batch は「複数の非同期処理を並行で予約する」ための API 
+				// tea.Batch は「複数の非同期処理を並行で予約する」ための API
 				// 保存開始と同時に次の spinner.TickMsg が予約されるため、待たずに「Saving Request...」のドットが回り始めやすくなる
 				// 同時に case spinner.TickMsg 内で spinner.TickMsg を処理する必要あり
 				return m, tea.Batch(asyncSaveCmd(req), m.spinner.Tick)
