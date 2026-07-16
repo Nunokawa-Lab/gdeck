@@ -278,23 +278,29 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 		case saveFinishedMsg:
 			if msg.err != nil {
+				m.loading = false
 				m.errorMsg = msg.err.Error()
-				m.showErrorResponse()
 				return m, nil
 			}
 
 			// リクエストを再読み込み
 			requests, err := store.List()
 			if err != nil {
+				m.loading = false
 				m.errorMsg = err.Error()
 				return m, nil
 			}
 			m.requests = requests
 
-			m.cursor = 0
-			m.leftViewport.YOffset = 0
 			m.statusMsg = fmt.Sprintf("✓ Saved %s", msg.name)
 			m.resetSave()
+			m.showPreview()
+			m.setSelectedRequest(msg.name)
+			if m.displayRequestCnt < m.cursor+1 {
+				m.leftViewport.YOffset = ((m.cursor + 1) - m.displayRequestCnt) * 2
+			} else {
+				m.leftViewport.YOffset = 0
+			}
 			m.loadCurrentRequest()
 
 			m.leftViewport.SetContent(m.requestListContent())

@@ -1,6 +1,7 @@
 package tui
 
 import (
+	"path/filepath"
 	"strings"
 
 	tea "github.com/charmbracelet/bubbletea"
@@ -96,8 +97,16 @@ func (m *Model) selectedRequestName() (string, bool) {
 
 // 渡されたリクエストにカーソルを置くメソッド
 func (m *Model) setSelectedRequest(selectedName string) {
+	normalize := func(name string) string {
+		return strings.TrimSuffix(name, filepath.Ext(name))
+	}
+	target := normalize(selectedName)
+
 	for i, req := range m.requests {
-		if req.Name == selectedName {
+		// req.Name → 基本は拡張子あり
+		// selectedName → 呼び出し元で違う（保存成功時の時は拡張子がない）
+		// そのため、拡張子を除いた比較も入れる
+		if req.Name == selectedName || normalize(req.Name) == target {
 			m.cursor = i
 			break
 		}
