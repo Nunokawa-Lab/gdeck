@@ -78,6 +78,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				if m.cursor > 0 {
 					m.cursor--
 
+					m.errorMsg = ""
 					m.showPreview()
 
 					// スクロール判定：カーソルが見える範囲の上を超えたら
@@ -90,6 +91,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				if m.cursor < len(m.filteredRequests)-1 {
 					m.cursor++
 
+					m.errorMsg = ""
 					m.showPreview()
 
 					// スクロール判定：カーソルが見える範囲の下を超えたら
@@ -112,6 +114,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				return m, asyncRunCmd(selected.Name, selected.Method)
 			default:
 				// 各値を初期値に戻す
+				m.errorMsg = ""
 				m.showPreview()
 				m.cursor = 0
 			}
@@ -166,6 +169,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			switch msg.String() {
 			case "y":
 				name, ok := m.selectedRequestName()
+				ok = false
 				if !ok {
 					m.errorMsg = "no request selected"
 					m.rightViewport.SetContent(m.responseContent())
@@ -205,6 +209,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			case "n":
 				m.mode = ModeNormal
 				m.errorMsg = ""
+				m.rightViewport.SetContent(m.responseContent())
 			case "esc":
 				// エラーで失敗した時にフッターの説明に「esc」がでるため、errorMsgに値がある時だけ動作させる
 				if m.errorMsg != "" {
