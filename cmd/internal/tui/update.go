@@ -47,6 +47,11 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		m.rightViewport.SetContent(m.responseContent())
 		return m, nil
+	case tea.WindowSizeMsg:
+		m.applyWindowSize(msg.Width, msg.Height)
+		m.leftViewport.SetContent(m.requestListContent())
+		m.rightViewport.SetContent(m.responseContent())
+		return m, nil
 	}
 
 	/** 検索モード中の挙動 */
@@ -128,25 +133,6 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 
 			return m, cmd
-		case tea.WindowSizeMsg:
-			// サイズセット
-			m.leftPaneWidth = int(float64(msg.Width) * 0.35)
-			m.rightPaneWidth = msg.Width - m.leftPaneWidth - 8
-			m.paneHeight = msg.Height - 11
-
-			// 奇数は正しい高さを割り出せないため偶数にする（改行含め2行でひとかたまりのため2の倍数が正）
-			if m.paneHeight%2 != 0 {
-				m.paneHeight++
-			}
-
-			// viewportにも高さ・幅をセット
-			m.leftViewport.Width = m.leftPaneWidth
-			m.leftViewport.Height = m.paneHeight
-			m.rightViewport.Width = m.rightPaneWidth
-			m.rightViewport.Height = m.paneHeight
-
-			// 表示中のリクエスト数セット（ペイン領域の高さの1/2が表示されている）
-			m.displayRequestCnt = m.paneHeight / 2
 		}
 
 		// カーソルを点滅させるためにBlinkMsg型も含めて全msgをUpdate()に渡す必要あり
@@ -264,7 +250,10 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 				m.startSaveLoading()
 
-				return m, asyncSaveCmd(req)
+				// tea.Batch は「複数の非同期処理を並行で予約する」ための API 
+				// 保存開始と同時に次の spinner.TickMsg が予約されるため、待たずに「Saving Request...」のドットが回り始めやすくなる
+				// 同時に case spinner.TickMsg 内で spinner.TickMsg を処理する必要あり
+				return m, tea.Batch(asyncSaveCmd(req), m.spinner.Tick)
 			case "shift+tab":
 				m.errorMsg = ""
 				if m.saveForm.focus > 0 {
@@ -313,6 +302,9 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 			// 2秒間だけ成功メッセージ表示
 			return m, clearStatusAfter(2 * time.Second)
+		case spinner.TickMsg:
+			m.spinner, cmd = m.spinner.Update(msg)
+			return m, cmd
 		}
 
 		cmd = m.saveForm.updateForm(msg)
@@ -441,25 +433,6 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 
 		return m, cmd
-	case tea.WindowSizeMsg:
-		// サイズセット
-		m.leftPaneWidth = int(float64(msg.Width) * 0.35)
-		m.rightPaneWidth = msg.Width - m.leftPaneWidth - 8
-		m.paneHeight = msg.Height - 13
-
-		// 奇数は正しい高さを割り出せないため偶数にする（改行含め2行でひとかたまりのため2の倍数が正）
-		if m.paneHeight%2 != 0 {
-			m.paneHeight++
-		}
-
-		// viewportにも高さ・幅をセット
-		m.leftViewport.Width = m.leftPaneWidth
-		m.leftViewport.Height = m.paneHeight
-		m.rightViewport.Width = m.rightPaneWidth
-		m.rightViewport.Height = m.paneHeight
-
-		// 表示中のリクエスト数セット（ペイン領域の高さの1/2が表示されている）
-		m.displayRequestCnt = m.paneHeight / 2
 	}
 
 	return m, cmd

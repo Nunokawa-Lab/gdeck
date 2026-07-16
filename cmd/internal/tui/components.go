@@ -149,7 +149,7 @@ func (m Model) footer() string {
 		if len(m.filteredRequests) < 1 {
 			text = "esc Cancel"
 		} else {
-			text = "↑↓ Select   ↵ Confirm   esc Cancel"
+			text = "↑↓ Select   ↵ Run   esc Cancel"
 		}
 
 	case ModeDeleteConfirm:

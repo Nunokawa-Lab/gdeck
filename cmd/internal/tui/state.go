@@ -139,6 +139,31 @@ func (m *Model) showErrorResponse() {
 	m.response = nil
 }
 
+// 端末サイズに合わせてペイン・viewport の寸法を更新する
+func (m *Model) applyWindowSize(width, height int) {
+	m.leftPaneWidth = int(float64(width) * 0.35)
+	m.rightPaneWidth = width - m.leftPaneWidth - 8
+
+	// header / search / footer などペイン以外の高さ（全モードで統一）
+	m.paneHeight = height - 13
+
+	// 奇数は正しい高さを割り出せないため偶数にする（改行含め2行でひとかたまりのため2の倍数が正）
+	if m.paneHeight%2 != 0 {
+		m.paneHeight++
+	}
+	if m.paneHeight < 0 {
+		m.paneHeight = 0
+	}
+
+	m.leftViewport.Width = m.leftPaneWidth
+	m.leftViewport.Height = m.paneHeight
+	m.rightViewport.Width = m.rightPaneWidth
+	m.rightViewport.Height = m.paneHeight
+
+	// 表示中のリクエスト数セット（ペイン領域の高さの1/2が表示されている）
+	m.displayRequestCnt = m.paneHeight / 2
+}
+
 func (m *Model) initSave() {
 	m.mode = ModeSave
 	m.focus = FocusResponse
