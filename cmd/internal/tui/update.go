@@ -16,9 +16,36 @@ import (
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var cmd tea.Cmd
 
-	switch msg.(type) {
+	switch msg := msg.(type) {
 	case clearStatusMsg:
 		m.statusMsg = ""
+		return m, nil
+	case runFinishedMsg:
+		if msg.err != nil {
+			m.errorMsg = msg.err.Error()
+			m.showErrorResponse()
+		} else {
+			m.showResponse(msg.response)
+		}
+
+		// 検索モード中に完了した場合は検索を解除し、実行したリクエストにカーソルを戻す
+		if m.mode == ModeSearch {
+			if len(m.filteredRequests) > 0 {
+				selected := m.filteredRequests[m.cursor]
+				m.resetSearch()
+				m.setSelectedRequest(selected.Name)
+
+				if m.displayRequestCnt < m.cursor+1 {
+					m.leftViewport.YOffset = ((m.cursor + 1) - m.displayRequestCnt) * 2
+				}
+			} else {
+				m.resetSearch()
+				m.cursor = 0
+			}
+			m.leftViewport.SetContent(m.requestListContent())
+		}
+
+		m.rightViewport.SetContent(m.responseContent())
 		return m, nil
 	}
 
@@ -88,29 +115,6 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.showPreview()
 				m.cursor = 0
 			}
-		case runFinishedMsg:
-			if msg.err != nil {
-				m.errorMsg = msg.err.Error()
-				m.showErrorResponse()
-			} else {
-				m.showResponse(msg.response)
-			}
-
-			// 検索モードを解除しつつカーソルは実行したものに当てる
-			selected := m.filteredRequests[m.cursor]
-			m.resetSearch()
-			m.setSelectedRequest(selected.Name)
-
-			// もしキープした位置がスクロールしないと見えない位置なら、見える位置までオフセットを調整
-			if m.displayRequestCnt < m.cursor+1 {
-				m.leftViewport.YOffset = ((m.cursor + 1) - m.displayRequestCnt) * 2
-			}
-
-			// コンテンツをviewportにセット
-			m.leftViewport.SetContent(m.requestListContent())
-			m.rightViewport.SetContent(m.responseContent())
-
-			return m, nil
 		case spinner.TickMsg:
 			m.spinner, cmd = m.spinner.Update(msg)
 
@@ -416,20 +420,6 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 			return m, nil
 		}
-	case runFinishedMsg:
-		if msg.err != nil {
-			m.errorMsg = msg.err.Error()
-			m.showErrorResponse()
-			m.rightViewport.SetContent(m.responseContent())
-			return m, nil
-		}
-
-		m.showResponse(msg.response)
-
-		// コンテンツをviewportにセット
-		m.rightViewport.SetContent(m.responseContent())
-
-		return m, nil
 	case spinner.TickMsg:
 		m.spinner, cmd = m.spinner.Update(msg)
 

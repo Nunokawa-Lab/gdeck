@@ -142,6 +142,13 @@ func (m *Model) resetSave() {
 	m.focus = FocusList
 	m.saveForm.AllBlurFormFiled()
 	m.saveForm.AllClearFormFiled()
+	m.loading = false
+
+	// 保存フォーム表示中に run が完了していた場合は結果を残す
+	if m.rightPaneView == RightPaneResponse {
+		return
+	}
+
 	m.errorMsg = ""
 	m.showPreview()
 }
