@@ -26,6 +26,9 @@ func asyncRunCmd(name string, method string) tea.Cmd {
 				err: err,
 			}
 		}
+		if results[0].Error != nil {
+			return runFinishedMsg{err: results[0].Error}
+		}
 
 		return runFinishedMsg{
 			response: results[0].Response,

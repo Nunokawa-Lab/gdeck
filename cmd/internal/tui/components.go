@@ -146,7 +146,11 @@ func (m Model) footer() string {
 	switch m.mode {
 
 	case ModeSearch:
-		text = "↑↓ Select   ↵ Confirm   esc Cancel"
+		if len(m.filteredRequests) < 1 {
+			text = "esc Cancel"
+		} else {
+			text = "↑↓ Select   ↵ Confirm   esc Cancel"
+		}
 
 	case ModeDeleteConfirm:
 		if m.errorMsg == "" {
@@ -160,7 +164,17 @@ func (m Model) footer() string {
 		text = "↓ tab   ↑ shift+tab   ctrl+s Confirm   esc Cancel"
 
 	default:
-		text = "↑↓ Move&Scroll   ↵ Run   s Save   d Delete   ←→ Focus   / SearchMode   q Quit"
+		if len(m.requests) < 1 {
+			// リクエストが一件もない時
+			text = "s Save   ←→ Focus   q Quit"
+		} else {
+			// リクエストあり > フォーカスで出しわけ
+			if m.focus == FocusList {
+				text = "q Quit   / SearchMode   ↑↓ Move&Scroll   ←→ Focus   s Save   ↵ Run   d Delete"
+			} else {
+				text = "q Quit   / SearchMode   ↑↓ Move&Scroll   ←→ Focus   s Save"
+			}
+		}
 	}
 
 	status := successMsgStyle.Render(m.statusMsg)

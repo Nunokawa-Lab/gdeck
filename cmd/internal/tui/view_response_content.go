@@ -15,7 +15,11 @@ import (
 func (m Model) responseContent() string {
 
 	if m.errorMsg != "" {
-		return fmt.Sprintf("Error: %s", m.errorMsg)
+		width := m.rightViewport.Width
+		if width <= 0 {
+			width = 1
+		}
+		return errorMsgStyle.Width(width).Render(m.errorMsg)
 	}
 
 	switch m.rightPaneView {

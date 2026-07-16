@@ -16,10 +16,15 @@ func (m Model) requestListContent() string {
 	requests := m.requests
 	if m.mode == ModeSearch {
 		requests = m.filteredRequests
+
+		if len(requests) < 1 {
+			s = "No hits. Sent from 2070 ? 🪐🛸🌌\n\n[ try another kw … ]"
+			return s
+		}
 	}
 
 	if len(requests) < 1 {
-		s = "No hits. Sent from 2070 ? 🪐🛸🌌\n\n[ try another kw … ]"
+		s = "No requests yet. Press 's' to save first request! 🚀"
 		return s
 	}
 

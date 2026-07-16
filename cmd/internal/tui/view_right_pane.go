@@ -18,17 +18,13 @@ func (m Model) renderRightPane(width int, height int) string {
 func (m Model) renderResponse(width int, height int) string {
 
 	var h string
-	if m.errorMsg != "" {
+	switch m.rightPaneView {
+	case RightPaneResponse:
 		h = "📡 Response"
-	} else {
-		switch m.rightPaneView {
-		case RightPaneResponse:
-			h = "📡 Response"
-		case RightPaneLoading:
-			h = "📡 Running..."
-		default:
-			h = "🔍 Request Preview"
-		}
+	case RightPaneLoading:
+		h = "📡 Running..."
+	default:
+		h = "🔍 Request Preview"
 	}
 
 	paneStyle := inactiveRightPaneStyle
@@ -85,8 +81,12 @@ func (m Model) renderNewRequest(width int, height int) string {
 		}
 
 		if m.errorMsg != "" {
+			errWidth := width
+			if errWidth <= 0 {
+				errWidth = 1
+			}
 			formParts = append([]string{
-				errorMsgStyle.Render("⚠️  " + m.errorMsg),
+				errorMsgStyle.Width(errWidth).Render(m.errorMsg),
 				"",
 			}, formParts...)
 		}

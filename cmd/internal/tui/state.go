@@ -14,6 +14,7 @@ func (m *Model) initSearch() {
 	m.mode = ModeSearch
 	m.searchInput.SetValue("")
 	m.searchInput.Focus()
+	m.errorMsg = ""
 }
 
 func (m *Model) applySearch(text string) {
@@ -57,11 +58,16 @@ func (m *Model) loadCurrentRequest() {
 			m.currentRequest = nil
 			return
 		}
+	} else {
+		// それ以外は1件もない時のガードを用意
+		if len(m.requests) < 1 {
+			m.currentRequest = nil
+			return 
+		}
 	}
 	focusedRequest := requests[m.cursor]
 
 	reqs, err := store.Load(focusedRequest.Name)
-
 	if err != nil {
 		m.errorMsg = err.Error()
 		return
@@ -102,6 +108,12 @@ func (m *Model) showResponse(res *model.Response) {
 	m.rightPaneView = RightPaneResponse
 	m.loading = false
 	m.response = res
+}
+
+func (m *Model) showErrorResponse() {
+	m.rightPaneView = RightPaneResponse
+	m.loading = false
+	m.response = nil
 }
 
 func (m *Model) initSave() {

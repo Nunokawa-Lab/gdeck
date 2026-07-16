@@ -9,35 +9,17 @@ import (
 	"github.com/nunokawa/gdeck/cmd/internal/model"
 )
 
-/*
-*******************
-
-	GET
-
-*******************
-*/
+/** GET */
 func Get(url string, options model.Options) (*model.Response, error) {
 	return Do("GET", url, "", nil, options)
 }
 
-/*
-*******************
-
-	POST
-
-*******************
-*/
+/** POST */
 func Post(url string, requestBody string, headers []string, options model.Options) (*model.Response, error) {
 	return Do("POST", url, requestBody, headers, options)
 }
 
-/*
-*******************
-
-	共通処理関数
-
-*******************
-*/
+/** 共通処理関数 */
 func Do(method string, url string, body string, headers []string, options model.Options) (*model.Response, error) {
 
 	// bodyがあればio.Reader型に変換（NewRequest()第三引数に渡せるようにするため）

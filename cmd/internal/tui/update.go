@@ -29,14 +29,19 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case tea.KeyMsg:
 			switch msg.String() {
 			case "esc":
-				// 検索モードを解除しつつカーソルは当てていたリクエストの位置をキープする
-				selected := m.filteredRequests[m.cursor] //リセットする前にカーソルの当たっているリクエスト取得
-				m.resetSearch()
-				m.setSelectedRequest(selected.Name)
+				if len(m.filteredRequests) < 1 {
+					m.resetSearch()
+					m.cursor = 0
+				} else {
+					// 検索モードを解除しつつカーソルは当てていたリクエストの位置をキープする
+					selected := m.filteredRequests[m.cursor] //リセットする前にカーソルの当たっているリクエスト取得
+					m.resetSearch()
+					m.setSelectedRequest(selected.Name)
 
-				// もしキープした位置がスクロールしないと見えない位置なら、見える位置までオフセットを調整
-				if m.displayRequestCnt < m.cursor+1 {
-					m.leftViewport.YOffset = ((m.cursor + 1) - m.displayRequestCnt) * 2
+					// もしキープした位置がスクロールしないと見えない位置なら、見える位置までオフセットを調整
+					if m.displayRequestCnt < m.cursor+1 {
+						m.leftViewport.YOffset = ((m.cursor + 1) - m.displayRequestCnt) * 2
+					}
 				}
 
 				m.leftViewport.SetContent(m.requestListContent())
@@ -68,6 +73,10 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					}
 				}
 			case "enter":
+				if len(m.filteredRequests) < 1 {
+					return m, nil
+				}
+
 				selected := m.filteredRequests[m.cursor]
 
 				m.startLoading(&selected)
@@ -82,11 +91,10 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case runFinishedMsg:
 			if msg.err != nil {
 				m.errorMsg = msg.err.Error()
-				m.showPreview()
-				return m, nil
+				m.showErrorResponse()
+			} else {
+				m.showResponse(msg.response)
 			}
-
-			m.showResponse(msg.response)
 
 			// 検索モードを解除しつつカーソルは実行したものに当てる
 			selected := m.filteredRequests[m.cursor]
@@ -169,7 +177,14 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				}
 
 				// 現在のカーソルの当たっているリクエストを再取得
+				if len(m.requests) == 0 {
+					m.cursor = 0
+				} else if m.cursor >= len(m.requests) {
+					m.cursor = len(m.requests) - 1
+				}
 				m.loadCurrentRequest()
+
+				m.rightPaneView = RightPanePreview
 
 				m.leftViewport.SetContent(m.requestListContent())
 				m.rightViewport.SetContent(m.responseContent())
@@ -253,6 +268,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case saveFinishedMsg:
 			if msg.err != nil {
 				m.errorMsg = msg.err.Error()
+				m.showErrorResponse()
 				return m, nil
 			}
 
@@ -268,6 +284,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.leftViewport.YOffset = 0
 			m.statusMsg = fmt.Sprintf("✓ Saved %s", msg.name)
 			m.resetSave()
+			m.loadCurrentRequest()
 
 			m.leftViewport.SetContent(m.requestListContent())
 			m.rightViewport.SetContent(m.responseContent())
@@ -284,8 +301,6 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	/** 通常時の挙動 */
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
-		m.errorMsg = ""
-
 		switch msg.String() {
 		case "q", "ctrl+c":
 			return m, tea.Quit
@@ -294,6 +309,10 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "right":
 			m.focus = FocusResponse
 		case "/":
+			if len(m.requests) < 1 {
+				return m, nil
+			}
+
 			// 検索モード初期設定
 			m.initSearch()
 
@@ -326,6 +345,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 						m.leftViewport.ScrollUp(2)
 					}
 
+					m.errorMsg = ""
 					m.showPreview()
 					m.loadCurrentRequest()
 					m.leftViewport.SetContent(m.requestListContent())
@@ -343,6 +363,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 						m.leftViewport.ScrollDown(2)
 					}
 
+					m.errorMsg = ""
 					m.showPreview()
 					m.loadCurrentRequest()
 					m.leftViewport.SetContent(m.requestListContent())
@@ -350,6 +371,10 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 				}
 			case "enter":
+				if len(m.requests) < 1 {
+					return m, nil
+				}
+
 				selected := m.requests[m.cursor]
 
 				m.startLoading(&selected)
@@ -357,6 +382,10 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 				return m, asyncRunCmd(selected.Name, selected.Method)
 			case "d":
+				if len(m.requests) < 1 {
+					return m, nil
+				}
+
 				// 削除確認モードオン
 				m.mode = ModeDeleteConfirm
 			}
@@ -380,7 +409,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case runFinishedMsg:
 		if msg.err != nil {
 			m.errorMsg = msg.err.Error()
-			m.showPreview()
+			m.showErrorResponse()
 			m.rightViewport.SetContent(m.responseContent())
 			return m, nil
 		}
