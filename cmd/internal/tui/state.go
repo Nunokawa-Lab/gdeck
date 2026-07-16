@@ -62,7 +62,7 @@ func (m *Model) loadCurrentRequest() {
 		// それ以外は1件もない時のガードを用意
 		if len(m.requests) < 1 {
 			m.currentRequest = nil
-			return 
+			return
 		}
 	}
 	focusedRequest := requests[m.cursor]
@@ -70,14 +70,28 @@ func (m *Model) loadCurrentRequest() {
 	reqs, err := store.Load(focusedRequest.Name)
 	if err != nil {
 		m.errorMsg = err.Error()
+		m.currentRequest = nil
 		return
 	}
 
 	if len(reqs) == 0 {
+		m.currentRequest = nil
 		return
 	}
 
 	m.currentRequest = reqs[0]
+}
+
+// リスト上でカーソルが当たっているリクエスト名を返す
+func (m *Model) selectedRequestName() (string, bool) {
+	requests := m.requests
+	if m.mode == ModeSearch {
+		requests = m.filteredRequests
+	}
+	if len(requests) < 1 || m.cursor < 0 || m.cursor >= len(requests) {
+		return "", false
+	}
+	return requests[m.cursor].Name, true
 }
 
 // 渡されたリクエストにカーソルを置くメソッド

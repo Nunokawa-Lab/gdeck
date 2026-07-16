@@ -161,8 +161,15 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case tea.KeyMsg:
 			switch msg.String() {
 			case "y":
+				name, ok := m.selectedRequestName()
+				if !ok {
+					m.errorMsg = "no request selected"
+					m.rightViewport.SetContent(m.responseContent())
+					return m, nil
+				}
+
 				// 削除
-				err := store.Delete(m.currentRequest.Name)
+				err := store.Delete(name)
 				if err != nil {
 					m.errorMsg = err.Error()
 					m.rightViewport.SetContent(m.responseContent())
@@ -382,7 +389,10 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 				return m, asyncRunCmd(selected.Name, selected.Method)
 			case "d":
-				if len(m.requests) < 1 {
+				if _, ok := m.selectedRequestName(); !ok {
+					return m, nil
+				}
+				if m.currentRequest == nil {
 					return m, nil
 				}
 

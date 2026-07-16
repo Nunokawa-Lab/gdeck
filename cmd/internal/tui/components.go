@@ -154,7 +154,11 @@ func (m Model) footer() string {
 
 	case ModeDeleteConfirm:
 		if m.errorMsg == "" {
-			text = "⚠️  Delete " + m.currentRequest.Name + " ?   y Yes   n No"
+			if name, ok := m.selectedRequestName(); ok {
+				text = "⚠️  Delete " + name + " ?   y Yes   n No"
+			} else {
+				text = "esc Cancel"
+			}
 		} else {
 			text = "esc Cancel"
 		}
