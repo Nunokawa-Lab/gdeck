@@ -4,7 +4,7 @@
 <!-- e.g. <img src="assets/icon.png" alt="gDeck" width="120"> -->
 
 <!-- TODO: Add demo GIF here -->
-<!-- e.g. <img src="assets/demo.gif" alt="gDeck demo" width="800"> -->
+![gDeck demo](assets/demo.gif)
 
 # gdeck
 
