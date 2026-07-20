@@ -1,7 +1,6 @@
 **English** | [日本語](README.ja.md)
 
-<!-- TODO: Add gDeck icon/logo here -->
-<!-- e.g. <img src="assets/icon.png" alt="gDeck" width="120"> -->
+![gDeck demo](assets/logo.png)
 
 ![gDeck demo](assets/demo.gif)
 
