@@ -1,6 +1,6 @@
 [English](README.md) | **日本語**
 
-<img src="assets/logo-new.png" alt="gDeck" width="120">
+<img src="assets/logo.png" alt="gDeck">
 
 ![gDeck demo](assets/demo.gif)
 

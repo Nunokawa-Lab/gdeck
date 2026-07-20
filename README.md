@@ -1,6 +1,6 @@
 **English** | [日本語](README.ja.md)
 
-<img src="assets/logo.wide.png" alt="gDeck">
+<img src="assets/logo.png" alt="gDeck">
 
 ![gDeck demo](assets/demo.gif)
 
