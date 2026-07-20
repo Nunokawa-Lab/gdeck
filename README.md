@@ -3,7 +3,6 @@
 <!-- TODO: Add gDeck icon/logo here -->
 <!-- e.g. <img src="assets/icon.png" alt="gDeck" width="120"> -->
 
-<!-- TODO: Add demo GIF here -->
 ![gDeck demo](assets/demo.gif)
 
 # gdeck

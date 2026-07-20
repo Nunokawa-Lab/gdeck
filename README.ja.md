@@ -3,8 +3,7 @@
 <!-- TODO: gDeck アイコン / ロゴをここに追加 -->
 <!-- 例: <img src="assets/icon.png" alt="gDeck" width="120"> -->
 
-<!-- TODO: デモ GIF をここに追加 -->
-<!-- 例: <img src="assets/demo.gif" alt="gDeck demo" width="800"> -->
+![gDeck demo](assets/demo.gif)
 
 # gdeck
 
