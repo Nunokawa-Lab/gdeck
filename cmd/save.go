@@ -44,13 +44,17 @@ var saveCmd = &cobra.Command{
 			Body:    requestData,
 		}
 
-		err := store.Save(name, req)
+		updated, err := store.Save(name, req)
 		if err != nil {
 			fmt.Println(err.Error())
 			return
 		}
 
-		fmt.Println("Saved: ", name)
+		if updated {
+			fmt.Println("Updated: ", name)
+		} else {
+			fmt.Println("Saved: ", name)
+		}
 	},
 }
 

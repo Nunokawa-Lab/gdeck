@@ -41,16 +41,42 @@ func asyncRunCmd(name string, method string) tea.Cmd {
 	}
 }
 
-// 非同期でsaveを実行
-// 現状は一瞬のため非同期であるメリットは少ないが念の為
-func asyncSaveCmd(request *model.Request) tea.Cmd {
+// 非同期でsaveコマンドを実行
+// save: Nameが同名なら更新、別名なら新規作成
+// edit: Nameが同名でも別名でも更新、ただし別名の場合の更新は「新規作成＋旧ファイル削除」で更新とする
+func asyncSaveCmd(request *model.Request, originalName string) tea.Cmd {
 
 	return func() tea.Msg {
 		if request.Name == "" || request.Method == "" || request.URL == "" {
 			return saveFinishedMsg{err: fmt.Errorf("not enough arguments")}
 		}
-		err := store.Save(request.Name, request)
-		return saveFinishedMsg{name: request.Name, err: err}
+
+		saveName := request.Name
+		renamed := false
+
+		if originalName != "" {
+			if requestNamesEqual(originalName, request.Name) {
+				saveName = originalName
+			} else {
+				renamed = true
+			}
+		}
+
+		updated, err := store.Save(saveName, request)
+		if err != nil {
+			return saveFinishedMsg{name: request.Name, err: err}
+		}
+
+		if renamed {
+			if err := store.Delete(originalName); err != nil {
+				return saveFinishedMsg{name: request.Name, err: err}
+			}
+			updated = true
+		} else if originalName != "" {
+			updated = true
+		}
+
+		return saveFinishedMsg{name: request.Name, updated: updated, err: err}
 	}
 }
 

@@ -174,9 +174,9 @@ func (m Model) footer() string {
 		} else {
 			// リクエストあり > フォーカスで出しわけ
 			if m.focus == FocusList {
-				text = "q Quit   / SearchMode   ↑↓ Move&Scroll   ←→ Focus   s Save   ↵ Run   d Delete"
+				text = "q Quit   / SearchMode   ↑↓ Move&Scroll   ←→ Focus   s Save   e Edit   ↵ Run   d Delete"
 			} else {
-				text = "q Quit   / SearchMode   ↑↓ Move&Scroll   ←→ Focus   s Save"
+				text = "q Quit   / SearchMode   ↑↓ Move&Scroll   ←→ Focus   s Save   e Edit"
 			}
 		}
 	}

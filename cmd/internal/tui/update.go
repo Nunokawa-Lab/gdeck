@@ -155,7 +155,6 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			switch msg.String() {
 			case "y":
 				name, ok := m.selectedRequestName()
-				ok = false
 				if !ok {
 					m.errorMsg = "no request selected"
 					m.rightViewport.SetContent(m.responseContent())
@@ -253,7 +252,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				// tea.Batch は「複数の非同期処理を並行で予約する」ための API
 				// 保存開始と同時に次の spinner.TickMsg が予約されるため、待たずに「Saving Request...」のドットが回り始めやすくなる
 				// 同時に case spinner.TickMsg 内で spinner.TickMsg を処理する必要あり
-				return m, tea.Batch(asyncSaveCmd(req), m.spinner.Tick)
+				return m, tea.Batch(asyncSaveCmd(req, m.editingRequestName), m.spinner.Tick)
 			case "shift+tab":
 				m.errorMsg = ""
 				if m.saveForm.focus > 0 {
@@ -286,7 +285,11 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 			m.requests = requests
 
-			m.statusMsg = fmt.Sprintf("✓ Saved %s", msg.name)
+			if msg.updated {
+				m.statusMsg = fmt.Sprintf("✓ Updated %s", msg.name)
+			} else {
+				m.statusMsg = fmt.Sprintf("✓ Saved %s", msg.name)
+			}
 			m.resetSave()
 			m.showPreview()
 			m.setSelectedRequest(msg.name)
@@ -341,6 +344,11 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, textinput.Blink
 		case "s":
 			m.initSave()
+			return m, m.saveForm.focusSaveFormFiled(focusSaveFieldName)
+		case "e":
+			if !m.initEdit() {
+				return m, nil
+			}
 			return m, m.saveForm.focusSaveFormFiled(focusSaveFieldName)
 		}
 

@@ -167,6 +167,7 @@ func (m *Model) applyWindowSize(width, height int) {
 func (m *Model) initSave() {
 	m.mode = ModeSave
 	m.focus = FocusResponse
+	m.editingRequestName = ""
 	m.saveForm.focus = focusSaveFieldName
 	m.errorMsg = ""
 }
@@ -174,6 +175,7 @@ func (m *Model) initSave() {
 func (m *Model) resetSave() {
 	m.mode = ModeNormal
 	m.focus = FocusList
+	m.editingRequestName = ""
 	m.saveForm.AllBlurFormFiled()
 	m.saveForm.AllClearFormFiled()
 	m.loading = false
@@ -185,6 +187,35 @@ func (m *Model) resetSave() {
 
 	m.errorMsg = ""
 	m.showPreview()
+}
+
+func normalizeRequestName(name string) string {
+	return strings.TrimSuffix(name, filepath.Ext(name))
+}
+
+// ファイル名比較関数
+// 保存・編集時にNameによる処理分岐があるため共通化
+func requestNamesEqual(a, b string) bool {
+	return a == b || normalizeRequestName(a) == normalizeRequestName(b)
+}
+
+func (m *Model) initEdit() bool {
+	name, ok := m.selectedRequestName()
+	if !ok || m.currentRequest == nil {
+		return false
+	}
+
+	m.mode = ModeSave
+	m.focus = FocusResponse
+	m.editingRequestName = name
+	m.saveForm.name.SetValue(normalizeRequestName(name))
+	m.saveForm.method.SetValue(m.currentRequest.Method)
+	m.saveForm.url.SetValue(m.currentRequest.URL)
+	m.saveForm.header.SetValue(m.currentRequest.ToStringHeaders())
+	m.saveForm.body.SetValue(m.currentRequest.Body)
+	m.saveForm.focus = focusSaveFieldName
+	m.errorMsg = ""
+	return true
 }
 
 // 全てのsaveFormのフォーカスカーソルを消す

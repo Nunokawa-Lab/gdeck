@@ -38,6 +38,7 @@ type Model struct {
 
 	saveForm           saveForm
 	saveFormFieldCount int
+	editingRequestName string // 空なら新規保存、非空なら edit 中の元リスト名（相対パス）
 
 	mode Mode
 }

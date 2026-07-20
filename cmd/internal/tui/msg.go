@@ -10,8 +10,9 @@ type runFinishedMsg struct {
 }
 
 type saveFinishedMsg struct {
-	name string
-	err  error
+	name    string
+	updated bool
+	err     error
 }
 
 // 自動消去用
