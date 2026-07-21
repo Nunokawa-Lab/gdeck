@@ -17,19 +17,63 @@
 
 ## インストール
 
-```bash
-go build -o gdeck
-mv gdeck /usr/local/bin/
-```
-
-グローバルにインストールせずローカルで試す場合:
+### Homebrew
 
 ```bash
-go build -o gdeck
-./gdeck --help
+brew tap Nunokawa-Lab/gdeck
+brew install gdeck
 ```
 
-> macOS ではシンボリックリンクも利用できます: `ln -s $(pwd)/gdeck /usr/local/bin/gdeck`
+### go install
+
+[Go](https://go.dev/dl/) 1.24 以降が必要です。
+
+```bash
+go install github.com/Nunokawa-Lab/gdeck@latest
+```
+
+`$HOME/go/bin`（または `$GOPATH/bin`）が `PATH` に通っていることを確認してください。
+
+特定のバージョンをインストールする場合:
+
+```bash
+go install github.com/Nunokawa-Lab/gdeck@v0.1.1
+```
+
+### バイナリをダウンロード
+
+ビルド済みバイナリは [Releases](https://github.com/Nunokawa-Lab/gdeck/releases) から入手できます。
+
+**macOS (Apple Silicon)**
+
+```bash
+curl -LO https://github.com/Nunokawa-Lab/gdeck/releases/latest/download/gdeck-darwin-arm64
+chmod +x gdeck-darwin-arm64
+mv gdeck-darwin-arm64 /usr/local/bin/gdeck
+```
+
+**macOS (Intel)**
+
+```bash
+curl -LO https://github.com/Nunokawa-Lab/gdeck/releases/latest/download/gdeck-darwin-amd64
+chmod +x gdeck-darwin-amd64
+mv gdeck-darwin-amd64 /usr/local/bin/gdeck
+```
+
+**Linux**
+
+```bash
+curl -LO https://github.com/Nunokawa-Lab/gdeck/releases/latest/download/gdeck-linux-amd64
+chmod +x gdeck-linux-amd64
+sudo mv gdeck-linux-amd64 /usr/local/bin/gdeck
+```
+
+Windows の場合は [Releases](https://github.com/Nunokawa-Lab/gdeck/releases) から `gdeck-windows-amd64.exe` をダウンロードし、`PATH` に追加してください。
+
+> **macOS:** 初回起動時に Gatekeeper によりブロックされる場合があります。そのときは以下を実行してください:
+> ```bash
+> xattr -d com.apple.quarantine gdeck-darwin-arm64   # または gdeck-darwin-amd64
+> ```
 
 ---
 

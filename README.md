@@ -17,19 +17,63 @@
 
 ## Installation
 
-```bash
-go build -o gdeck
-mv gdeck /usr/local/bin/
-```
-
-To try it locally without installing globally:
+### Homebrew
 
 ```bash
-go build -o gdeck
-./gdeck --help
+brew tap Nunokawa-Lab/gdeck
+brew install gdeck
 ```
 
-> On macOS, you can also symlink: `ln -s $(pwd)/gdeck /usr/local/bin/gdeck`
+### go install
+
+Requires [Go](https://go.dev/dl/) 1.24 or later.
+
+```bash
+go install github.com/Nunokawa-Lab/gdeck@latest
+```
+
+Ensure `$HOME/go/bin` (or `$GOPATH/bin`) is on your `PATH`.
+
+To install a specific version:
+
+```bash
+go install github.com/Nunokawa-Lab/gdeck@v0.1.1
+```
+
+### Binary download
+
+Pre-built binaries are available on the [Releases](https://github.com/Nunokawa-Lab/gdeck/releases) page.
+
+**macOS (Apple Silicon)**
+
+```bash
+curl -LO https://github.com/Nunokawa-Lab/gdeck/releases/latest/download/gdeck-darwin-arm64
+chmod +x gdeck-darwin-arm64
+mv gdeck-darwin-arm64 /usr/local/bin/gdeck
+```
+
+**macOS (Intel)**
+
+```bash
+curl -LO https://github.com/Nunokawa-Lab/gdeck/releases/latest/download/gdeck-darwin-amd64
+chmod +x gdeck-darwin-amd64
+mv gdeck-darwin-amd64 /usr/local/bin/gdeck
+```
+
+**Linux**
+
+```bash
+curl -LO https://github.com/Nunokawa-Lab/gdeck/releases/latest/download/gdeck-linux-amd64
+chmod +x gdeck-linux-amd64
+sudo mv gdeck-linux-amd64 /usr/local/bin/gdeck
+```
+
+For Windows, download `gdeck-windows-amd64.exe` from [Releases](https://github.com/Nunokawa-Lab/gdeck/releases) and add it to your `PATH`.
+
+> **macOS:** Gatekeeper may block unsigned binaries on first launch. If so, run:
+> ```bash
+> xattr -d com.apple.quarantine gdeck-darwin-arm64   # or gdeck-darwin-amd64
+> ```
 
 ---
 
