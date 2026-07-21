@@ -3,8 +3,8 @@ package cmd
 import (
 	"fmt"
 
-	op "github.com/nunokawa/gdeck/cmd/internal/output"
-	"github.com/nunokawa/gdeck/cmd/internal/store"
+	op "github.com/Nunokawa-Lab/gdeck/cmd/internal/output"
+	"github.com/Nunokawa-Lab/gdeck/cmd/internal/store"
 
 	"github.com/spf13/cobra"
 )

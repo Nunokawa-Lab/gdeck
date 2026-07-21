@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/nunokawa/gdeck/cmd/internal/model"
+	"github.com/Nunokawa-Lab/gdeck/cmd/internal/model"
 )
 
 /** GET */

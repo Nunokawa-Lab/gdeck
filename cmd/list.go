@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"path/filepath"
 
-	"github.com/nunokawa/gdeck/cmd/internal/store"
+	"github.com/Nunokawa-Lab/gdeck/cmd/internal/store"
 
 	"github.com/spf13/cobra"
 )

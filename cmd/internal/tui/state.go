@@ -4,9 +4,9 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/Nunokawa-Lab/gdeck/cmd/internal/model"
+	"github.com/Nunokawa-Lab/gdeck/cmd/internal/store"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/nunokawa/gdeck/cmd/internal/model"
-	"github.com/nunokawa/gdeck/cmd/internal/store"
 )
 
 /** modelの状態を変更する処理を実装するファイル */

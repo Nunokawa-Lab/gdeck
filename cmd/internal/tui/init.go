@@ -1,12 +1,12 @@
 package tui
 
 import (
+	"github.com/Nunokawa-Lab/gdeck/cmd/internal/store"
 	"github.com/charmbracelet/bubbles/spinner"
 	"github.com/charmbracelet/bubbles/textarea"
 	"github.com/charmbracelet/bubbles/textinput"
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/nunokawa/gdeck/cmd/internal/store"
 )
 
 func (m Model) Init() tea.Cmd {

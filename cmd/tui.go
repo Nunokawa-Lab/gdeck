@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/nunokawa/gdeck/cmd/internal/tui"
+	"github.com/Nunokawa-Lab/gdeck/cmd/internal/tui"
 	"github.com/spf13/cobra"
 )
 

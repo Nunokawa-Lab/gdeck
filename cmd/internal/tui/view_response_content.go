@@ -3,7 +3,7 @@ package tui
 import (
 	"fmt"
 
-	"github.com/nunokawa/gdeck/cmd/internal/output"
+	"github.com/Nunokawa-Lab/gdeck/cmd/internal/output"
 )
 
 // 出力テキストを返す

@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/Nunokawa-Lab/gdeck/cmd/internal/model"
+	"github.com/Nunokawa-Lab/gdeck/cmd/internal/runner"
+	"github.com/Nunokawa-Lab/gdeck/cmd/internal/store"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/nunokawa/gdeck/cmd/internal/model"
-	"github.com/nunokawa/gdeck/cmd/internal/runner"
-	"github.com/nunokawa/gdeck/cmd/internal/store"
 )
 
 /** 非同期処理を定義するファイル */

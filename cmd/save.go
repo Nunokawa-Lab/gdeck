@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/nunokawa/gdeck/cmd/internal/model"
-	"github.com/nunokawa/gdeck/cmd/internal/store"
+	"github.com/Nunokawa-Lab/gdeck/cmd/internal/model"
+	"github.com/Nunokawa-Lab/gdeck/cmd/internal/store"
 
 	"github.com/spf13/cobra"
 )

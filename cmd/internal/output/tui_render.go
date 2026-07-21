@@ -5,8 +5,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Nunokawa-Lab/gdeck/cmd/internal/model"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/nunokawa/gdeck/cmd/internal/model"
 )
 
 func RenderTUIResponse(

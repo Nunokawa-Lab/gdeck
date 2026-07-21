@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/nunokawa/gdeck/cmd/internal/model"
+	"github.com/Nunokawa-Lab/gdeck/cmd/internal/model"
 )
 
 // 保存されたコマンドを読み込む処理

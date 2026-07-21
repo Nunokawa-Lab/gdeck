@@ -1,9 +1,9 @@
 package runner
 
 import (
-	"github.com/nunokawa/gdeck/cmd/internal/env"
-	"github.com/nunokawa/gdeck/cmd/internal/model"
-	"github.com/nunokawa/gdeck/cmd/internal/request"
+	"github.com/Nunokawa-Lab/gdeck/cmd/internal/env"
+	"github.com/Nunokawa-Lab/gdeck/cmd/internal/model"
+	"github.com/Nunokawa-Lab/gdeck/cmd/internal/request"
 )
 
 func PrepareRequest(

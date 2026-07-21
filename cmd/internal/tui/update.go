@@ -7,10 +7,10 @@ import (
 
 	"github.com/charmbracelet/bubbles/spinner"
 	// "github.com/charmbracelet/bubbles/textarea"
+	"github.com/Nunokawa-Lab/gdeck/cmd/internal/model"
+	"github.com/Nunokawa-Lab/gdeck/cmd/internal/store"
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/nunokawa/gdeck/cmd/internal/model"
-	"github.com/nunokawa/gdeck/cmd/internal/store"
 )
 
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {

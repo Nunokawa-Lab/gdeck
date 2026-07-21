@@ -1,4 +1,4 @@
-module github.com/nunokawa/gdeck
+module github.com/Nunokawa-Lab/gdeck
 
 go 1.24.2
 

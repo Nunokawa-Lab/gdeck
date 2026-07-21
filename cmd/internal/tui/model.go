@@ -1,11 +1,11 @@
 package tui
 
 import (
+	"github.com/Nunokawa-Lab/gdeck/cmd/internal/model"
 	"github.com/charmbracelet/bubbles/spinner"
 	"github.com/charmbracelet/bubbles/textarea"
 	"github.com/charmbracelet/bubbles/textinput"
 	"github.com/charmbracelet/bubbles/viewport"
-	"github.com/nunokawa/gdeck/cmd/internal/model"
 )
 
 type Model struct {

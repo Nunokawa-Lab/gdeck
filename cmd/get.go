@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/nunokawa/gdeck/cmd/internal/httpclient"
-	outputHandler "github.com/nunokawa/gdeck/cmd/internal/output"
-	"github.com/nunokawa/gdeck/cmd/internal/store"
+	"github.com/Nunokawa-Lab/gdeck/cmd/internal/httpclient"
+	outputHandler "github.com/Nunokawa-Lab/gdeck/cmd/internal/output"
+	"github.com/Nunokawa-Lab/gdeck/cmd/internal/store"
 
 	"github.com/spf13/cobra"
 )
