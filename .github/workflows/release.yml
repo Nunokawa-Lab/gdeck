@@ -1,0 +1,36 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  goreleaser:
+    runs-on: ubuntu-latest
+    steps:
+      # リポジトリのコードを Actions の仮想マシン（ubuntu-latest）に clone
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # changelog用。全履歴を取得。GoReleaser が changelog を作るとき「前のタグから今回のタグまでのコミット一覧」が必要なため
+
+      # go環境準備
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      # GoReleaser処理
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v6
+        with:
+          distribution: goreleaser
+          version: "~> v2"
+          args: release --clean   # 前回のビルド成果物を消してからやり直す
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}   # トークンは自動生成される
