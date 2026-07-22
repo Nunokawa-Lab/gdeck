@@ -1,0 +1,48 @@
+# GoReleaser の設定ファイル形式のバージョン。現在の主流フォーマット指定。
+version: 2
+
+project_name: gdeck
+
+# ビルド前の処理指定
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: gdeck   # ビルド識別子
+    main: .   # エントリーポイント
+    binary: gdeck   # 出力される実行ファイル名
+    env:
+      - CGO_ENABLED=0   # C言語連携を無効化
+    goos:   # コンパイル対象OS
+      - darwin
+      - linux
+      - windows
+    goarch:   # 対象CPU
+      - amd64
+      - arm64
+
+# 配布ファイルの形式指定
+archives:
+  - id: default
+    formats:
+      - binary    # バイナリを配布（zip等にはしない）
+    name_template: >-
+      {{ .ProjectName }}-{{ .Os }}-{{ .Arch }}{{ if eq .Os "windows" }}.exe{{ end }}
+
+checksum:
+  name_template: "checksums.txt"
+
+release:
+  github:
+    owner: Nunokawa-Lab
+    name: gdeck
+  draft: false
+  prerelease: auto   # v0.1.0-beta.1 などハイフン以降があればprerelease扱い
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
