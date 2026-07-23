@@ -69,16 +69,12 @@ homebrew_casks:
       template: "https://github.com/Nunokawa-Lab/gdeck/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
       verified: "github.com/Nunokawa-Lab/gdeck/"
     # brew info --cask gdeck 等で表示されるメッセージ（Casks/gdeck.rb に毎回埋め込まれる）
-    # ※ 各行のインデントを揃えること（YAML の literal block で必須）
-    # ※ Ruby heredoc では行末の \ が次行と結合されるため、AA 行末に \ を置かない
-    caveats: |
-        ____ ____  _____ ____ _  __
-        / ___|  _ \\| ____/ ___| |/ /
-        | |  _| | | |  _|| |   | ' /
-        | |_| | |_| | |__| |___| .
-        \\____|____/|_____\\____|_|\\_
-
-        Run `gdeck --help` to get started, or `gdeck tui` for the interactive UI.
+    # ※ GoReleaser の split() が caveats 全体に TrimSpace するため、1行目の字下げは
+    #   \u200b（ゼロ幅スペース）+ スペースで保持する
+    # ※ Ruby <<~EOS 用: \| は \\\\|、行頭 \\____ は \\\\\\\\_ と YAML エスケープ
+    # ※ K の斜線（4・5行目末尾の \）は heredoc 行継続を避けるため \u200b を付ける
+    #   4行目: . \\\\\u200b  5行目: \\\\_\\\\\u200b（YAML 上のエスケープ）
+    caveats: "\u200b        ____ ____  _____ ____ _  __\n       / ___|  _ \\\\| ____/ ___| |/ /\n      | |  _| | | |  _|| |   | ' /\n      | |_| | |_| | |__| |___| . \\\\\u200b\n       \\\\____|____/|_____\\\\____|_|\\\\_\\\\\u200b\n\nRun `gdeck --help` to get started, or `gdeck tui` for the interactive UI."
     # 署名なしバイナリの Gatekeeper 対策（brew install 直後の起動ブロックを回避）
     # staged されるファイル名は gdeck-darwin-amd64 等（binary の target 名 gdeck ではない）
     hooks:
