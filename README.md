@@ -21,10 +21,30 @@
 
 macOS only. Installs the pre-built binary from [Releases](https://github.com/Nunokawa-Lab/gdeck/releases) (Go is not required).
 
+**Option A — one command (Homebrew 6.0+; trusts this cask only):**
+
+```bash
+brew install --cask Nunokawa-Lab/gdeck/gdeck
+```
+
+**Option B — tap, then install:**
+
+On [Homebrew 6.0+](https://docs.brew.sh/Tap-Trust), third-party taps must be trusted before their casks are loaded. Either trust the whole tap or this cask only:
+
 ```bash
 brew tap Nunokawa-Lab/gdeck
+brew trust Nunokawa-Lab/gdeck              # trust the entire tap
 brew install --cask gdeck
 ```
+
+Or trust only the gdeck cask (recommended):
+
+```bash
+brew tap Nunokawa-Lab/gdeck
+brew trust --cask Nunokawa-Lab/gdeck/gdeck
+brew install --cask gdeck
+```
+
 Linux users: use [go install](#go-install) or [binary download](#binary-download) below.
 
 To upgrade:

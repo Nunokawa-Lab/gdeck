@@ -21,10 +21,30 @@
 
 macOS 専用。[Releases](https://github.com/Nunokawa-Lab/gdeck/releases) のビルド済みバイナリをインストールします（Go は不要）。
 
+**方法A — 1コマンド（Homebrew 6.0+。この Cask のみ trust）:**
+
+```bash
+brew install --cask Nunokawa-Lab/gdeck/gdeck
+```
+
+**方法B — tap してからインストール:**
+
+[Homebrew 6.0+](https://docs.brew.sh/Tap-Trust) では、サードパーティ tap は trust しないと Cask が読み込まれません。tap 全体を trust するか、この Cask だけ trust してください:
+
 ```bash
 brew tap Nunokawa-Lab/gdeck
+brew trust Nunokawa-Lab/gdeck              # tap 全体を trust
 brew install --cask gdeck
 ```
+
+または gdeck の Cask だけ trust する（推奨）:
+
+```bash
+brew tap Nunokawa-Lab/gdeck
+brew trust --cask Nunokawa-Lab/gdeck/gdeck
+brew install --cask gdeck
+```
+
 Linux ユーザーは下記の **go install** または **バイナリをダウンロード** を利用してください。
 
 アップグレード:
