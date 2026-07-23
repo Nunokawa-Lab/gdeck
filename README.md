@@ -17,11 +17,21 @@
 
 ## Installation
 
-### Homebrew
+### Homebrew (macOS)
+
+macOS only. Installs the pre-built binary from [Releases](https://github.com/Nunokawa-Lab/gdeck/releases) (Go is not required).
 
 ```bash
 brew tap Nunokawa-Lab/gdeck
-brew install gdeck
+brew install --cask gdeck
+```
+Linux users: use [go install](#go-install) or [binary download](#binary-download) below.
+
+To upgrade:
+
+```bash
+brew update
+brew upgrade --cask gdeck
 ```
 
 ### go install

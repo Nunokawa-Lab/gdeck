@@ -26,6 +26,9 @@ jobs:
           cache: true
 
       # GoReleaser処理
+      # - gdeck リポジトリ: Release 作成・全 OS バイナリ upload（GITHUB_TOKEN）
+      # - homebrew-gdeck リポジトリ: Casks/gdeck.rb 更新 & push（HOMEBREW_TAP_GITHUB_TOKEN）
+      #   ※ Cask は macOS 専用。Release バイナリを tap 経由で配布（Go 不要）
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v6
         with:
@@ -33,4 +36,9 @@ jobs:
           version: "~> v2"
           args: release --clean   # 前回のビルド成果物を消してからやり直す
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}   # トークンは自動生成される
+          # この Workflow が動いている gdeck リポジトリへの Release 作成用（Actions が自動発行）
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # homebrew-gdeck への push 用（要: リポジトリ Secrets に手動登録）
+          # GitHub > gdeck > Secrets > Actions : HOMEBREW_TAP_GITHUB_TOKEN
+          # PAT には repo スコープが必要（homebrew-gdeck への write 権限）
+          HOMEBREW_TAP_GITHUB_TOKEN: ${{ secrets.HOMEBREW_TAP_GITHUB_TOKEN }}

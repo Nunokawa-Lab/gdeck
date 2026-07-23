@@ -40,6 +40,42 @@ release:
   draft: false
   prerelease: auto   # v0.1.0-beta.1 などハイフン以降があればprerelease扱い
 
+# Homebrew tap（homebrew-gdeck）の Cask を自動更新する設定
+# - macOS 専用（Linux は go install または Release バイナリ DL を使う）
+# - Release に upload したビルド済みバイナリを配布する（インストール時に Go 不要）
+# - タグ push → Release 作成後、別リポジトリの Casks/gdeck.rb を commit & push する
+homebrew_casks:
+  - name: gdeck
+    # 参照する archives（上記 archives セクションの id）
+    ids:
+      - default
+    # Cask に配置する実行ファイル名（builds.binary と一致）
+    binaries:
+      - gdeck
+    # 更新対象の tap リポジトリ（brew tap Nunokawa-Lab/gdeck で使う repo）
+    repository:
+      owner: Nunokawa-Lab
+      name: homebrew-gdeck
+      # gdeck 用 GITHUB_TOKEN では tap repo に書き込めないため、別 PAT を使う
+      # release.yml の HOMEBREW_TAP_GITHUB_TOKEN → GitHub Secrets に登録した値
+      token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
+    # Cask ファイルの置き場（Formula/ ではなく Casks/）
+    directory: Casks
+    homepage: "https://github.com/Nunokawa-Lab/gdeck"
+    description: "Lightweight API testing tool (CLI + TUI)"
+    commit_msg_template: "brew: update {{ .ProjectName }} cask to {{ .Tag }}"
+    # Release Assets からバイナリを取得する URL（archives.name_template のファイル名と一致）
+    url:
+      template: "https://github.com/Nunokawa-Lab/gdeck/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+      verified: "github.com/Nunokawa-Lab/gdeck/"
+    # 署名なしバイナリの Gatekeeper 対策（brew install 直後の起動ブロックを回避）
+    hooks:
+      post:
+        install: |
+          if OS.mac?
+            system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/gdeck"]
+          end
+
 changelog:
   sort: asc
   filters:

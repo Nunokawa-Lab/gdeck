@@ -17,11 +17,21 @@
 
 ## インストール
 
-### Homebrew
+### Homebrew（macOS）
+
+macOS 専用。[Releases](https://github.com/Nunokawa-Lab/gdeck/releases) のビルド済みバイナリをインストールします（Go は不要）。
 
 ```bash
 brew tap Nunokawa-Lab/gdeck
-brew install gdeck
+brew install --cask gdeck
+```
+Linux ユーザーは下記の **go install** または **バイナリをダウンロード** を利用してください。
+
+アップグレード:
+
+```bash
+brew update
+brew upgrade --cask gdeck
 ```
 
 ### go install
