@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="gdeck — Lightweight terminal API client with CLI and interactive TUI.">
+  <title>gdeck — Lightweight API testing tool</title>
+  <style>
+    :root {
+      --purple-950: #1a0b2e;
+      --purple-900: #2d1b4e;
+      --purple-800: #4c1d95;
+      --purple-700: #6d28d9;
+      --purple-600: #7c3aed;
+      --purple-500: #8b5cf6;
+      --purple-400: #a78bfa;
+      --purple-300: #c4b5fd;
+      --purple-100: #ede9fe;
+      --purple-50: #f5f3ff;
+      --text: #1e1b2e;
+      --text-muted: #5b5675;
+      --surface: #ffffff;
+      --surface-elevated: #faf9fc;
+      --border: #e8e4f0;
+      --shadow: 0 4px 24px rgba(109, 40, 217, 0.12);
+      --shadow-lg: 0 20px 60px rgba(109, 40, 217, 0.18);
+      --radius: 12px;
+      --radius-lg: 20px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: var(--text);
+      line-height: 1.6;
+      background: var(--surface);
+    }
+
+    /* ── Nav ── */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.875rem 2rem;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 700;
+      font-size: 1.125rem;
+    }
+
+    .nav-brand img {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .nav-links .nav-text {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--purple-600); }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.625rem 1.25rem;
+      border-radius: 999px;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn:active { transform: scale(0.97); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--purple-600), var(--purple-500));
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(124, 58, 237, 0.4);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 6px 20px rgba(124, 58, 237, 0.5);
+    }
+
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--purple-600);
+      border: 1.5px solid var(--purple-300);
+    }
+
+    .btn-outline:hover {
+      background: var(--purple-50);
+    }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 5rem 2rem 6rem;
+      text-align: center;
+      background: linear-gradient(160deg, var(--purple-950) 0%, var(--purple-900) 40%, var(--purple-800) 100%);
+      color: #fff;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(139, 92, 246, 0.35), transparent),
+        radial-gradient(ellipse 50% 40% at 80% 60%, rgba(167, 139, 250, 0.15), transparent),
+        radial-gradient(ellipse 40% 30% at 10% 80%, rgba(124, 58, 237, 0.2), transparent);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .hero-logo {
+      width: 396px;
+      height: 176px;
+      margin: 0 auto 1.5rem;
+      border-radius: 22px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    .hero h1 {
+      margin: 0 0 0.75rem;
+      font-size: clamp(2.5rem, 6vw, 3.75rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, #fff 30%, var(--purple-300));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-tagline {
+      margin: 0 auto 2rem;
+      max-width: 540px;
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.75);
+      line-height: 1.65;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.875rem;
+      justify-content: center;
+    }
+
+    /* ── Demo ── */
+    .demo-section {
+      margin-top: -3rem;
+      padding: 0 2rem 5rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .demo-frame {
+      max-width: 900px;
+      margin: 0 auto;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-lg);
+      background: var(--purple-950);
+    }
+
+    .demo-frame-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      background: var(--purple-900);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .demo-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .demo-dot:nth-child(1) { background: #ff5f57; }
+    .demo-dot:nth-child(2) { background: #febc2e; }
+    .demo-dot:nth-child(3) { background: #28c840; }
+
+    .demo-frame-title {
+      flex: 1;
+      text-align: center;
+      font-size: 0.8125rem;
+      color: rgba(255, 255, 255, 0.45);
+      font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+    }
+
+    .demo-frame img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    /* ── Sections ── */
+    .section {
+      padding: 5rem 2rem;
+    }
+
+    .section-alt {
+      background: var(--surface-elevated);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-inner {
+      max-width: 1040px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      display: inline-block;
+      margin-bottom: 0.75rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      background: var(--purple-100);
+      color: var(--purple-700);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .section h2 {
+      margin: 0 0 0.5rem;
+      font-size: clamp(1.75rem, 4vw, 2.25rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    .section-desc {
+      margin: 0 0 3rem;
+      max-width: 560px;
+      color: var(--text-muted);
+      font-size: 1.0625rem;
+    }
+
+    /* ── Features ── */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .feature-card {
+      padding: 1.75rem;
+      border-radius: var(--radius);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+    }
+
+    .section-alt .feature-card {
+      background: var(--surface);
+    }
+
+    .feature-card:hover {
+      border-color: var(--purple-300);
+      box-shadow: var(--shadow);
+      transform: translateY(-2px);
+    }
+
+    .feature-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      margin-bottom: 1rem;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--purple-100), var(--purple-50));
+      font-size: 1.25rem;
+    }
+
+    .feature-card h3 {
+      margin: 0 0 0.5rem;
+      font-size: 1.0625rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .feature-card p {
+      margin: 0;
+      font-size: 0.9375rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    /* ── Install ── */
+    .install-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .install-card {
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      background: var(--surface);
+    }
+
+    .install-card-header {
+      padding: 1rem 1.25rem;
+      background: linear-gradient(135deg, var(--purple-50), #fff);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .install-card-header h3 {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--purple-800);
+    }
+
+    .install-card-header p {
+      margin: 0.25rem 0 0;
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+    }
+
+    .install-card pre {
+      margin: 0;
+      padding: 1.25rem;
+      background: var(--purple-950);
+      overflow-x: auto;
+    }
+
+    .install-card code {
+      font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+      font-size: 0.8125rem;
+      line-height: 1.7;
+      color: var(--purple-300);
+      white-space: pre;
+    }
+
+    .install-card code .comment { color: rgba(255, 255, 255, 0.35); }
+    .install-card code .cmd { color: #e2d9f3; }
+
+    /* ── Quick start ── */
+    .quickstart {
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .quickstart pre {
+      margin: 0;
+      padding: 1.75rem 2rem;
+      background: var(--purple-950);
+      overflow-x: auto;
+    }
+
+    .quickstart code {
+      font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+      font-size: 0.875rem;
+      line-height: 1.85;
+      color: var(--purple-300);
+      white-space: pre;
+    }
+
+    .quickstart code .prompt { color: var(--purple-500); user-select: none; }
+    .quickstart code .comment { color: rgba(255, 255, 255, 0.35); }
+
+    /* ── Footer ── */
+    .footer {
+      padding: 3rem 2rem;
+      text-align: center;
+      background: var(--purple-950);
+      color: rgba(255, 255, 255, 0.55);
+      font-size: 0.875rem;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-links a {
+      color: rgba(255, 255, 255, 0.75);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--purple-300); }
+
+    .footer-copy { margin: 0; }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      .nav { padding: 0.75rem 1.25rem; }
+      .nav-links .nav-text { display: none; }
+      .hero { padding: 3.5rem 1.25rem 5rem; }
+      .demo-section { padding: 0 1.25rem 3.5rem; }
+      .section { padding: 3.5rem 1.25rem; }
+      .hero-actions { flex-direction: column; align-items: center; }
+      .hero-actions .btn { width: 100%; max-width: 280px; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav class="nav">
+    <a class="nav-brand" href="#">
+      <img src="assets/logo.png" alt="gdeck logo">
+      gdeck
+    </a>
+    <div class="nav-links">
+      <a class="nav-text" href="#features">Features</a>
+      <a class="nav-text" href="#install">Install</a>
+      <a class="nav-text" href="https://github.com/Nunokawa-Lab/gdeck/blob/main/README.md">Docs</a>
+      <a class="btn btn-primary" href="#install">Get started</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="hero-inner">
+      <img class="hero-logo" src="assets/logo.png" alt="gdeck logo">
+      <h1><span>gdeck</span></h1>
+      <p class="hero-tagline">
+        A lightweight API testing tool for the terminal.<br>
+        Send requests from the CLI, manage them in an interactive TUI.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#install">Install gdeck</a>
+        <a class="btn btn-ghost" href="https://github.com/Nunokawa-Lab/gdeck">View on GitHub</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Demo -->
+  <section class="demo-section" aria-label="Demo">
+    <div class="demo-frame">
+      <div class="demo-frame-header">
+        <span class="demo-dot"></span>
+        <span class="demo-dot"></span>
+        <span class="demo-dot"></span>
+        <span class="demo-frame-title">gdeck tui</span>
+      </div>
+      <img src="assets/demo.gif" alt="gdeck TUI demo — browse, run, and manage saved HTTP requests">
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="section section-alt" id="features">
+    <div class="section-inner">
+      <span class="section-label">Features</span>
+      <h2>Everything you need, in the terminal</h2>
+      <p class="section-desc">
+        No GUI bloat. Save request definitions once, run them anytime — with env-based variable substitution built in.
+      </p>
+      <div class="features">
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>CLI-first</h3>
+          <p>Send HTTP requests directly from the command line with familiar curl-like ergonomics.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💾</div>
+          <h3>Save &amp; reuse</h3>
+          <p>Store request definitions locally and run them by name — no copy-pasting URLs every time.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🖥️</div>
+          <h3>Interactive TUI</h3>
+          <p>Browse, run, edit, and delete saved requests in a full-screen terminal UI.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">{ }</div>
+          <h3>Env variables</h3>
+          <p>Substitute <code>{{VAR}}</code> placeholders at runtime via env files — perfect for dev/staging/prod.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick start -->
+  <section class="section">
+    <div class="section-inner">
+      <span class="section-label">Quick start</span>
+      <h2>Up and running in 30 seconds</h2>
+      <p class="section-desc">Save a request, set env values, and run it — all from the terminal.</p>
+      <div class="quickstart">
+        <pre><code><span class="comment"># Save a request with placeholders</span>
+<span class="prompt">$</span> gdeck save getUser GET https://api.example.com/users/{{USER_ID}} \
+    -H 'Authorization: Bearer {{TOKEN}}'
+
+<span class="comment"># Set env values</span>
+<span class="prompt">$</span> gdeck env set USER_ID 42
+<span class="prompt">$</span> gdeck env set TOKEN abc123
+
+<span class="comment"># Run the saved request</span>
+<span class="prompt">$</span> gdeck run getUser</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Install -->
+  <section class="section section-alt" id="install">
+    <div class="section-inner">
+      <span class="section-label">Install</span>
+      <h2>Pick your platform</h2>
+      <p class="section-desc">Available on macOS, Linux, and Windows. Go is only required for <code>go install</code>.</p>
+      <div class="install-grid">
+        <div class="install-card">
+          <div class="install-card-header">
+            <h3>Homebrew</h3>
+            <p>macOS · pre-built binary · Go not required</p>
+          </div>
+          <pre><code><span class="cmd">brew install --cask Nunokawa-Lab/gdeck/gdeck</span></code></pre>
+        </div>
+        <div class="install-card">
+          <div class="install-card-header">
+            <h3>go install</h3>
+            <p>macOS / Linux / Windows · requires Go 1.24+</p>
+          </div>
+          <pre><code><span class="cmd">go install github.com/Nunokawa-Lab/gdeck@latest</span></code></pre>
+        </div>
+        <div class="install-card">
+          <div class="install-card-header">
+            <h3>Binary download</h3>
+            <p>All platforms · no dependencies</p>
+          </div>
+          <pre><code><span class="comment"># macOS Apple Silicon</span>
+<span class="cmd">curl -LO https://github.com/Nunokawa-Lab/gdeck/releases/latest/download/gdeck-darwin-arm64</span>
+<span class="cmd">chmod +x gdeck-darwin-arm64</span></code></pre>
+        </div>
+      </div>
+      <p style="margin-top: 2rem; text-align: center;">
+        <a class="btn btn-outline" href="https://github.com/Nunokawa-Lab/gdeck/releases">All releases &amp; platforms →</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="https://github.com/Nunokawa-Lab/gdeck">GitHub</a>
+      <a href="https://github.com/Nunokawa-Lab/gdeck/releases">Releases</a>
+      <a href="https://github.com/Nunokawa-Lab/gdeck/blob/main/README.md">Documentation</a>
+      <a href="https://github.com/Nunokawa-Lab/gdeck/blob/main/README.ja.md">日本語</a>
+    </div>
+    <p class="footer-copy">MIT License · Built with Go</p>
+  </footer>
+
+</body>
+</html>
