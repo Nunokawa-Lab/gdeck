@@ -104,13 +104,26 @@
     .btn:active { transform: scale(0.97); }
 
     .btn-primary {
-      background: linear-gradient(135deg, var(--purple-600), var(--purple-500));
+      background: linear-gradient(135deg, #4c1d95 0%, #6d28d9 28%, #7c3aed 55%, #9333ea 78%, #c026d3 100%);
       color: #fff;
-      box-shadow: 0 4px 14px rgba(124, 58, 237, 0.4);
+      box-shadow: 0 4px 16px rgba(109, 40, 217, 0.45);
     }
 
     .btn-primary:hover {
-      box-shadow: 0 6px 20px rgba(124, 58, 237, 0.5);
+      background: linear-gradient(135deg, #4c1d95 0%, #6d28d9 28%, #7c3aed 55%, #9333ea 78%, #c026d3 100%);
+      box-shadow: 0 6px 24px rgba(124, 58, 237, 0.55);
+    }
+
+    /* Hero CTA — brighter purple + pink for contrast on dark background */
+    .btn-hero {
+      background: linear-gradient(135deg, #4c1d95 0%, #6d28d9 28%, #7c3aed 55%, #9333ea 78%, #c026d3 100%);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+
+    .btn-hero:hover {
+      background: linear-gradient(135deg, #5b21b6 0%, #7c3aed 28%, #8b5cf6 55%, #a855f7 78%, #d946ef 100%);
+      box-shadow: 0 4px 20px rgba(124, 58, 237, 0.5), 0 4px 16px rgba(168, 85, 247, 0.35);
     }
 
     .btn-ghost {
@@ -363,21 +376,21 @@
 
     .install-card-header {
       padding: 1rem 1.25rem;
-      background: #6d5896;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: linear-gradient(135deg, #ffffff 0%, var(--purple-50) 55%, var(--purple-100) 100%);
+      border-bottom: 1px solid rgba(109, 40, 217, 0.12);
     }
 
     .install-card-header h3 {
       margin: 0;
       font-size: 1rem;
       font-weight: 700;
-      color: #fff;
+      color: var(--purple-800);
     }
 
     .install-card-header p {
       margin: 0.25rem 0 0;
       font-size: 0.8125rem;
-      color: rgba(255, 255, 255, 0.55);
+      color: var(--text-muted);
     }
 
     .install-card pre {
@@ -494,7 +507,7 @@
         Send requests from the CLI, manage them in an interactive TUI.
       </p>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="#install">Install gdeck</a>
+        <a class="btn btn-hero" href="#install">Install gdeck</a>
         <a class="btn btn-ghost" href="https://github.com/Nunokawa-Lab/gdeck">View on GitHub</a>
       </div>
     </div>
