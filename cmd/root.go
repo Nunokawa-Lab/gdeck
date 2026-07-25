@@ -20,6 +20,6 @@ var rootCmd = &cobra.Command{
 
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
-		log.Fatalln(fmt.Println("コマンド起動エラー：", err.Error()))
+		log.Fatalln(fmt.Println("Command execution failed：", err.Error()))
 	}
 }
