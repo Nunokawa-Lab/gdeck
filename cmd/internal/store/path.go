@@ -6,6 +6,17 @@ import (
 	"strings"
 )
 
+// gdeckで使用するディレクトリを作成
+func EnsureDirs() error {
+	home, err := os.UserHomeDir()
+	if err != nil {
+		return err
+	}
+
+	base := filepath.Join(home, ".gdeck")
+    return os.MkdirAll(filepath.Join(base, "requests"), 0755)
+}
+
 func BuildRequestPath(name string) (string, error) {
 	home, err := os.UserHomeDir()
 	if err != nil {
