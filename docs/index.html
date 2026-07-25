@@ -353,32 +353,35 @@
     }
 
     .install-card {
+      display: flex;
+      flex-direction: column;
       border-radius: var(--radius);
-      border: 1px solid var(--border);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       overflow: hidden;
-      background: var(--surface);
+      background: var(--purple-950);
     }
 
     .install-card-header {
       padding: 1rem 1.25rem;
-      background: linear-gradient(135deg, var(--purple-50), #fff);
-      border-bottom: 1px solid var(--border);
+      background: #6d5896;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .install-card-header h3 {
       margin: 0;
       font-size: 1rem;
       font-weight: 700;
-      color: var(--purple-800);
+      color: #fff;
     }
 
     .install-card-header p {
       margin: 0.25rem 0 0;
       font-size: 0.8125rem;
-      color: var(--text-muted);
+      color: rgba(255, 255, 255, 0.55);
     }
 
     .install-card pre {
+      flex: 1;
       margin: 0;
       padding: 1.25rem;
       background: var(--purple-950);
@@ -576,7 +579,9 @@
             <h3>Homebrew</h3>
             <p>macOS · pre-built binary · Go not required</p>
           </div>
-          <pre><code><span class="cmd">brew install --cask Nunokawa-Lab/gdeck/gdeck</span></code></pre>
+          <pre><code><span class="cmd">brew tap Nunokawa-Lab/gdeck</span>
+<span class="cmd">brew trust Nunokawa-Lab/gdeck</span>   <span class="comment"># Homebrew 6.0+</span>
+<span class="cmd">brew install --cask gdeck</span></code></pre>
         </div>
         <div class="install-card">
           <div class="install-card-header">
