@@ -36,6 +36,10 @@ var listCmd = &cobra.Command{
 			fmt.Printf("Error: %s", err.Error())
 		}
 
+		if len(requestItems) < 1 {
+			fmt.Println("no requests specified.\nRun 'gdeck save --help' for usage.")
+		}
+
 		for _, reqeustItem := range requestItems {
 			name := reqeustItem.Name
 			ext := filepath.Ext(name)
